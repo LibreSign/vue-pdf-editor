@@ -73,7 +73,7 @@
             @onCancel="onCancelDrawingCanvas"/>
       </div>
     </div>
-    <div v-if="pages.length" class="w-full">
+    <div v-if="pages.length" id="pdfBody" class="w-full" ref = 'pdfBody'>
       <div class="flex justify-center px-5 w-full md:hidden">
         <img src="/edit.svg" class="mr-2" alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
         <input ref="renamePDFInputTwo" title="在此处重命名PDF"
@@ -213,11 +213,19 @@ export default {
       type: Boolean,
       default: true
     },
+    saveToUpload:{
+      type: Boolean,
+      default: false
+    },
     initFileSrc: {
       type: String,
       default: ''
     },
     initTextFields: {
+      type: Array,
+      default: null
+    },
+    initImageUrls: {
       type: Array,
       default: null
     }
@@ -259,8 +267,9 @@ export default {
         //   // prepareAssets();
         // }, 5000);
         fetchFont(this.currentFont);
-        // initTextField
+
         this.initTextField();
+        await this.initImages();
       } catch (e) {
         console.log(e);
       }
@@ -273,15 +282,32 @@ export default {
         this.selectedPageIndex = i;
         for (let j = 0; j < this.initTextFields.length; j++) {
           let text = this.initTextFields[j];
-          this.addTextField(text, - 100, j * 100);
+          this.addTextField(text, 600, j * 60);
         }
       }
       this.selectedPageIndex = 0;
-      setTimeout(()=>{
-        for (const textItemElement of this.$refs.textItem) {
-          textItemElement.operation = '';
+      let checker = setInterval(() => {
+        if (this.$refs.textItem.length === this.initTextFields.length) {
+          document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
+            bubbles: true,
+            cancelable: true,
+          }));
+          clearInterval(checker)
         }
-      },500)
+      }, 100);
+
+    },
+    async initImages(){
+      if (this.selectedPageIndex<0) {
+        return;
+      }
+      for (let i = 0; i <this.pages.length; i++) {
+        this.selectedPageIndex = i;
+        for (let j = 0; j < this.initImageUrls.length; j++) {
+          await this.addImage(this.initImageUrls[j], 600, (j-1+this.initTextFields.length) * 100 ,0.2);
+        }
+      }
+      this.selectedPageIndex = 0;
 
     },
     onFinishDrawingCanvas(e) {
@@ -314,6 +340,7 @@ export default {
         console.log(e);
       }
       this.initTextField();
+      this.initImages();
     },
     resetDefaultState() {
       this.pdfFile = null;
@@ -357,10 +384,15 @@ export default {
       }
       e.target.value = null;
     },
-    async addImage(file) {
+    async addImage(file, x = 0, y = 0, sizeNarrow = 1) {
       try {
         // get dataURL to prevent canvas from tainted
-        const url = await readAsDataURL(file);
+        let url;
+        if (typeof file === "string" && file.startsWith("http")) {
+          url = file;
+        }else {
+          url = await readAsDataURL(file);
+        }
         const img = await readAsImage(url);
         const id = this.genID();
         const {width, height} = img;
@@ -373,14 +405,14 @@ export default {
         const object = {
           id,
           type: "image",
-          width,
-          height,
+          width:width*sizeNarrow,
+          height:height*sizeNarrow,
           originWidth: width,
           originHeight: height,
           canvasWidth: canvasWidth,
           canvasHeight: canvasHeight,
-          x: 0,
-          y: 0,
+          x: x,
+          y: y,
           payload: img,
           file
         };
@@ -481,7 +513,8 @@ export default {
       if (!this.pdfFile || this.saving || !this.pages.length) return;
       this.saving = true;
       try {
-        await save(this.pdfFile, this.allObjects, this.pdfName, this.pagesScale);
+        // await save(this.pdfFile, this.allObjects, this.pdfName, this.pagesScale);
+        await save(this.pdfFile, this.allObjects, this.pdfName, this.saveToUpload);
       } catch (e) {
         console.log(e);
       } finally {

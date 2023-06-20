@@ -333,7 +333,7 @@ export default {
       });
     },
     render() {
-      this.$refs.editable.innerHTML = this.text;
+      this.$refs.editable.innerText = this.text;
       this.$refs.editable.focus();
     },
     extractLines() {

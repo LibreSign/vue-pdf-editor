@@ -2,7 +2,7 @@ import { readAsArrayBuffer } from './asyncReader.js';
 import { fetchFont, getAsset } from './prepareAssets';
 import { noop } from './helper.js';
 
-export async function save(pdfFile, objects, name) {
+export async function save(pdfFile, objects, name, isUpload=false) {
   const PDFLib = await getAsset('PDFLib');
   const download = await getAsset('download');
   const makeTextPDF = await getAsset('makeTextPDF');
@@ -22,7 +22,9 @@ export async function save(pdfFile, objects, name) {
         let { file, x, y, width, height } = object;
         let img;
         try {
-          if (file.type === 'image/jpeg') {
+          if(typeof file == 'string' && file.startsWith("http")){
+            img = await pdfDoc.embedPng(await fetch(file).then(res => res.arrayBuffer()));
+          }else if (file.type === 'image/jpeg') {
             img = await pdfDoc.embedJpg(await readAsArrayBuffer(file));
           } else {
             img = await pdfDoc.embedPng(await readAsArrayBuffer(file));
@@ -93,6 +95,10 @@ export async function save(pdfFile, objects, name) {
   await Promise.all(pagesProcesses);
   try {
     const pdfBytes = await pdfDoc.save();
+    if (isUpload) {
+     // 上传
+      return
+    }
     download(pdfBytes, name, 'application/pdf');
   } catch (e) {
     console.log('Failed to save PDF.');

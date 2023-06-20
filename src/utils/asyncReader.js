@@ -18,6 +18,7 @@ export function readAsImage(src) {
       const url = window.URL.createObjectURL(src);
       img.src = url;
     } else {
+      img.setAttribute('crossOrigin', 'anonymous');
       img.src = src;
     }
   });
