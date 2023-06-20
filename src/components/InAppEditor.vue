@@ -15,13 +15,13 @@
           name="image"
           class="hidden"
           @change="onUploadImage"/>
-      <label
+      <label v-if="showChooseFileBtn"
           class="whitespace-no-wrap bg-blue-500 hover:bg-blue-700 text-white
       font-bold py-1 px-3 md:px-4 rounded mr-3 cursor-pointer md:mr-4"
           for="pdf">
         选择PDF
       </label>
-      <div
+      <div v-if="showCustomizeEditor"
           class="relative mr-3 flex h-8 bg-gray-400 rounded-sm overflow-hidden
       md:mr-4">
         <label title="添加图片"
@@ -47,7 +47,7 @@
           <img src="/gesture.svg" alt="An icon for adding drawing"/>
         </label>
       </div>
-      <div class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
+      <div v-if="showRename" class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
         <img src="/edit.svg" class="mr-2" alt="a pen, edit pdf name"  @click="renamePDF($refs.renamePDFInputOne)"/>
         <input ref="renamePDFInputOne" title="在此处重命名PDF"
             placeholder="在此处重命名PDF"
@@ -82,6 +82,8 @@
             class="flex-grow bg-transparent"
             :value="pdfName"/>
       </div>
+
+      <!--  PDF主体      -->
       <div class="w-full">
         <div v-for="(page,pIndex) in pages" :key="pIndex">
           <div
@@ -118,6 +120,7 @@
                     </div>
                     <div v-else-if="object.type === 'text'">
                       <TextItem
+                          ref="textItem"
                           @onUpdate="updateObject(object.id, $event)"
                           @onDelete="deleteObject(object.id)"
                           @onSelectFont="selectFontFamily"
@@ -148,12 +151,13 @@
           </div>
         </div>
       </div>
+
     </div>
-    <div v-else>
-      <div class="w-full flex-grow flex justify-center items-center">
-        <span class=" font-bold text-3xl text-gray-500">拖入PDF文件</span>
-      </div>
-    </div>
+<!--    <div v-else>-->
+<!--      <div class="w-full flex-grow flex justify-center items-center">-->
+<!--        <span class=" font-bold text-3xl text-gray-500">拖入PDF文件</span>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -192,7 +196,32 @@ export default {
     DrawingCanvas
   },
   props: {
-    msg: String
+    msg: String,
+    showChooseFileBtn: {
+      type: Boolean,
+      default:false
+    },
+    showCustomizeEditor: {
+      type: Boolean,
+      default: true
+    },
+    showRename: {
+      type: Boolean,
+      default: true
+    },
+    loadDefaultFile:{
+      type: Boolean,
+      default: true
+    },
+    initFileSrc: {
+      type: String,
+      default: ''
+    },
+    initTextFields: {
+      type: Array,
+      default: null
+    }
+
   },
   data() {
     return {
@@ -208,7 +237,8 @@ export default {
       selectedPageIndex: -1,
       saving: false,
       addingDrawing: false,
-      DEBUG_LINK: "https://raw.githubusercontent.com/pdf-association/pdf20examples/master/pdf20-utf8-test.pdf"
+      defaultFileSrc: "https://raw.githubusercontent.com/pdf-association/pdf20examples/master/pdf20-utf8-test.pdf",
+
     }
   },
   async mounted() {
@@ -220,19 +250,40 @@ export default {
   methods: {
     async init() {
       try {
-        const res = await fetch(this.DEBUG_LINK);
+        const res = await fetch(this.loadDefaultFile ? this.defaultFileSrc : this.initFileSrc);
         const pdfBlob = await res.blob();
         await this.addPDF(pdfBlob);
         this.selectedPageIndex = 0;
-        setTimeout(() => {
-          fetchFont(this.currentFont);
-          // prepareAssets();
-        }, 5000);
+        // setTimeout(() => {
+        //   fetchFont(this.currentFont);
+        //   // prepareAssets();
+        // }, 5000);
+        fetchFont(this.currentFont);
+        // initTextField
+        this.initTextField();
       } catch (e) {
         console.log(e);
       }
     },
+    initTextField(){
+      if (this.selectedPageIndex<0 || this.initTextFields === null || this.initTextFields.length === 0) {
+        return;
+      }
+      for (let i = 0; i <this.pages.length; i++) {
+        this.selectedPageIndex = i;
+        for (let j = 0; j < this.initTextFields.length; j++) {
+          let text = this.initTextFields[j];
+          this.addTextField(text, - 100, j * 100);
+        }
+      }
+      this.selectedPageIndex = 0;
+      setTimeout(()=>{
+        for (const textItemElement of this.$refs.textItem) {
+          textItemElement.operation = '';
+        }
+      },500)
 
+    },
     onFinishDrawingCanvas(e) {
       const {originWidth, originHeight, path} = e;
       let scale = 1;
@@ -262,6 +313,7 @@ export default {
       } catch (e) {
         console.log(e);
       }
+      this.initTextField();
     },
     resetDefaultState() {
       this.pdfFile = null;
@@ -345,7 +397,7 @@ export default {
       }
     },
 
-    addTextField(text = "请在此输入") {
+    addTextField(text = "请在此输入", x = 0, y = 0) {
       const id = this.genID();
       fetchFont(this.currentFont);
       const object = {
@@ -356,8 +408,8 @@ export default {
         width: 0, // recalculate after editing
         lineHeight: 1.4,
         fontFamily: this.currentFont,
-        x: 0,
-        y: 0
+        x: x,
+        y: y
       };
       this.allObjects = this.allObjects.map((objects, pIndex) =>
           pIndex === this.selectedPageIndex ? [...objects, object] : objects
@@ -414,7 +466,6 @@ export default {
               ? objects.filter(object => object.id !== objectId)
               : objects
       );
-      this.$forceUpdate();
     },
 
     onMeasure(e, i) {

@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <InAppEditor msg="Welcome to Your Vue.js App"/>
+    <PdfEditor></PdfEditor>
   </div>
 </template>
 
 <script>
-import InAppEditor from './components/InAppEditor.vue'
+import PdfEditor from './components/PdfEditor/PdfEditor.vue'
 
 export default {
   name: 'App',
   components: {
-    InAppEditor
+    PdfEditor
   }
 }
 </script>
