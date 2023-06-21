@@ -1,11 +1,11 @@
 {
   "name": "xcc-pdf-editor",
-  "description": "vue2 pdf 组件",
-  "version": "0.1.1",
+  "description": "vue2 pdf editor component",
+  "version": "0.1.2",
   "author": "Langel",
   "private": false,
-  "main": "dist/pdf-editor.umd.min.js",
-  "keywords": ["pdf editor"],
+  "main": "pdf-editor.umd.min.js",
+  "keywords": ["pdf","pdf editor","editor"],
   "scripts": {
     "start": "vue-cli-service serve --port 8081",
     "build": "vue-cli-service build",
@@ -59,6 +59,5 @@
   "directories": {
     "lib": "lib"
   },
-  "keywords": [],
   "license": "ISC"
 }

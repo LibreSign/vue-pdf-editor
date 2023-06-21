@@ -1,17 +1,11 @@
 {
   "name": "xcc-pdf-editor",
-  "description": "vue2 pdf 组件",
+  "description": "vue2 pdf editor component",
   "version": "0.1.2",
   "author": "Langel",
   "private": false,
   "main": "pdf-editor.umd.min.js",
-  "keywords": ["pdf editor"],
-  "scripts": {
-    "start": "vue-cli-service serve --port 8081",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "build:lib": "vue-cli-service build --target lib --name xcc-pdf-editor lib/install.js"
-  },
+  "keywords": ["pdf","pdf editor","editor"],
   "dependencies": {
     "core-js": "^3.8.3",
     "open": "^8.4.0",
