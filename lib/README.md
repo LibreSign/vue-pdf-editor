@@ -10,6 +10,7 @@ eg:
     :show-choose-file-btn="true"
     :show-customize-editor="true"
     :show-rename="true"
+    :show-save-btn="false"
     :load-default-file="false"    <!--is a sample file-->
     :init-file-src="'【pdf url】'"   
     :init-text-fields = "【text array】"

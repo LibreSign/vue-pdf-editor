@@ -1,9 +1,12 @@
 <template>
   <div id="app">
+    <button @click="btnClick">保存</button>
     <XccPdfEditor
+        ref="xccPdfEditor"
         :show-choose-file-btn="true"
-        :show-customize-editor="true"
-        :show-rename="true"
+        :show-customize-editor="false"
+        :show-rename="false"
+        :show-save-btn="false"
         :load-default-file="false"
         :init-file-src="''"
         :init-text-fields = "this.textFields"
@@ -31,6 +34,9 @@ export default {
     }
   },
   methods:{
+    btnClick(){
+      this.$refs.xccPdfEditor.savePDF();
+    },
     save2Upload(payload){
       console.log(payload.pdfBytes);
     }

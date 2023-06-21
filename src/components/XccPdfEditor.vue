@@ -56,6 +56,7 @@
              v-model="pdfName"/>
       </div>
       <button
+          v-if="showSaveBtn"
           @click="savePDF"
           class="w-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3
       md:px-4 mr-3 md:mr-4 rounded"
@@ -207,6 +208,10 @@ export default {
       default: true
     },
     showRename: {
+      type: Boolean,
+      default: true
+    },
+    showSaveBtn: {
       type: Boolean,
       default: true
     },
