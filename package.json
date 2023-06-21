@@ -1,11 +1,15 @@
 {
   "name": "pdf-editor",
+  "description": "pdf编辑组件",
   "version": "0.1.0",
-  "private": true,
+  "author": "Langel",
+  "private": false,
+  "main": "dist/pdf-editor.umd.min.js",
   "scripts": {
     "start": "vue-cli-service serve --port 8081",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build:lib": "vue-cli-service build --target lib --name pdf-editor lib/install.js"
   },
   "dependencies": {
     "core-js": "^3.8.3",

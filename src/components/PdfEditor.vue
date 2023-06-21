@@ -187,7 +187,7 @@ import {save} from "@/utils/PDF.js";
 getAsset('makeTextPDF');
 
 export default {
-  name: 'InAppEditor',
+  name: 'pdf-editor',
   components: {
     PDFPage,
     ImageItem,

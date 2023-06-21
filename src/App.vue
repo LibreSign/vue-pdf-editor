@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <InAppEditor
+    <PdfEditor
         :show-choose-file-btn="true"
         :show-customize-editor="true"
         :show-rename="false"
@@ -10,17 +10,17 @@
         :init-image-urls = "this.imageUrls"
         :save-to-upload="false"
     >
-    </InAppEditor>
+    </PdfEditor>
   </div>
 </template>
 
 <script>
-import InAppEditor from './components/InAppEditor.vue'
+import PdfEditor from './components/PdfEditor.vue'
 
 export default {
   name: 'App',
   components: {
-    InAppEditor
+    PdfEditor
   },
   data(){
     return {
