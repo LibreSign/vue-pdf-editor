@@ -1,7 +1,7 @@
 {
   "name": "pdf-editor",
   "description": "pdf编辑组件",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Langel",
   "private": false,
   "main": "dist/pdf-editor.umd.min.js",
@@ -48,7 +48,7 @@
     "rules": {
       "no-debugger": "off",
       "no-console": "off"
-  }
+    }
   },
   "browserslist": [
     "> 1%",
