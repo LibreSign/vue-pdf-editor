@@ -2,6 +2,7 @@
   <div>
     <toolbar-component ref="textItemToolbarComponent" v-if="operation === 'edit' || operation === 'tool'">
       <tapout-component
+          ref="toolBox"
           class="
 					h-full
 					flex
@@ -148,7 +149,7 @@ export default {
     TapoutComponent,
   },
   mixins: [itemEventsMixin],
-  props: ["size", "text", "lineHeight", "x", "y", "fontFamily", "pageScale"],
+  props: ["size", "text", "lineHeight", "x", "y", "fontFamily", "pageScale","currentPage"],
   data() {
     return {
       Families: Object.keys(Fonts),
@@ -247,6 +248,7 @@ export default {
       this.$refs.editable.blur();
       this.sanitize();
       this.$emit("onUpdate", {
+        currentPage:this.currentPage,
         lines: this.extractLines(),
         width: this.$refs.editable.clientWidth,
       });
@@ -310,6 +312,7 @@ export default {
     async onBlurTool() {
       if (this.operation !== "tool" || this.operation === "edit") return;
       this.$emit("onUpdate", {
+        currentPage:this.currentPage,
         lines: this.extractLines(),
         lineHeight: this.lineHeight_,
         size: this.size_,
@@ -335,6 +338,15 @@ export default {
     render() {
       this.$refs.editable.innerText = this.text;
       this.$refs.editable.focus();
+    },
+    render4Init() {
+      this.$refs.editable.innerText = this.text;
+      this.$refs.editable.focus();
+      document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      }));
     },
     extractLines() {
       const nodes = this.$refs.editable.childNodes;

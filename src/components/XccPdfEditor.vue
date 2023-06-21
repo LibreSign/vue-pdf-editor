@@ -53,7 +53,7 @@
             placeholder="在此处重命名PDF"
             type="text"
             class="flex-grow bg-transparent"
-            :value="pdfName"/>
+             v-model="pdfName"/>
       </div>
       <button
           @click="savePDF"
@@ -80,7 +80,7 @@
             placeholder="在此处重命名PDF"
             type="text"
             class="flex-grow bg-transparent"
-            :value="pdfName"/>
+            v-model="pdfName"/>
       </div>
 
       <!--  PDF主体      -->
@@ -130,6 +130,7 @@
                           :size="object.size"
                           :lineHeight="object.lineHeight"
                           :fontFamily="object.fontFamily"
+                          :current-page="object.currentPage"
                           :pageScale="pagesScale[pIndex]"/>
                     </div>
                     <div v-else-if="object.type === 'drawing'">
@@ -250,7 +251,9 @@ export default {
     }
   },
   async mounted() {
-    await this.init();
+    if (this.loadDefaultFile || this.initFileSrc){
+      await this.init();
+    }
   },
   created() {
   },
@@ -282,15 +285,16 @@ export default {
         this.selectedPageIndex = i;
         for (let j = 0; j < this.initTextFields.length; j++) {
           let text = this.initTextFields[j];
-          this.addTextField(text, 600, j * 60);
+          this.addTextField(text, 600, j * 60, this.selectedPageIndex);
         }
       }
       this.selectedPageIndex = 0;
       let checker = setInterval(() => {
-        if (this.$refs.textItem.length === this.initTextFields.length) {
+        if (this.$refs.textItem.length === this.initTextFields.length * this.pages.length) {
           document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
             bubbles: true,
             cancelable: true,
+            view: window
           }));
           clearInterval(checker)
         }
@@ -340,7 +344,7 @@ export default {
         console.log(e);
       }
       this.initTextField();
-      this.initImages();
+      await this.initImages();
     },
     resetDefaultState() {
       this.pdfFile = null;
@@ -429,7 +433,7 @@ export default {
       }
     },
 
-    addTextField(text = "请在此输入", x = 0, y = 0) {
+    addTextField(text = "请在此输入", x = 0, y = 0, currentPage = this.selectedPageIndex) {
       const id = this.genID();
       fetchFont(this.currentFont);
       const object = {
@@ -441,7 +445,8 @@ export default {
         lineHeight: 1.4,
         fontFamily: this.currentFont,
         x: x,
-        y: y
+        y: y,
+        currentPage:currentPage
       };
       this.allObjects = this.allObjects.map((objects, pIndex) =>
           pIndex === this.selectedPageIndex ? [...objects, object] : objects
@@ -484,7 +489,7 @@ export default {
 
     updateObject(objectId, payload) {
       this.allObjects = this.allObjects.map((objects, pIndex) =>
-          pIndex === this.selectedPageIndex
+          pIndex === (payload.currentPage !== undefined ? payload.currentPage : this.selectedPageIndex)
               ? objects.map(object =>
                   object.id === objectId ? {...object, ...payload} : object
               )
@@ -514,7 +519,9 @@ export default {
       this.saving = true;
       try {
         // await save(this.pdfFile, this.allObjects, this.pdfName, this.pagesScale);
-        await save(this.pdfFile, this.allObjects, this.pdfName, this.saveToUpload);
+        await save(this.pdfFile, this.allObjects, this.pdfName, this.saveToUpload,(pdfBytes)=>{
+          this.$emit("onSave2Upload", {pdfBytes});
+        });
       } catch (e) {
         console.log(e);
       } finally {

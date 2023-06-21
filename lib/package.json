@@ -1,7 +1,7 @@
 {
   "name": "xcc-pdf-editor",
   "description": "vue2 pdf 组件",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Langel",
   "private": false,
   "main": "pdf-editor.umd.min.js",

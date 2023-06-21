@@ -2,7 +2,7 @@ import { readAsArrayBuffer } from './asyncReader.js';
 import { fetchFont, getAsset } from './prepareAssets';
 import { noop } from './helper.js';
 
-export async function save(pdfFile, objects, name, isUpload=false) {
+export async function save(pdfFile, objects, name, isUpload=false,callback) {
   const PDFLib = await getAsset('PDFLib');
   const download = await getAsset('download');
   const makeTextPDF = await getAsset('makeTextPDF');
@@ -97,6 +97,7 @@ export async function save(pdfFile, objects, name, isUpload=false) {
     const pdfBytes = await pdfDoc.save();
     if (isUpload) {
      // 上传
+      callback(pdfBytes);
       return
     }
     download(pdfBytes, name, 'application/pdf');

@@ -6,15 +6,16 @@
 
 eg:
 ```vue
-<XccPdfEditor
+    <XccPdfEditor
     :show-choose-file-btn="true"
     :show-customize-editor="true"
-    :show-rename="false"
-    :load-default-file="true"  <!--is a sample file-->
-    :init-file-src="'【pdf url】'"
+    :show-rename="true"
+    :load-default-file="false"    <!--is a sample file-->
+    :init-file-src="'【pdf url】'"   
     :init-text-fields = "【text array】"
     :init-image-urls = "【image url array】"
-    :save-to-upload="false"
-    >
+    :save-to-upload="true"  <!--false to download; true to callback-->
+    @onSave2Upload="【save callback】"  
+>
 </XccPdfEditor>
 ```

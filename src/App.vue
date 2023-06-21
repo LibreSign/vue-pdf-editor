@@ -3,12 +3,13 @@
     <XccPdfEditor
         :show-choose-file-btn="true"
         :show-customize-editor="true"
-        :show-rename="false"
-        :load-default-file="true"
-        :init-file-src="'http://10.110.96.23:30080/WebDiskServer/doc?token=725359685334305f4f6276724f42326c784233416c346c325a45747667375a59343692ec10c0d6f942ac67c5&appCode=INSPUR-DZZW-TYSP&doc_id=9887'"
+        :show-rename="true"
+        :load-default-file="false"
+        :init-file-src="''"
         :init-text-fields = "this.textFields"
         :init-image-urls = "this.imageUrls"
-        :save-to-upload="false"
+        :save-to-upload="true"
+        @onSave2Upload="save2Upload"
     >
     </XccPdfEditor>
   </div>
@@ -24,12 +25,17 @@ export default {
   },
   data(){
     return {
-      textFields: ['你好，这是回家等哈是否哈斯哦怕哈送到哈怂i的环境','你好，这是回家等哈是\n否哈斯哦怕哈送到哈怂i的环境','你好，这是回家等哈是\n否哈斯哦怕哈送到哈怂i的环境'],
+      textFields: ['加了卡刷点卡商品点卡商品','接口连接\n加哦加哦加哦i解耦','尽量靠\n近佛啤酒哦\nIP'],
       imageUrls: [
-        'http://10.110.96.23:30080/WebDiskServer/doc?token=5636617548302f37375166795f2f56435068355a4a4371334f59754a5167636b3973838b0bf8fae7188b38c5&appCode=INSPUR-DZZW-TYSP&doc_id=9886&type=thumbnail',
-        'http://10.110.96.23:30080/WebDiskServer/doc?token=73513376516a397a597853336566576469634658394f4c38794f2f5a74796c7a6466a1b321c4d6f007b512c5&appCode=INSPUR-DZZW-TYSP&doc_id=9888&type=thumbnail'],
+      ],
+    }
+  },
+  methods:{
+    save2Upload(payload){
+      console.log(payload.pdfBytes);
     }
   }
+
 }
 </script>
 
