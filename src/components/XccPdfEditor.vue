@@ -187,7 +187,7 @@ import {save} from "@/utils/PDF.js";
 getAsset('makeTextPDF');
 
 export default {
-  name: 'pdf-editor',
+  name: 'xcc-pdf-editor',
   components: {
     PDFPage,
     ImageItem,

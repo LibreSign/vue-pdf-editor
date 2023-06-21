@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <PdfEditor
+    <XccPdfEditor
         :show-choose-file-btn="true"
         :show-customize-editor="true"
         :show-rename="false"
@@ -10,17 +10,17 @@
         :init-image-urls = "this.imageUrls"
         :save-to-upload="false"
     >
-    </PdfEditor>
+    </XccPdfEditor>
   </div>
 </template>
 
 <script>
-import PdfEditor from './components/PdfEditor.vue'
+import XccPdfEditor from './components/XccPdfEditor.vue'
 
 export default {
   name: 'App',
   components: {
-    PdfEditor
+    XccPdfEditor
   },
   data(){
     return {
