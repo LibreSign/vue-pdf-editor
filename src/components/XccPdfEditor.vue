@@ -171,20 +171,20 @@ PDFJS.GlobalWorkerOptions.workerSrc = require("pdfjs-dist/build/pdf.worker");
 
 // import * as PDFLib from 'pdf-lib';
 
-import {getAsset} from "@/utils/prepareAssets";
+import {getAsset} from "../utils/prepareAssets";
 
-import PDFPage from "@/components/PDFPage";
-import ImageItem from "@/components/Image";
-import TextItem from "@/components/TextItem";
-import Drawing from "@/components/Drawing";
-import DrawingCanvas from "@/components/DrawingCanvas";
-import {fetchFont} from "@/utils/prepareAssets.js";
+import PDFPage from "./PDFPage";
+import ImageItem from "./Image";
+import TextItem from "./TextItem";
+import Drawing from "./Drawing";
+import DrawingCanvas from "./DrawingCanvas";
+import {fetchFont} from "../utils/prepareAssets.js";
 import {
   readAsImage,
   readAsPDF,
   readAsDataURL
-} from "@/utils/asyncReader.js";
-import {save} from "@/utils/PDF.js";
+} from "../utils/asyncReader.js";
+import {save} from "../utils/PDF.js";
 
 getAsset('makeTextPDF');
 

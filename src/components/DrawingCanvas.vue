@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-import itemEventsMixin from "@/components/ItemEventsMixin";
+import itemEventsMixin from "./ItemEventsMixin";
 
 export default {
   name: "DrawingCanvasComponent",

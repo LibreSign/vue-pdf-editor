@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Portal from "@/components/Portal";
+import Portal from "./Portal";
 
 export default {
   name: "ToolbarComponent",

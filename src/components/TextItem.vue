@@ -136,11 +136,11 @@
 </template>
 
 <script>
-import itemEventsMixin from "@/components/ItemEventsMixin";
-import ToolbarComponent from "@/components/Toolbar";
-import TapoutComponent from "@/components/Tapout";
-import {Fonts} from "@/utils/prepareAssets.js";
-import {timeout} from "@/utils/helper.js";
+import itemEventsMixin from "./ItemEventsMixin";
+import ToolbarComponent from "./Toolbar";
+import TapoutComponent from "./Tapout";
+import {Fonts} from "../utils/prepareAssets.js";
+import {timeout} from "../utils/helper.js";
 
 export default {
   name: "TextComponent",
