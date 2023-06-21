@@ -4,9 +4,9 @@
     <XccPdfEditor
         ref="xccPdfEditor"
         :show-choose-file-btn="true"
-        :show-customize-editor="false"
-        :show-rename="false"
-        :show-save-btn="false"
+        :show-customize-editor="true"
+        :show-rename="true"
+        :show-save-btn="true"
         :load-default-file="false"
         :init-file-src="''"
         :init-text-fields = "this.textFields"
