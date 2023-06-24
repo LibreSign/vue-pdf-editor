@@ -9,6 +9,7 @@ src/main.js
 babel.config.js
 jsconfig.json
 package-lock.json
+package-backup.json
 postcss.config.js
 tailwind.config.js
 vue.config.js
