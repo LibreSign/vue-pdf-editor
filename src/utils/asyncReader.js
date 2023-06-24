@@ -1,4 +1,4 @@
-import { getAsset } from './prepareAssets';
+import 'pdfjs-dist/build/pdf.worker.min'
 
 export function readAsArrayBuffer(file) {
   return new Promise((resolve, reject) => {
@@ -34,8 +34,9 @@ export function readAsDataURL(file) {
 }
 
 export async function readAsPDF(file) {
-  const pdfjsLib = await getAsset('pdfjsLib');
-  // Safari possibly get webkitblobresource error 1 when using origin file blob
+  const pdfjsLib = require('pdfjs-dist');
+  const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
   const blob = new Blob([file]);
   const url = window.URL.createObjectURL(blob);
   return pdfjsLib.getDocument(url).promise;

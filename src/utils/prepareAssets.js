@@ -1,16 +1,4 @@
 const scripts = [
-  {
-    name: 'pdfjsLib',
-    src: '/pdf.min.js',
-  },
-  {
-    name: 'PDFLib',
-    src: '/pdf-lib.min.js',
-  },
-  {
-    name: 'download',
-    src: '/download.min.js',
-  },
   { name: 'makeTextPDF',
     src: '/makeTextPDF.js'
   },
