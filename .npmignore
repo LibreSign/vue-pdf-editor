@@ -1,14 +1,9 @@
 .git/
 .idea/
 node_modules/
-src/App.vue
-src/main.js
 .gitignore
 .npmignore
 babel.config.js
-jsconfig.json
-package-lock.json
-package-backup.json
 vue.config.js
-yarn.lock
+
 
