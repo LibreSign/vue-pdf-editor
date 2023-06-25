@@ -55,7 +55,7 @@
 
 <script>
 import itemEventsMixin from "./ItemEventsMixin";
-
+import '../assets/main.css'
 export default {
   name: "DrawingComponent",
   mixins: [itemEventsMixin],

@@ -68,7 +68,7 @@
 
 <script>
 import itemEventsMixin from "./ItemEventsMixin";
-
+import '../assets/main.css'
 export default {
   name: "ImageComponent",
   mixins: [itemEventsMixin],

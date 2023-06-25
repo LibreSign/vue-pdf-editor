@@ -8,7 +8,7 @@
 
 <script>
 import Portal from "./Portal";
-
+import '../assets/main.css'
 export default {
   name: "ToolbarComponent",
   components: { Portal },

@@ -185,7 +185,7 @@ import {
   readAsDataURL
 } from "../utils/asyncReader.js";
 import {save} from "../utils/PDF.js";
-
+import '../assets/main.css'
 getAsset('makeTextPDF');
 
 export default {

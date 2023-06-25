@@ -1,6 +1,5 @@
 .git/
 .idea/
-lib/
 node_modules/
 src/App.vue
 src/main.js
@@ -10,8 +9,6 @@ babel.config.js
 jsconfig.json
 package-lock.json
 package-backup.json
-postcss.config.js
-tailwind.config.js
 vue.config.js
 yarn.lock
 

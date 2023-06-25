@@ -141,7 +141,7 @@ import ToolbarComponent from "./Toolbar";
 import TapoutComponent from "./Tapout";
 import {Fonts} from "../utils/prepareAssets.js";
 import {timeout} from "../utils/helper.js";
-
+import '../assets/main.css'
 export default {
   name: "TextComponent",
   components: {
