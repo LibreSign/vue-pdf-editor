@@ -222,6 +222,10 @@ export default {
       type: String,
       default: ''
     },
+    initFileName: {
+      type: String,
+      default: ''
+    },
     initTextFields: {
       type: Array,
       default: null
@@ -252,7 +256,6 @@ export default {
   },
   async mounted() {
     if (this.loadDefaultFile || this.initFileSrc){
-      debugger
       await this.init();
     }
   },
@@ -372,7 +375,13 @@ export default {
         this.resetDefaultState();
 
         this.pdfFile = file;
-        this.pdfName = file.name;
+        if (this.initFileName) {
+          this.pdfName = this.initFileName
+        }else if(file.name){
+          this.pdfName = file.name;
+        }else {
+          this.pdfName = new Date().getTime();
+        }
 
         this.pdfDocument = await readAsPDF(file);
         if (this.pdfDocument) {
@@ -527,7 +536,7 @@ export default {
       try {
         // await save(this.pdfFile, this.allObjects, this.pdfName, this.pagesScale);
         await save(this.pdfFile, this.allObjects, this.pdfName, this.saveToUpload,(pdfBytes)=>{
-          this.$emit("onSave2Upload", {pdfBytes});
+          this.$emit("onSave2Upload", {pdfBytes:pdfBytes, fileName: this.pdfName});
         });
       } catch (e) {
         console.log(e);

@@ -10,6 +10,7 @@
           :show-save-btn="true"
           :load-default-file="false"
           :init-file-src="initFile"
+          :init-file-name="initFileName"
           :init-text-fields = "this.textFields"
           :init-image-urls = "this.imageUrls"
           :save-to-upload="true"
@@ -27,6 +28,7 @@ export default {
   name: 'App',
   data(){
     return {
+      initFileName: '测试pdf.pdf',
       initFile :'https://api48.ilovepdf.com/v1/download/yxp70b066dj82jy2gt7n8jljfks1wzlnw7hngm5t8hz0y2nf370rgg3rfbrn1pn839z5rzbvqjvsnrzA4s7w5bqw1A4zxr2vczpsfg5zfn6yjql7yzg6Azzthlbmwd5p51xAvpgmxsw5zc5tv7rnjkq9Am63fysht56xc94w5tmvqf1jdgtq',
       textFields: ['加了卡刷点卡商品点卡商品','接口连接\n加哦加哦加哦i解耦','尽量靠\n近佛啤酒哦\nIP'],
       imageUrls: [
@@ -40,6 +42,7 @@ export default {
     },
     save2Upload(payload){
       console.log(payload.pdfBytes);
+      console.log(payload.fileName);
     }
   }
 
