@@ -1,8 +1,7 @@
 <template>
-  <div class="flex flex-col items-center py-16 bg-gray-100 min-h-screen">
-    <div
-        class="fixed z-10 top-0 left-0 right-0 h-12 flex justify-center items-center
-    bg-gray-200 border-b border-gray-300">
+  <div style="width: 100%;height: 100%;overflow: scroll;" class="flex-col py-10 items-center bg-gray-100 min-h-screen">
+    <div style="position: absolute;" v-if="showChooseFileBtn || showCustomizeEditor||showSaveBtn"
+         class="z-10 top-0 left-0 right-0 z-10 h-12 flex justify-center items-center bg-gray-200 border-b border-gray-300">
       <input
           type="file"
           name="pdf"
@@ -253,6 +252,7 @@ export default {
   },
   async mounted() {
     if (this.loadDefaultFile || this.initFileSrc){
+      debugger
       await this.init();
     }
   },
@@ -303,13 +303,19 @@ export default {
 
     },
     async initImages(){
-      if (this.selectedPageIndex<0) {
+      if (this.selectedPageIndex<0 || this.initImageUrls === null || this.initImageUrls.length === 0) {
         return;
       }
       for (let i = 0; i <this.pages.length; i++) {
         this.selectedPageIndex = i;
         for (let j = 0; j < this.initImageUrls.length; j++) {
-          await this.addImage(this.initImageUrls[j], 600, (j-1+this.initTextFields.length) * 100 ,0.2);
+          let y = 0;
+          if (this.initTextFields.length === 0) {
+            y = j * 100
+          }else {
+            y = (j-1+this.initTextFields.length) * 100
+          }
+          await this.addImage(this.initImageUrls[j], 600, y ,0.2);
         }
       }
       this.selectedPageIndex = 0;

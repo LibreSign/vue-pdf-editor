@@ -32,7 +32,7 @@
 				"
           @click="onClose"
       >
-        Cancel
+        取消
       </button>
       <button
           class="
@@ -47,7 +47,7 @@
 				"
           @click="onFinish"
       >
-        Done
+        完成
       </button>
     </div>
   </div>

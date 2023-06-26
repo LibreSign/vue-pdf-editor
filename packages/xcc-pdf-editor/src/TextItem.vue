@@ -1,7 +1,14 @@
 <template>
   <div>
-    <toolbar-component ref="textItemToolbarComponent" v-if="operation === 'edit' || operation === 'tool'">
-      <tapout-component
+<!--    <toolbar-component style="position: absolute" >-->
+
+<!--    </toolbar-component>-->
+    <tapout-component
+        class="absolute left-0 top-0 select-none"
+        :style="{ transform: `translate(${x + dx}px, ${y + dy}px)` }"
+        @tapout="onBlur"
+    >
+      <tapout-component v-if="operation === 'edit' || operation === 'tool'" style="width: 400px;height: 40px"
           ref="toolBox"
           class="
 					h-full
@@ -93,12 +100,6 @@
           <img class="w-full h-full" src="/xcc-pdf-editor/svg/delete.svg" title="移除" alt="delete object"/>
         </div>
       </tapout-component>
-    </toolbar-component>
-    <tapout-component
-        class="absolute left-0 top-0 select-none"
-        :style="{ transform: `translate(${x + dx}px, ${y + dy}px)` }"
-        @tapout="onBlur"
-    >
       <div
           class="
 					absolute
@@ -137,7 +138,7 @@
 
 <script>
 import itemEventsMixin from "./ItemEventsMixin";
-import ToolbarComponent from "./Toolbar";
+// import ToolbarComponent from "./Toolbar";
 import TapoutComponent from "./Tapout";
 import {Fonts} from "../utils/prepareAssets.js";
 import {timeout} from "../utils/helper.js";
@@ -145,7 +146,7 @@ import {timeout} from "../utils/helper.js";
 export default {
   name: "TextComponent",
   components: {
-    ToolbarComponent,
+    // ToolbarComponent,
     TapoutComponent,
   },
   mixins: [itemEventsMixin],
