@@ -1,6 +1,6 @@
 const scripts = [
   { name: 'makeTextPDF',
-    src: '/xcc-pdf-editor/js/makeTextPDF.js'
+    src: '/xcc-pdf-editor/js/makeTextPDF.min.js'
   },
 ];
 

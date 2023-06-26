@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%;height: 100%;overflow: scroll;" class="flex-col py-10 items-center bg-gray-100 min-h-screen">
+  <div style="width: 100%;height: 100%;overflow: auto;" class="flex-col py-10 items-center bg-gray-100">
     <div style="position: absolute;" v-if="showChooseFileBtn || showCustomizeEditor||showSaveBtn"
          class="z-10 top-0 left-0 right-0 z-10 h-12 flex justify-center items-center bg-gray-200 border-b border-gray-300">
       <input
@@ -23,14 +23,14 @@
       <div v-if="showCustomizeEditor"
           class="relative mr-3 flex h-8 bg-gray-400 rounded-sm overflow-hidden
       md:mr-4">
-        <label title="添加图片"
+        <label title="添加图片" v-if="showCustomizeEditorAddImg"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             for="image"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
           <img src="/xcc-pdf-editor/svg/image.svg" alt="An icon for adding images"/>
         </label>
-        <label title="添加文字"
+        <label title="添加文字" v-if="showCustomizeEditorAddText"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             for="text"
@@ -38,7 +38,7 @@
             @click="onAddTextField">
           <img src="/xcc-pdf-editor/svg/notes.svg" alt="An icon for adding text"/>
         </label>
-        <label title="添加笔迹"
+        <label title="添加笔迹" v-if="showCustomizeEditorAddDraw"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             @click="onAddDrawing"
@@ -74,7 +74,7 @@
       </div>
     </div>
     <div v-if="pages.length" id="pdfBody" class="w-full" ref = 'pdfBody'>
-      <div class="flex justify-center px-5 w-full md:hidden">
+      <div v-if="showRename" class="flex justify-center px-5 w-full md:hidden">
         <img src="/xcc-pdf-editor/svg/edit.svg" class="mr-2" alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
         <input ref="renamePDFInputTwo" title="在此处重命名PDF"
             placeholder="在此处重命名PDF"
@@ -199,6 +199,18 @@ export default {
       default:false
     },
     showCustomizeEditor: {
+      type: Boolean,
+      default: true
+    },
+    showCustomizeEditorAddText: {
+      type: Boolean,
+      default: true
+    },
+    showCustomizeEditorAddImg: {
+      type: Boolean,
+      default: true
+    },
+    showCustomizeEditorAddDraw: {
       type: Boolean,
       default: true
     },

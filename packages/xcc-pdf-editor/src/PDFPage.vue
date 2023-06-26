@@ -40,6 +40,7 @@ export default {
       });
       canvas.width = viewport.width;
       canvas.height = viewport.height;
+      debugger
       await _page.render({
         canvasContext: context,
         viewport,

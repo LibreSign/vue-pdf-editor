@@ -26,5 +26,6 @@ module.exports = {
   // 强制CSS内联
   css: {
     extract: false
-  }
+  },
+  transpileDependencies: true
 }
