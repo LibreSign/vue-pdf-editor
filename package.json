@@ -4,7 +4,7 @@
   "version": "0.1.20",
   "author": "Langel",
   "private": false,
-  "main": "lib/xcc-pdf-editor.umd.min.js",
+  "main": "lib/xcc-pdf-editor.umd.js",
   "keywords": [
     "pdf",
     "pdf editor",
@@ -18,10 +18,10 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "downloadjs": "^1.4.7",
     "open": "^8.4.0",
     "pdf-lib": "^1.4.0",
-    "pdfjs-dist": "^2.3.200",
-    "downloadjs": "^1.4.7"
+    "pdfjs-dist": "^2.16.105"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -32,11 +32,12 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
-    "vue-template-compiler": "^2.6.14",
     "postcss": "^8.4.18",
     "postcss-load-config": "^4.0.1",
     "tailwindcss": "^3.2.1",
-    "vue": "^2.6.14"
+    "terser-webpack-plugin": "^5.3.9",
+    "vue": "^2.6.14",
+    "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {
     "root": true,
