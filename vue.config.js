@@ -27,5 +27,16 @@ module.exports = {
   css: {
     extract: false
   },
-  transpileDependencies: true
+  transpileDependencies: true,
+  configureWebpack:{
+    module: {
+      rules: [
+        {
+          test:/\.js$/,
+          loader: 'babel-loader'
+        }
+      ]
+    }
+  }
+
 }

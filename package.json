@@ -21,7 +21,7 @@
     "downloadjs": "^1.4.7",
     "open": "^8.4.0",
     "pdf-lib": "^1.4.0",
-    "pdfjs-dist": "^2.16.105"
+    "pdfjs-dist": "2.4.456"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
