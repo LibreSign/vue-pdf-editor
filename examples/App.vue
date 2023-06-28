@@ -9,6 +9,7 @@
           :show-customize-editor-add-text="true"
           :show-customize-editor-add-img="false"
           :show-customize-editor-add-draw="false"
+          :show-font-select="false"
           :show-rename="true"
           :show-save-btn="true"
           :load-default-file="false"

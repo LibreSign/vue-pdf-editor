@@ -127,6 +127,7 @@
                           :text="object.text"
                           :x="object.x"
                           :y="object.y"
+                          :show-font-select = 'showFontSelect'
                           :size="object.size"
                           :lineHeight="object.lineHeight"
                           :fontFamily="object.fontFamily"
@@ -211,6 +212,10 @@ export default {
       default: true
     },
     showCustomizeEditorAddDraw: {
+      type: Boolean,
+      default: true
+    },
+    showFontSelect: {
       type: Boolean,
       default: true
     },

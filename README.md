@@ -18,6 +18,7 @@
     :show-customize-editor-add-text="true" <!--添加文本 默认true-->
     :show-customize-editor-add-img="true"  <!--添加图片 默认true-->
     :show-customize-editor-add-draw="true"  <!--添加笔迹 默认true-->
+    :show-font-select = 'showFontSelect'  <!--字体选择 默认true-->
     :show-rename="true"   <!--展示重命名栏 默认true-->
     :show-save-btn="false"  <!--展示保存按钮 默认true-->
     :load-default-file="false"    <!--加载组件内置实例pdf 默认true-->

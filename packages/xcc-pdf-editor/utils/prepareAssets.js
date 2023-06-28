@@ -59,37 +59,37 @@ export const Fonts = {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: '/xcc-pdf-editor/fonts/宋体.ttf',
+    src: '/xcc-pdf-editor/fonts/SongTi.ttf',
   },
   '微软雅黑': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: '/xcc-pdf-editor/fonts/微软雅黑.ttf',
+    src: '/xcc-pdf-editor/fonts/WeiRuanYaHei.ttf',
   },
   '方正小标宋简': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: '/xcc-pdf-editor/fonts/方正小标宋简.ttf',
+    src: '/xcc-pdf-editor/fonts/FangZhengXiaoBiaoSongJian.ttf',
   },
   '楷体': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: '/xcc-pdf-editor/fonts/楷体.ttf',
+    src: '/xcc-pdf-editor/fonts/KaiTi.ttf',
   },
   '等线': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: '/xcc-pdf-editor/fonts/等线.ttf',
+    src: '/xcc-pdf-editor/fonts/DengXian.ttf',
   },
   '黑体': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: '/xcc-pdf-editor/fonts/黑体.ttf',
+    src: '/xcc-pdf-editor/fonts/HeiTi.ttf',
   },
 };
 

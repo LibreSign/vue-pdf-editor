@@ -43,7 +43,7 @@
               class="h-6 w-12 text-center flex-shrink-0 rounded-sm"
           />
         </div>
-        <div class="mr-2 flex items-center">
+        <div v-if="showFontSelect" class="mr-2 flex items-center">
           <img title="字体" src="/xcc-pdf-editor/svg/text-family.svg" class="w-4 mr-2" alt="Font family"/>
           <div class="relative w-32 md:w-40">
             <select
@@ -150,7 +150,7 @@ export default {
     TapoutComponent,
   },
   mixins: [itemEventsMixin],
-  props: ["size", "text", "lineHeight", "x", "y", "fontFamily", "pageScale","currentPage"],
+  props: ["size", "text", "lineHeight", "x", "y", "fontFamily", "pageScale","currentPage","showFontSelect"],
   data() {
     return {
       Families: Object.keys(Fonts),
