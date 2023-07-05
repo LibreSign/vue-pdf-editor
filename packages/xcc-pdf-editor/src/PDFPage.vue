@@ -1,23 +1,36 @@
 <template>
   <canvas ref="canvas" />
-<!--  class="w-full" -->
 </template>
 
 <script>
 export default {
   name: "PDFPage",
-  props: ["page"],
+  props:{
+    page:{
+      type:Promise
+    },
+    scale:{
+      type: Number,
+      default: 1
+    }
+  },
   data() {
     return {
+      dynamicScale: this.scale,
       // canvas:null,
       // width:null,
       // height:null,
       clientWidth: null,
-      scale: 1,
     };
   },
   mounted() {
     this.render();
+  },
+  watch: {
+    scale(newScale) {
+      this.dynamicScale = newScale; // 监听scale属性的变化，并更新动态缩放
+      this.render();
+    },
   },
   methods: {
     getCanvasMeasurement() {
@@ -28,7 +41,7 @@ export default {
     },
     measure() {
       this.$emit("onMeasure", {
-        scale: this.scale,
+        scale: this.dynamicScale,
       });
     },
     async render() {
@@ -36,12 +49,11 @@ export default {
       let canvas = this.$refs.canvas;
       const context = canvas.getContext("2d");
       const viewport = _page.getViewport({
-        scale: this.scale,
+        scale: this.dynamicScale,
         rotation: 0,
       });
       canvas.width = viewport.width;
       canvas.height = viewport.height;
-      debugger
       await _page.render({
         canvasContext: context,
         viewport,

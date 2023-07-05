@@ -1,5 +1,6 @@
 <template>
-  <div style="width: 100%;height: 100%;overflow: auto;" class="flex-col py-10 items-center bg-gray-100">
+  <div :style="{width:width,height:height}" style="margin: 0 auto;overflow: hidden;position: relative;">
+    <div style="width: 100%;height: 100%;overflow: auto;" ref="scrollBox" @wheel.ctrl="wheelZoom" @wheel.meta="wheelZoom"  class="flex-col py-10 items-center bg-gray-100">
     <div style="position: absolute;" v-if="showChooseFileBtn || showCustomizeEditor||showSaveBtn"
          class="z-10 top-0 left-0 right-0 z-10 h-12 flex justify-center items-center bg-gray-200 border-b border-gray-300">
       <input
@@ -20,9 +21,9 @@
           for="pdf">
         选择PDF
       </label>
-      <button v-show="narrowEnlargeShow && false" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center mr-3 md:mr-4
+      <button v-show="narrowEnlargeShow" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center mr-3 md:mr-4
         rounded-full" @click="narrow">-</button>
-      <button v-show="narrowEnlargeShow && false" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center  mr-3 md:mr-4
+      <button v-show="narrowEnlargeShow" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center  mr-3 md:mr-4
       rounded-full" @click="enlarge">+</button>
       <div v-if="showCustomizeEditor"
           class="relative mr-3 flex h-8 bg-gray-400 rounded-sm overflow-hidden
@@ -96,10 +97,9 @@
               @touchstart="selectPage(pIndex)">
             <div style="display: inline-block;"
                 class="relative shadow-lg"
-
                 :class="[pIndex === selectedPageIndex ?'shadowOutline':'']">
-<!--              :style="{ width: pdfPageBoxWidth + '%' }" -->
               <PDFPage
+                  :scale="scale"
                   :ref="`page${pIndex}`"
                   :data-key="pIndex"
                   @onMeasure="onMeasure($event, pIndex)"
@@ -167,6 +167,7 @@
 <!--      </div>-->
 <!--    </div>-->
   </div>
+  </div>
 </template>
 
 <script>
@@ -201,6 +202,14 @@ export default {
   },
   props: {
     msg: String,
+    width:{
+      type:String,
+      default:'100%'
+    },
+    height:{
+      type:String,
+      default:'100%'
+    },
     showChooseFileBtn: {
       type: Boolean,
       default:false
@@ -256,13 +265,18 @@ export default {
     initImageUrls: {
       type: Array,
       default: null
+    },
+    initImageScale: {
+      type: Number,
+      default: 0.2
     }
 
   },
   data() {
     return {
+      wheelZoomCount: 0,
       narrowEnlargeShow:false,
-      pdfPageBoxWidth: 100,
+      scale: 1,
       pdfFile: null,
       pdfName: "",
       numPages: null,
@@ -286,19 +300,35 @@ export default {
   },
   created() {
   },
-  watch: {},
+  watch: {
+  },
   methods: {
-    enlarge(){
-      if (this.pdfPageBoxWidth === 100) {
+    wheelZoom(e){
+      e.stopPropagation();
+      e.preventDefault();
+      this.wheelZoomCount++;
+
+      if (this.wheelZoomCount < 3) {
         return;
       }
-      this.pdfPageBoxWidth += 5;
+      this.wheelZoomCount = 0;
+      if (e.deltaY >0) {
+        this.narrow();
+      }else if (e.deltaY <0 ) {
+        this.enlarge();
+      }
+    },
+    enlarge(){
+      if (this.scale >= 2) {
+        return;
+      }
+      this.scale =parseFloat((this.scale +0.1).toFixed(1))
     },
     narrow(){
-      if (this.pdfPageBoxWidth === 50) {
+      if (this.scale <= 0.1) {
         return;
       }
-      this.pdfPageBoxWidth -= 5;
+      this.scale = parseFloat((this.scale - 0.1).toFixed(1))
     },
     async init() {
       try {
@@ -355,7 +385,7 @@ export default {
           }else {
             y = (j-1+this.initTextFields.length) * 100
           }
-          await this.addImage(this.initImageUrls[j], 0, y ,0.2);
+          await this.addImage(this.initImageUrls[j], 0, y ,1);
         }
       }
       this.selectedPageIndex = 0;
@@ -561,6 +591,7 @@ export default {
 
     onMeasure(e, i) {
       this.pagesScale[i] = e.scale;
+      this.$forceUpdate();
     },
 
     renamePDF(object){
