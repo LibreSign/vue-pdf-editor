@@ -20,6 +20,10 @@
           for="pdf">
         选择PDF
       </label>
+      <button v-show="narrowEnlargeShow && false" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center mr-3 md:mr-4
+        rounded-full" @click="narrow">-</button>
+      <button v-show="narrowEnlargeShow && false" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center  mr-3 md:mr-4
+      rounded-full" @click="enlarge">+</button>
       <div v-if="showCustomizeEditor"
           class="relative mr-3 flex h-8 bg-gray-400 rounded-sm overflow-hidden
       md:mr-4">
@@ -85,14 +89,16 @@
 
       <!--  PDF主体      -->
       <div class="w-full">
-        <div v-for="(page,pIndex) in pages" :key="pIndex">
+        <div v-for="(page,pIndex) in pages" :key="pIndex" style="display: inline-block;">
           <div
-              class="p-5 w-full flex flex-col items-center overflow-hidden"
+              class="p-5  items-center" style="text-align: center"
               @mousedown="selectPage(pIndex)"
               @touchstart="selectPage(pIndex)">
-            <div
+            <div style="display: inline-block;"
                 class="relative shadow-lg"
+
                 :class="[pIndex === selectedPageIndex ?'shadowOutline':'']">
+<!--              :style="{ width: pdfPageBoxWidth + '%' }" -->
               <PDFPage
                   :ref="`page${pIndex}`"
                   :data-key="pIndex"
@@ -255,6 +261,8 @@ export default {
   },
   data() {
     return {
+      narrowEnlargeShow:false,
+      pdfPageBoxWidth: 100,
       pdfFile: null,
       pdfName: "",
       numPages: null,
@@ -280,6 +288,18 @@ export default {
   },
   watch: {},
   methods: {
+    enlarge(){
+      if (this.pdfPageBoxWidth === 100) {
+        return;
+      }
+      this.pdfPageBoxWidth += 5;
+    },
+    narrow(){
+      if (this.pdfPageBoxWidth === 50) {
+        return;
+      }
+      this.pdfPageBoxWidth -= 5;
+    },
     async init() {
       try {
         const res = await fetch(this.loadDefaultFile ? this.defaultFileSrc : this.initFileSrc);
@@ -291,7 +311,7 @@ export default {
         //   // prepareAssets();
         // }, 5000);
         fetchFont(this.currentFont);
-
+        this.narrowEnlargeShow = true;
         this.initTextField();
         await this.initImages();
       } catch (e) {
@@ -306,7 +326,7 @@ export default {
         this.selectedPageIndex = i;
         for (let j = 0; j < this.initTextFields.length; j++) {
           let text = this.initTextFields[j];
-          this.addTextField(text, 600, j * 60, this.selectedPageIndex);
+          this.addTextField(text, 0, j * 60, this.selectedPageIndex);
         }
       }
       this.selectedPageIndex = 0;
@@ -335,7 +355,7 @@ export default {
           }else {
             y = (j-1+this.initTextFields.length) * 100
           }
-          await this.addImage(this.initImageUrls[j], 600, y ,0.2);
+          await this.addImage(this.initImageUrls[j], 0, y ,0.2);
         }
       }
       this.selectedPageIndex = 0;
@@ -366,6 +386,7 @@ export default {
       this.selectedPageIndex = -1;
       try {
         await this.addPDF(file);
+        this.narrowEnlargeShow = true;
         this.selectedPageIndex = 0;
       } catch (e) {
         console.log(e);

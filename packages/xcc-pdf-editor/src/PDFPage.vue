@@ -1,5 +1,6 @@
 <template>
   <canvas ref="canvas" />
+<!--  class="w-full" -->
 </template>
 
 <script>
