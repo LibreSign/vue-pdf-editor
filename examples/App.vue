@@ -10,6 +10,8 @@
           :show-customize-editor-add-text="true"
           :show-customize-editor-add-img="true"
           :show-customize-editor-add-draw="true"
+          :show-line-size-select = 'false'
+          :show-font-size-select= 'false'
           :show-font-select="false"
           :show-rename="true"
           :show-save-btn="true"

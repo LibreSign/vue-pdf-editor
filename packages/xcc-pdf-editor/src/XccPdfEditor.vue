@@ -89,7 +89,7 @@
       </div>
 
       <!--  PDF主体      -->
-      <div class="w-full">
+      <div class="w-full" style="text-align: center;">
         <div v-for="(page,pIndex) in pages" :key="pIndex" style="display: inline-block;">
           <div
               class="p-5  items-center" style="text-align: center"
@@ -133,6 +133,8 @@
                           :text="object.text"
                           :x="object.x"
                           :y="object.y"
+                          :show-line-size-select = 'showLineSizeSelect'
+                          :show-font-size-select= 'showFontSizeSelect'
                           :show-font-select = 'showFontSelect'
                           :size="object.size"
                           :lineHeight="object.lineHeight"
@@ -230,6 +232,14 @@ export default {
       type: Boolean,
       default: true
     },
+    showLineSizeSelect: {
+      type: Boolean,
+      default: true
+    },
+    showFontSizeSelect: {
+      type: Boolean,
+      default: true
+    },
     showFontSelect: {
       type: Boolean,
       default: true
@@ -261,6 +271,10 @@ export default {
     initTextFields: {
       type: Array,
       default: null
+    },
+    textDefaultSize:{
+      type:Number,
+      default: 12,
     },
     initImageUrls: {
       type: Array,
@@ -524,7 +538,7 @@ export default {
         id,
         text,
         type: "text",
-        size: 16,
+        size: this.textDefaultSize,
         width: 0, // recalculate after editing
         lineHeight: 1.4,
         fontFamily: this.currentFont,

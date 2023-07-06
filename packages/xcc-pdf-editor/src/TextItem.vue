@@ -21,7 +21,7 @@
           @onfocus="onFocusTool"
           @tapout="onBlurTool"
       >
-        <div class="mr-2 flex items-center">
+        <div v-if="showLineSizeSelect" class="mr-2 flex items-center">
           <img title="行间距" src="/xcc-pdf-editor/svg/line_height.svg" class="w-6 mr-2" alt="Line height"/>
           <input
               v-model="lineHeight_"
@@ -32,7 +32,7 @@
               class="h-6 w-12 text-center flex-shrink-0 rounded-sm"
           />
         </div>
-        <div class="mr-2 flex items-center">
+        <div v-if="showFontSizeSelect" class="mr-2 flex items-center">
           <img title="字号" src="/xcc-pdf-editor/svg/text.svg" class="w-6 mr-2" alt="Font size"/>
           <input
               v-model="size_"
@@ -150,7 +150,7 @@ export default {
     TapoutComponent,
   },
   mixins: [itemEventsMixin],
-  props: ["size", "text", "lineHeight", "x", "y", "fontFamily", "pageScale","currentPage","showFontSelect"],
+  props: ["size", "text", "lineHeight", "x", "y", "fontFamily", "pageScale","currentPage","showLineSizeSelect","showFontSelect","showFontSizeSelect"],
   data() {
     return {
       Families: Object.keys(Fonts),
