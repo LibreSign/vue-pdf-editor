@@ -118,6 +118,7 @@
                           :payload="object.payload"
                           :x="object.x"
                           :y="object.y"
+                          :fixSize="object.isSealImage"
                           :width="object.width"
                           :height="object.height"
                           :originWidth="object.originWidth"
@@ -283,7 +284,20 @@ export default {
     initImageScale: {
       type: Number,
       default: 0.2
+    },
+    sealImageShow:{
+      type:Boolean,
+      default:false
+    },
+    sealImageUrl:{
+      type:String,
+      default:'/xcc-pdf-editor/image/sealImag.png'
+    },
+    sealImageHiddenOnSave:{
+      type:Boolean,
+      default:false
     }
+
 
   },
   data() {
@@ -302,15 +316,12 @@ export default {
       focusId: null,
       selectedPageIndex: -1,
       saving: false,
-      addingDrawing: false,
-      defaultFileSrc: "https://raw.githubusercontent.com/pdf-association/pdf20examples/master/pdf20-utf8-test.pdf",
+      addingDrawing: false
 
     }
   },
   async mounted() {
-    if (this.loadDefaultFile || this.initFileSrc){
-      await this.init();
-    }
+    await this.init();
   },
   created() {
   },
@@ -345,15 +356,15 @@ export default {
       this.scale = parseFloat((this.scale - 0.1).toFixed(1))
     },
     async init() {
+      if(!this.initFileSrc){
+        console.log("init file is not exist");
+        return;
+      }
       try {
-        const res = await fetch(this.loadDefaultFile ? this.defaultFileSrc : this.initFileSrc);
+        const res = await fetch(this.initFileSrc);
         const pdfBlob = await res.blob();
         await this.addPDF(pdfBlob);
         this.selectedPageIndex = 0;
-        // setTimeout(() => {
-        //   fetchFont(this.currentFont);
-        //   // prepareAssets();
-        // }, 5000);
         fetchFont(this.currentFont);
         this.narrowEnlargeShow = true;
         this.initTextField();
@@ -387,19 +398,27 @@ export default {
 
     },
     async initImages(){
-      if (this.selectedPageIndex<0 || this.initImageUrls === null || this.initImageUrls.length === 0) {
+      if (this.selectedPageIndex<0 ) {
         return;
       }
       for (let i = 0; i <this.pages.length; i++) {
         this.selectedPageIndex = i;
-        for (let j = 0; j < this.initImageUrls.length; j++) {
-          let y = 0;
-          if (this.initTextFields.length === 0) {
-            y = j * 100
-          }else {
-            y = (j-1+this.initTextFields.length) * 100
+        let y = 0;
+        if (this.initImageUrls !== null && this.initImageUrls.length !== 0) {
+          // 需要初始化图片
+          for (let j = 0; j < this.initImageUrls.length; j++) {
+            if (this.initTextFields.length === 0) {
+              y = j * 100
+            }else {
+              y = (j-1+this.initTextFields.length) * 100
+            }
+            await this.addImage(this.initImageUrls[j], 0, y ,1);
           }
-          await this.addImage(this.initImageUrls[j], 0, y ,1);
+        }
+        if (this.sealImageShow) {
+          // 展示印章示例
+          const res = await fetch(this.sealImageUrl);
+          await this.addImage(await res.blob(), 0, (y+1)*100 ,0.4,true);
         }
       }
       this.selectedPageIndex = 0;
@@ -486,7 +505,7 @@ export default {
       }
       e.target.value = null;
     },
-    async addImage(file, x = 0, y = 0, sizeNarrow = 1) {
+    async addImage(file, x = 0, y = 0, sizeNarrow = 1, isSealImage=false) {
       try {
         // get dataURL to prevent canvas from tainted
         let url;
@@ -515,6 +534,7 @@ export default {
           canvasHeight: canvasHeight,
           x: x,
           y: y,
+          isSealImage:isSealImage,
           payload: img,
           file
         };
@@ -612,14 +632,31 @@ export default {
       object.focus();
     },
 
-// FIXME: Should wait all objects finish their async work
     async savePDF() {
       if (!this.pdfFile || this.saving || !this.pages.length) return;
       this.saving = true;
       try {
-        // await save(this.pdfFile, this.allObjects, this.pdfName, this.pagesScale);
-        await save(this.pdfFile, this.allObjects, this.pdfName, this.saveToUpload,(pdfBytes)=>{
-          this.$emit("onSave2Upload", {pdfBytes:pdfBytes, fileName: this.pdfName});
+        let sealInfo = [];
+        let allObject4Save = [];
+        if (this.sealImageShow){
+          for (let i = 0; i < this.pages.length; i++) {
+            let seal = this.allObjects[i].find((e)=> e.isSealImage===true );
+            let page = await this.pages[i];
+            sealInfo.push({
+              page:page._pageIndex,
+              pageWidth:page._pageInfo.view[2],
+              pageHeight:page._pageInfo.view[3],
+              x:seal.x+60,
+              y:seal.y+60
+            })
+            if (this.sealImageHiddenOnSave){
+              allObject4Save.push(this.allObjects[i].filter(e => e !== seal));
+            }
+          }
+        }
+        await save(this.pdfFile, this.sealImageShow&&this.sealImageHiddenOnSave?allObject4Save:this.allObjects,
+            this.pdfName, this.saveToUpload,(pdfBytes)=>{
+          this.$emit("onSave2Upload", {pdfBytes:pdfBytes, fileName: this.pdfName,sealInfo:sealInfo});
         });
       } catch (e) {
         console.log(e);

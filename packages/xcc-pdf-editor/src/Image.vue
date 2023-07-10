@@ -31,22 +31,22 @@
       <!--      <div-->
       <!--          data-direction="right"-->
       <!--          class="absolute border-dashed border-gray-600 h-full w-1 right-0 top-0 border-r cursor-ew-resize"/>-->
-      <div
+      <div v-if="!fixSize"
           data-direction="left-top"
           class="absolute cursor-nwse-resize transform selector"
           :style="{ top: '0%', left: '0%' }"
       />
-      <div
+      <div v-if="!fixSize"
           data-direction="right-top"
           class="absolute cursor-nesw-resize transform selector"
           :style="{ top: '0%', left: '100%' }"
       />
-      <div
+      <div v-if="!fixSize"
           data-direction="left-bottom"
           class="absolute cursor-nesw-resize transform selector"
           :style="{ top: '100%', left: '0%' }"
       />
-      <div
+      <div v-if="!fixSize"
           data-direction="right-bottom"
           class="absolute cursor-nwse-resize transform selector"
           :style="{ top: '100%', left: '100%' }"
@@ -81,6 +81,7 @@ export default {
     "x",
     "y",
     "pageScale",
+    "fixSize"
   ],
   data() {
     return {

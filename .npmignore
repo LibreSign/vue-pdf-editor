@@ -1,9 +1,16 @@
 .git/
 .idea/
+examples/
+lib/demo.html
 node_modules/
+packages/
+public/
+.eslintignore
 .gitignore
 .npmignore
 babel.config.js
+postcss.config.js
+tailwind.config.js
 vue.config.js
 
 

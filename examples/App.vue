@@ -15,13 +15,14 @@
           :show-font-select="false"
           :show-rename="true"
           :show-save-btn="true"
-          :load-default-file="false"
           :init-file-src="initFile"
           :init-file-name="initFileName"
           :init-text-fields = "this.textFields"
           :init-image-urls = "this.imageUrls"
           :init-image-scale = "1"
-          :save-to-upload="false"
+          :save-to-upload="true"
+          :seal-image-show="true"
+          :seal-image-hidden-on-save="true"
           @onSave2Upload="save2Upload"
       >
       </XccPdfEditor>
@@ -50,6 +51,7 @@ export default {
     save2Upload(payload){
       console.log(payload.pdfBytes);
       console.log(payload.fileName);
+      console.log(payload.sealInfo);
     }
   }
 
