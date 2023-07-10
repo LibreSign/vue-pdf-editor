@@ -1,5 +1,6 @@
 .git/
 .idea/
+dist/
 examples/
 lib/demo.html
 node_modules/

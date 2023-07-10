@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <button @click="btnClick">保存</button>
       <XccPdfEditor
           ref="xccPdfEditor"
           width="100%"
@@ -40,14 +39,11 @@ export default {
       initFile :'',
       textFields: ['初始文本'],
       imageUrls: [
-          'https://lh3.googleusercontent.com/a/AAcHTtfoMRrou6KGLaZ2ZxMRDVaJ8BppZsBCpcnCpjDEdEr2TPDK=s83-c-mo'
+          ''
       ],
     }
   },
   methods:{
-    btnClick(){
-      this.$refs.xccPdfEditor.savePDF();
-    },
     save2Upload(payload){
       console.log(payload.pdfBytes);
       console.log(payload.fileName);
