@@ -21,8 +21,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install cross-env
+        run: npm install -g cross-env
+
       - name: Build
-        run: PUBLIC_PATH=/xcc-pdf-editor/ && npm run build
+        run: cross-env PUBLIC_PATH=/xcc-pdf-editor/ npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
