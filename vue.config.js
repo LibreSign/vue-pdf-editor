@@ -1,6 +1,7 @@
+const publicPath = process.env.PUBLIC_PATH ? process.env.PUBLIC_PATH : "./";
 module.exports = {
+  publicPath: publicPath,
   // 修改 src 目录 为 examples 目录
-  publicPath: './',
   pages: {
     index: {
       entry: 'examples/main.js',

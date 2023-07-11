@@ -9,8 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      BUILD_ARGS: --mode production --env.VUE_APP_PUBLIC_PATH=/xcc-pdf-editor/
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -24,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build ${{ env.BUILD_ARGS }}
+        run: PUBLIC_PATH=/xcc-pdf-editor/ && npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
