@@ -1,6 +1,6 @@
 <template>
   <div :style="{width:width,height:height}" style="margin: 0 auto;overflow: hidden;position: relative;">
-    <div style="width: 100%;height: 100%;overflow: auto;" ref="scrollBox" @wheel.ctrl="wheelZoom" @wheel.meta="wheelZoom"  class="flex-col py-10 items-center bg-gray-100">
+    <div style="width: 100%;height: 100%;overflow: auto;" ref="scrollBox" @wheel.ctrl="wheelZoom" @wheel.meta="wheelZoom"  class="flex-col py-12 items-center bg-gray-100">
     <div style="position: absolute;" v-if="showChooseFileBtn || showCustomizeEditor||showSaveBtn"
          class="z-10 top-0 left-0 right-0 z-10 h-12 flex justify-center items-center bg-gray-200 border-b border-gray-300">
       <input
@@ -33,7 +33,7 @@
         cursor-pointer"
             for="image"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
-          <img src="/xcc-pdf-editor/svg/image.svg" alt="An icon for adding images"/>
+          <img src="xcc-pdf-editor/svg/image.svg" alt="An icon for adding images"/>
         </label>
         <label title="添加文字" v-if="showCustomizeEditorAddText"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
@@ -41,18 +41,18 @@
             for="text"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']"
             @click="onAddTextField">
-          <img src="/xcc-pdf-editor/svg/notes.svg" alt="An icon for adding text"/>
+          <img src="xcc-pdf-editor/svg/notes.svg" alt="An icon for adding text"/>
         </label>
         <label title="添加笔迹" v-if="showCustomizeEditorAddDraw"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             @click="onAddDrawing"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
-          <img src="/xcc-pdf-editor/svg/gesture.svg" alt="An icon for adding drawing"/>
+          <img src="xcc-pdf-editor/svg/gesture.svg" alt="An icon for adding drawing"/>
         </label>
       </div>
       <div v-if="showRename" class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
-        <img src="/xcc-pdf-editor/svg/edit.svg" class="mr-2" alt="a pen, edit pdf name"  @click="renamePDF($refs.renamePDFInputOne)"/>
+        <img src="xcc-pdf-editor/svg/edit.svg" class="mr-2" alt="a pen, edit pdf name"  @click="renamePDF($refs.renamePDFInputOne)"/>
         <input ref="renamePDFInputOne" title="在此处重命名PDF"
             placeholder="在此处重命名PDF"
             type="text"
@@ -79,13 +79,16 @@
       </div>
     </div>
     <div v-if="pages.length" id="pdfBody" class="w-full" ref = 'pdfBody'>
-      <div v-if="showRename" class="flex justify-center px-5 w-full md:hidden">
-        <img src="/xcc-pdf-editor/svg/edit.svg" class="mr-2" alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
-        <input ref="renamePDFInputTwo" title="在此处重命名PDF"
-            placeholder="在此处重命名PDF"
-            type="text"
-            class="flex-grow bg-transparent"
-            v-model="pdfName"/>
+      <div v-if="showRename" class="flex justify-center px-5 pt-5 w-full md:hidden">
+        <div class="flex items-center">
+          <img src="xcc-pdf-editor/svg/edit.svg" class="mr-2 justify-center"  alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
+          <input ref="renamePDFInputTwo" style="text-align:center" title="在此处重命名PDF"
+                 placeholder="在此处重命名PDF"
+                 type="text"
+                 class="flex-grow bg-transparent justify-center"
+                 v-model="pdfName"/>
+        </div>
+
       </div>
 
       <!--  PDF主体      -->
@@ -291,7 +294,7 @@ export default {
     },
     sealImageUrl:{
       type:String,
-      default:'/xcc-pdf-editor/image/sealImag.png'
+      default:'xcc-pdf-editor/image/sealImag.png'
     },
     sealImageHiddenOnSave:{
       type:Boolean,
