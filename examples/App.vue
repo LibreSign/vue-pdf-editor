@@ -38,9 +38,7 @@ export default {
       initFileName: '测试.pdf',
       initFile :'',
       textFields: ['初始文本'],
-      imageUrls: [
-          ''
-      ],
+      imageUrls: [],
     }
   },
   methods:{
