@@ -7,6 +7,10 @@
 # npm
 https://www.npmjs.com/package/xcc-pdf-editor
 
+# DEMO
+
+[xcc-pdf-editor](https://llanc.github.io/xcc-pdf-editor/)
+
 # 使用
 - package.json添加依赖并安装 / npm i xcc-pdf-editor
 - 解压node_modules中xcc-pdf-editor下的xcc-pdf-editor.7z到项目根目录的public下，xcc-pdf-editor.7z中为资源文件。
