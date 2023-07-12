@@ -18,17 +18,14 @@ jobs:
         with:
           node-version: 16.20
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install & Build
+        run: |
+          npm install
+          npm install -g cross-env
+          cross-env PUBLIC_PATH=/xcc-pdf-editor/ npm run build
 
-      - name: Install cross-env
-        run: npm install -g cross-env
-
-      - name: Build
-        run: cross-env PUBLIC_PATH=/xcc-pdf-editor/ npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+            branch: gh-pages
+            folder: dist
