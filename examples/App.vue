@@ -21,7 +21,7 @@
           :init-image-scale = "1"
           :save-to-upload="false"
           :seal-image-show="true"
-          :seal-image-hidden-on-save="true"
+          :seal-image-hidden-on-save="false"
           @onSave2Upload="save2Upload"
       >
       </XccPdfEditor>
