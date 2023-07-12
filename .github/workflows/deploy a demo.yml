@@ -18,13 +18,11 @@ jobs:
         with:
           node-version: 16.20
 
-      - name: Install dependencies
-        run: 
+      - name: Install & Build
+        run: |
           npm install
           npm install -g cross-env
-
-      - name: Build
-        run: cross-env PUBLIC_PATH=/xcc-pdf-editor/ npm run build
+          cross-env PUBLIC_PATH=/xcc-pdf-editor/ npm run build
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.2.2
