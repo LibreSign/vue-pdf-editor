@@ -1,0 +1,11 @@
+export * from './components/Image.vue'
+export * from './components/Portal.vue'
+export * from './components/Tapout.vue'
+export * from './components/Drawing.vue'
+export * from './components/DrawingCanvas.vue'
+export * from './components/PDFPage.vue'
+export * from './components/Toolbar.vue'
+export * from './components/TextItem.vue'
+export * from './components/PDFEditor.vue'
+export * from './components/ItemEventsMixin.vue'
+

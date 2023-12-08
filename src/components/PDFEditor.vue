@@ -19,7 +19,6 @@
           class="whitespace-no-wrap bg-blue-500 hover:bg-blue-700 text-white
       font-bold py-1 px-3 md:px-4 rounded mr-3 cursor-pointer md:mr-4"
           for="pdf">
-        选择PDF
       </label>
       <button v-show="narrowEnlargeShow" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center mr-3 md:mr-4
         rounded-full" @click="narrow">-</button>
@@ -33,7 +32,7 @@
         cursor-pointer"
             for="image"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
-          <img src="xcc-pdf-editor/svg/image.svg" alt="An icon for adding images"/>
+          <img src="../../svg/image.svg" alt="An icon for adding images"/>
         </label>
         <label title="添加文字" v-if="showCustomizeEditorAddText"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
@@ -41,18 +40,18 @@
             for="text"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']"
             @click="onAddTextField">
-          <img src="xcc-pdf-editor/svg/notes.svg" alt="An icon for adding text"/>
+          <img src="../../svg/notes.svg" alt="An icon for adding text"/>
         </label>
         <label title="添加笔迹" v-if="showCustomizeEditorAddDraw"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             @click="onAddDrawing"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
-          <img src="xcc-pdf-editor/svg/gesture.svg" alt="An icon for adding drawing"/>
+          <img src="../../svg/gesture.svg" alt="An icon for adding drawing"/>
         </label>
       </div>
       <div v-if="showRename" class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
-        <img src="xcc-pdf-editor/svg/edit.svg" class="mr-2" alt="a pen, edit pdf name"  @click="renamePDF($refs.renamePDFInputOne)"/>
+        <img src="../../svg/edit.svg" class="mr-2" alt="a pen, edit pdf name"  @click="renamePDF($refs.renamePDFInputOne)"/>
         <input ref="renamePDFInputOne" title="在此处重命名PDF"
             placeholder="在此处重命名PDF"
             type="text"
@@ -81,7 +80,7 @@
     <div v-if="pages.length" id="pdfBody" class="w-full" ref = 'pdfBody'>
       <div v-if="showRename" class="flex justify-center px-5 pt-5 w-full md:hidden">
         <div class="flex items-center">
-          <img src="xcc-pdf-editor/svg/edit.svg" class="mr-2 justify-center"  alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
+          <img src="../../svg/edit.svg" class="mr-2 justify-center"  alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
           <input ref="renamePDFInputTwo" style="text-align:center" title="在此处重命名PDF"
                  placeholder="在此处重命名PDF"
                  type="text"
@@ -91,7 +90,6 @@
 
       </div>
 
-      <!--  PDF主体      -->
       <div class="w-full" style="text-align: center;">
         <div v-for="(page,pIndex) in pages" :key="pIndex" style="display: inline-block;">
           <div
@@ -165,18 +163,13 @@
           </div>
         </div>
       </div>
-
     </div>
-<!--    <div v-else>-->
-<!--      <div class="w-full flex-grow flex justify-center items-center">-->
-<!--        <span class=" font-bold text-3xl text-gray-500">拖入PDF文件</span>-->
-<!--      </div>-->
-<!--    </div>-->
   </div>
   </div>
 </template>
 
 <script>
+
 import "pdfjs-dist/web/pdf_viewer.css";
 
 const PDFJS = require("pdfjs-dist");
@@ -184,11 +177,11 @@ PDFJS.GlobalWorkerOptions.workerSrc = require("pdfjs-dist/build/pdf.worker");
 
 import {getAsset} from "../utils/prepareAssets";
 
-import PDFPage from "./PDFPage";
-import ImageItem from "./Image";
-import TextItem from "./TextItem";
-import Drawing from "./Drawing";
-import DrawingCanvas from "./DrawingCanvas";
+import PDFPage from "./PDFPage.vue";
+import ImageItem from "./Image.vue";
+import TextItem from "./TextItem.vue";
+import Drawing from "./Drawing.vue";
+import DrawingCanvas from "./DrawingCanvas.vue";
 import {fetchFont} from "../utils/prepareAssets.js";
 import {
   readAsImage,
@@ -197,8 +190,11 @@ import {
 } from "../utils/asyncReader.js";
 import {save} from "../utils/PDF.js";
 getAsset('makeTextPDF');
-export default {
-  name: 'XccPdfEditor',
+
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'PDFEditor',
   components: {
     PDFPage,
     ImageItem,
@@ -294,14 +290,12 @@ export default {
     },
     sealImageUrl:{
       type:String,
-      default:'xcc-pdf-editor/image/sealImag.png'
+      default:'../../image/sealImag.png'
     },
     sealImageHiddenOnSave:{
       type:Boolean,
       default:false
     }
-
-
   },
   data() {
     return {
@@ -408,7 +402,6 @@ export default {
         this.selectedPageIndex = i;
         let y = 0;
         if (this.initImageUrls !== null && this.initImageUrls.length !== 0) {
-          // 需要初始化图片
           for (let j = 0; j < this.initImageUrls.length; j++) {
             if (this.initTextFields.length === 0) {
               y = j * 100
@@ -419,7 +412,6 @@ export default {
           }
         }
         if (this.sealImageShow) {
-          // 展示印章示例
           const res = await fetch(this.sealImageUrl);
           await this.addImage(await res.blob(), 0, (y+1)*100 ,0.4,true);
         }
@@ -668,7 +660,7 @@ export default {
       }
     },
   }
-}
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
