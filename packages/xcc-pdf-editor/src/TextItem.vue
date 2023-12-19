@@ -1,8 +1,5 @@
 <template>
   <div>
-<!--    <toolbar-component style="position: absolute" >-->
-
-<!--    </toolbar-component>-->
     <tapout-component
         class="absolute left-0 top-0 select-none"
         :style="{ transform: `translate(${x + dx}px, ${y + dy}px)` }"
@@ -33,7 +30,7 @@
           />
         </div>
         <div v-if="showFontSizeSelect" class="mr-2 flex items-center">
-          <img title="字号" src="xcc-pdf-editor/svg/text.svg" class="w-6 mr-2" alt="Font size"/>
+          <img title="Font Size" src="xcc-pdf-editor/svg/text.svg" class="w-6 mr-2" alt="Font size"/>
           <input
               v-model="size_"
               type="number"
@@ -44,7 +41,7 @@
           />
         </div>
         <div v-if="showFontSelect" class="mr-2 flex items-center">
-          <img title="字体" src="xcc-pdf-editor/svg/text-family.svg" class="w-4 mr-2" alt="Font family"/>
+          <img title="Font" src="xcc-pdf-editor/svg/text-family.svg" class="w-4 mr-2" alt="Font family"/>
           <div class="relative w-32 md:w-40">
             <select
                 v-model="fontFamily_"
@@ -97,7 +94,7 @@
         <div
             class="w-5 h-5 rounded-full bg-white cursor-pointer"
             @click="onDelete">
-          <img class="w-full h-full" src="xcc-pdf-editor/svg/delete.svg" title="移除" alt="delete object"/>
+          <img class="w-full h-full" src="xcc-pdf-editor/svg/delete.svg" title="Remove" alt="delete object"/>
         </div>
       </tapout-component>
       <div

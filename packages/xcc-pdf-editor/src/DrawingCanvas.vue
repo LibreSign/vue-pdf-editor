@@ -47,7 +47,7 @@
 				"
           @click="onFinish"
       >
-        完成
+        Finish
       </button>
     </div>
   </div>

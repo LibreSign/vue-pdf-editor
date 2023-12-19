@@ -28,7 +28,7 @@ export default {
   },
   watch: {
     scale(newScale) {
-      this.dynamicScale = newScale; // 监听scale属性的变化，并更新动态缩放
+      this.dynamicScale = newScale;
       this.render();
     },
   },

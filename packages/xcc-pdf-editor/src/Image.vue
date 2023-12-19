@@ -19,19 +19,7 @@
         @mousedown="handlePanStart"
         @touchstart="handlePanStart"
     >
-      <!--      <div-->
-      <!--          data-direction="left"-->
-      <!--          class="absolute border-dashed border-gray-600 h-full w-1 left-0 top-0 border-l cursor-ew-resize"/>-->
-      <!--      <div-->
-      <!--          data-direction="top"-->
-      <!--          class="absolute border-dashed border-gray-600 w-full h-1 left-0 top-0 border-t cursor-ns-resize"/>-->
-      <!--      <div-->
-      <!--          data-direction="bottom"-->
-      <!--          class="absolute border-dashed border-gray-600 w-full h-1 left-0 bottom-0 border-b cursor-ns-resize"/>-->
-      <!--      <div-->
-      <!--          data-direction="right"-->
-      <!--          class="absolute border-dashed border-gray-600 h-full w-1 right-0 top-0 border-r cursor-ew-resize"/>-->
-      <div v-if="!fixSize"
+       <div v-if="!fixSize"
           data-direction="left-top"
           class="absolute cursor-nwse-resize transform selector"
           :style="{ top: '0%', left: '0%' }"
