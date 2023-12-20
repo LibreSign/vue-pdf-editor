@@ -19,7 +19,7 @@
           class="whitespace-no-wrap bg-blue-500 hover:bg-blue-700 text-white
       font-bold py-1 px-3 md:px-4 rounded mr-3 cursor-pointer md:mr-4"
           for="pdf">
-        选择PDF
+      PDF
       </label>
       <button v-show="narrowEnlargeShow" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center mr-3 md:mr-4
         rounded-full" @click="narrow">-</button>
@@ -33,7 +33,7 @@
         cursor-pointer"
             for="image"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
-          <img src="xcc-pdf-editor/svg/image.svg" alt="An icon for adding images"/>
+          <img src="../../../public/svg/image.svg" alt="An icon for adding images"/>
         </label>
         <label title="Add text" v-if="showCustomizeEditorAddText"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
@@ -81,7 +81,7 @@
     <div v-if="pages.length" id="pdfBody" class="w-full" ref = 'pdfBody'>
       <div v-if="showRename" class="flex justify-center px-5 pt-5 w-full md:hidden">
         <div class="flex items-center">
-          <img src="xcc-pdf-editor/svg/edit.svg" class="mr-2 justify-center"  alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
+          <img src="../../../public/svg/edit.svg" class="mr-2 justify-center"  alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
           <input ref="renamePDFInputTwo" style="text-align:center" title="Rename here"
                  placeholder="Rename PDF"
                  type="text"
@@ -289,7 +289,7 @@ export default {
     },
     sealImageUrl:{
       type:String,
-      default:'xcc-pdf-editor/image/sealImag.png'
+      default:'../../../public/image/sealImag.png'
     },
     sealImageHiddenOnSave:{
       type:Boolean,
