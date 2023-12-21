@@ -38,7 +38,10 @@
         :style="{ top: '0%', left: '50%' }"
         @click="onDelete"
     >
-      <img class="w-full h-full" src="xcc-pdf-editor/svg/delete.svg" alt="delete object"/>
+    
+          <Icon
+            icon="material-symbols:delete"
+          />
     </div>
     <svg ref="svg" width="100%" height="100%">
       <path
@@ -54,10 +57,16 @@
 </template>
 
 <script>
-import itemEventsMixin from "./ItemEventsMixin";
+
+import { Icon } from '@iconify/vue2';
+import itemEventsMixin from "./ItemEventsMixin.vue";
+
 export default {
   name: "DrawingComponent",
   mixins: [itemEventsMixin],
+  component: {
+    Icon,
+  },
   props: [
     "originWidth",
     "originHeight",

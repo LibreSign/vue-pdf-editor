@@ -1,7 +1,4 @@
 <template>
-  <!--  <div-->
-  <!--      class="absolute left-0 top-0 select-none"-->
-  <!--      :style="{width: `${width + dw}px`,height: `${(height + dh)}px`,transform: `translate(${x + dx}px, ${y + dy}px)`}">-->
   <div
       class="absolute left-0 top-0 select-none"
       :style="{
@@ -45,7 +42,9 @@
         :style="{ top: '0%', left: '50%' }"
         @click="onDelete"
     >
-      <img class="w-full h-full" src="xcc-pdf-editor/svg/delete.svg" alt="delete object" />
+          <Icon
+            icon="material-symbols:delete"
+          />
     </div>
     <canvas
         ref="imgCanvas"
@@ -55,9 +54,14 @@
 </template>
 
 <script>
-import itemEventsMixin from "./ItemEventsMixin";
+import itemEventsMixin from "./ItemEventsMixin.vue";
+import { Icon } from '@iconify/vue2';
+
 export default {
   name: "ImageComponent",
+  components: {
+    Icon,
+  },
   mixins: [itemEventsMixin],
   props: [
     "payload",

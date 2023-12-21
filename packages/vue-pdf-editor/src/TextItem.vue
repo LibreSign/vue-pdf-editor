@@ -19,7 +19,11 @@
           @tapout="onBlurTool"
       >
         <div v-if="showLineSizeSelect" class="mr-2 flex items-center">
-          <img title="行间距" src="xcc-pdf-editor/svg/line_height.svg" class="w-6 mr-2" alt="Line height"/>
+         
+          <Icon
+            icon="mdi:format-line-height"
+          />
+
           <input
               v-model="lineHeight_"
               type="number"
@@ -30,7 +34,10 @@
           />
         </div>
         <div v-if="showFontSizeSelect" class="mr-2 flex items-center">
-          <img title="Font Size" src="xcc-pdf-editor/svg/text.svg" class="w-6 mr-2" alt="Font size"/>
+         
+          <Icon
+            icon="el:fontsize"
+          />
           <input
               v-model="size_"
               type="number"
@@ -41,7 +48,11 @@
           />
         </div>
         <div v-if="showFontSelect" class="mr-2 flex items-center">
-          <img title="Font" src="xcc-pdf-editor/svg/text-family.svg" class="w-4 mr-2" alt="Font family"/>
+
+          <Icon
+            icon="file-icons:font-outline"
+          />
+
           <div class="relative w-32 md:w-40">
             <select
                 v-model="fontFamily_"
@@ -94,7 +105,11 @@
         <div
             class="w-5 h-5 rounded-full bg-white cursor-pointer"
             @click="onDelete">
-          <img class="w-full h-full" src="xcc-pdf-editor/svg/delete.svg" title="Remove" alt="delete object"/>
+         
+          <Icon
+            icon="material-symbols:delete"
+          />
+
         </div>
       </tapout-component>
       <div
@@ -134,16 +149,16 @@
 </template>
 
 <script>
-import itemEventsMixin from "./ItemEventsMixin";
-// import ToolbarComponent from "./Toolbar";
-import TapoutComponent from "./Tapout";
+import itemEventsMixin from "./ItemEventsMixin.vue";
+import TapoutComponent from "./Tapout.vue";
+import { Icon } from '@iconify/vue2';
 import {Fonts} from "../utils/prepareAssets.js";
 import {timeout} from "../utils/helper.js";
-// import '../assets/main.css'
+
 export default {
   name: "TextComponent",
   components: {
-    // ToolbarComponent,
+    Icon,
     TapoutComponent,
   },
   mixins: [itemEventsMixin],

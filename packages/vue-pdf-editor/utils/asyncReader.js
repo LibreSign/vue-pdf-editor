@@ -1,4 +1,6 @@
-import 'pdfjs-dist/build/pdf.worker.min'
+import "pdfjs-dist/build/pdf.worker.min";
+import * as pdfjsLib from "pdfjs-dist";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
 export function readAsArrayBuffer(file) {
   return new Promise((resolve, reject) => {
@@ -18,7 +20,7 @@ export function readAsImage(src) {
       const url = window.URL.createObjectURL(src);
       img.src = url;
     } else {
-      img.setAttribute('crossOrigin', 'anonymous');
+      img.setAttribute("crossOrigin", "anonymous");
       img.src = src;
     }
   });
@@ -34,8 +36,6 @@ export function readAsDataURL(file) {
 }
 
 export async function readAsPDF(file) {
-  const pdfjsLib = require('pdfjs-dist');
-  const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
   const blob = new Blob([file]);
   const url = window.URL.createObjectURL(blob);

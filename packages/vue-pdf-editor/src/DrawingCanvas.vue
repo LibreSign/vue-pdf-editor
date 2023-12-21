@@ -32,7 +32,7 @@
 				"
           @click="onClose"
       >
-        取消
+        Close
       </button>
       <button
           class="
@@ -53,11 +53,14 @@
   </div>
 </template>
 <script>
-import itemEventsMixin from "./ItemEventsMixin";
+import itemEventsMixin from "./ItemEventsMixin.vue";
+import { Icon } from '@iconify/vue2';
 
 export default {
   name: "DrawingCanvasComponent",
-  // components: {itemEventsMixin},
+  components: {
+    Icon,
+  },
   mixins: [itemEventsMixin],
   props: [],
   data() {

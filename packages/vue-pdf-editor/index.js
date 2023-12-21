@@ -1,9 +1,8 @@
-import VuePdfEditor from './src/VuePdfEditor.vue'
-import './style/main.css'
+import VuePdfEditor from "./src/VuePdfEditor.vue";
+import "./style/main.css";
 
 VuePdfEditor.install = function (Vue) {
-    Vue.component(VuePdfEditor.name, VuePdfEditor)
-}
+  Vue.component(VuePdfEditor.name, VuePdfEditor);
+};
 
-export default VuePdfEditor
-
+export default VuePdfEditor;

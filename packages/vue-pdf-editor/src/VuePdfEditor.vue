@@ -33,7 +33,9 @@
         cursor-pointer"
             for="image"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
-          <img src="../../../public/svg/image.svg" alt="An icon for adding images"/>
+          <Icon
+            icon="material-symbols:image-outline"
+          />
         </label>
         <label title="Add text" v-if="showCustomizeEditorAddText"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
@@ -41,18 +43,25 @@
             for="text"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']"
             @click="onAddTextField">
-          <img src="xcc-pdf-editor/svg/notes.svg" alt="An icon for adding text"/>
+          <Icon
+            icon="material-symbols:notes"
+          />
         </label>
         <label title="Add Signature" v-if="showCustomizeEditorAddDraw"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             @click="onAddDrawing"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
-          <img src="xcc-pdf-editor/svg/gesture.svg" alt="An icon for adding drawing"/>
+          <Icon
+            icon="material-symbols:gesture"
+          />
         </label>
       </div>
       <div v-if="showRename" class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
-        <img src="xcc-pdf-editor/svg/edit.svg" class="mr-2" alt="a pen, edit pdf name"  @click="renamePDF($refs.renamePDFInputOne)"/>
+          <Icon
+            icon="material-symbols:edit"
+            @click="renamePDF($refs.renamePDFInputOne)"
+          />
         <input ref="renamePDFInputOne" title="Reneme PDF"
             placeholder="Rename PDF"
             type="text"
@@ -81,7 +90,10 @@
     <div v-if="pages.length" id="pdfBody" class="w-full" ref = 'pdfBody'>
       <div v-if="showRename" class="flex justify-center px-5 pt-5 w-full md:hidden">
         <div class="flex items-center">
-          <img src="../../../public/svg/edit.svg" class="mr-2 justify-center"  alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
+          <Icon
+            icon="material-symbols:edit"
+            @click="renamePDF($refs.renamePDFInputTwo)"
+          />
           <input ref="renamePDFInputTwo" style="text-align:center" title="Rename here"
                  placeholder="Rename PDF"
                  type="text"
@@ -173,17 +185,17 @@
 
 <script>
 import "pdfjs-dist/web/pdf_viewer.css";
-
+import { Icon } from '@iconify/vue2';
 const PDFJS = require("pdfjs-dist");
 PDFJS.GlobalWorkerOptions.workerSrc = require("pdfjs-dist/build/pdf.worker");
 
 import {getAsset} from "../utils/prepareAssets";
 
-import PDFPage from "./PDFPage";
-import ImageItem from "./Image";
-import TextItem from "./TextItem";
-import Drawing from "./Drawing";
-import DrawingCanvas from "./DrawingCanvas";
+import PDFPage from "./PDFPage.vue";
+import ImageItem from "./Image.vue";
+import TextItem from "./TextItem.vue";
+import Drawing from "./Drawing.vue";
+import DrawingCanvas from "./DrawingCanvas.vue";
 import {fetchFont} from "../utils/prepareAssets.js";
 import {
   readAsImage,
@@ -191,15 +203,18 @@ import {
   readAsDataURL
 } from "../utils/asyncReader.js";
 import {save} from "../utils/PDF.js";
+
 getAsset('makeTextPDF');
+
 export default {
-  name: 'XccPdfEditor',
+  name: 'VuePdfEditor',
   components: {
     PDFPage,
     ImageItem,
     TextItem,
     Drawing,
-    DrawingCanvas
+    DrawingCanvas,
+    Icon,
   },
   props: {
     msg: String,
@@ -318,8 +333,8 @@ export default {
 
     }
   },
-  async mounted() {
-    await this.init();
+  mounted() {
+    this.init().then(_res => {console.log(_res)});
   },
   created() {
   },
@@ -353,23 +368,30 @@ export default {
       }
       this.scale = parseFloat((this.scale - 0.1).toFixed(1))
     },
-    async init() {
-      if(!this.initFileSrc){
-        console.log("init file is not exist");
+    init() {
+      if (!this.initFileSrc) {
+        console.log("init file does not exist");
         return;
       }
-      try {
-        const res = await fetch(this.initFileSrc);
-        const pdfBlob = await res.blob();
-        await this.addPDF(pdfBlob);
-        this.selectedPageIndex = 0;
-        fetchFont(this.currentFont);
-        this.narrowEnlargeShow = true;
-        this.initTextField();
-        await this.initImages();
-      } catch (e) {
-        console.log(e);
-      }
+
+      fetch(this.initFileSrc)
+        .then((res) => res.blob())
+        .then((pdfBlob) => {
+          this.addPDF(pdfBlob)
+            .then(() => {
+              this.selectedPageIndex = 0;
+              fetchFont(this.currentFont);
+              this.narrowEnlargeShow = true;
+              this.initTextField();
+              return this.initImages();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     initTextField(){
       if (this.selectedPageIndex<0 || this.initTextFields === null || this.initTextFields.length === 0) {
@@ -395,30 +417,39 @@ export default {
       }, 100);
 
     },
-    async initImages(){
-      if (this.selectedPageIndex<0 ) {
-        return;
+    initImages() {
+      if (this.selectedPageIndex < 0) {
+        return Promise.resolve();
       }
-      for (let i = 0; i <this.pages.length; i++) {
+
+      let imagePromises = [];
+
+      for (let i = 0; i < this.pages.length; i++) {
         this.selectedPageIndex = i;
         let y = 0;
+
         if (this.initImageUrls !== null && this.initImageUrls.length !== 0) {
           for (let j = 0; j < this.initImageUrls.length; j++) {
             if (this.initTextFields.length === 0) {
-              y = j * 100
-            }else {
-              y = (j-1+this.initTextFields.length) * 100
+              y = j * 100;
+            } else {
+              y = (j - 1 + this.initTextFields.length) * 100;
             }
-            await this.addImage(this.initImageUrls[j], 0, y ,1);
+            imagePromises.push(this.addImage(this.initImageUrls[j], 0, y, 1));
           }
         }
+
         if (this.sealImageShow) {
-          const res = await fetch(this.sealImageUrl);
-          await this.addImage(await res.blob(), 0, (y+1)*100 ,0.4,true);
+          imagePromises.push(
+            fetch(this.sealImageUrl)
+              .then((res) => res.blob())
+              .then((blob) => this.addImage(blob, 0, (y + 1) * 100, 0.4, true))
+          );
         }
       }
-      this.selectedPageIndex = 0;
 
+      this.selectedPageIndex = 0;
+      return Promise.all(imagePromises);
     },
     onFinishDrawingCanvas(e) {
       const {originWidth, originHeight, path} = e;
@@ -438,20 +469,23 @@ export default {
         return id++;
       };
     },
-    async onUploadPDF(e) {
+    onUploadPDF(e) {
       const files = e.target.files || (e.dataTransfer && e.dataTransfer.files);
       const file = files[0];
+
       if (!file || file.type !== "application/pdf") return;
+
       this.selectedPageIndex = -1;
-      try {
-        await this.addPDF(file);
-        this.narrowEnlargeShow = true;
-        this.selectedPageIndex = 0;
-      } catch (e) {
-        console.log(e);
-      }
-      this.initTextField();
-      await this.initImages();
+      this.addPDF(file)
+        .then(() => {
+          this.narrowEnlargeShow = true;
+          this.selectedPageIndex = 0;
+          this.initTextField();
+          return this.initImages();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     resetDefaultState() {
       this.pdfFile = null;
@@ -462,84 +496,106 @@ export default {
       this.pagesScale = [];
       this.allObjects = [];
     },
-    async getPdfDocument(file) {
+    getPdfDocument(file) {
       const blob = new Blob([file]);
       const url = window.URL.createObjectURL(blob);
       return PDFJS.getDocument(url).promise;
     },
-    async addPDF(file) {
-      try {
-        this.resetDefaultState();
+    addPDF(file) {
+      this.resetDefaultState();
+      this.pdfFile = file;
 
-        this.pdfFile = file;
-        if (this.initFileName) {
-          this.pdfName = this.initFileName
-        }else if(file.name){
-          this.pdfName = file.name;
-        }else {
-          this.pdfName = new Date().getTime();
-        }
+      if (this.initFileName) {
+        this.pdfName = this.initFileName;
+      } else if (file.name) {
+        this.pdfName = file.name;
+      } else {
+        this.pdfName = new Date().getTime();
+      }
 
-        this.pdfDocument = await readAsPDF(file);
-        if (this.pdfDocument) {
-          this.numPages = this.pdfDocument.numPages;
-          this.pages = Array(this.numPages)
+      readAsPDF(file)
+        .then((pdfDocument) => {
+          this.pdfDocument = pdfDocument;
+
+          if (this.pdfDocument) {
+            this.numPages = this.pdfDocument.numPages;
+            this.pages = Array(this.numPages)
               .fill()
               .map((_, i) => this.pdfDocument.getPage(i + 1));
-          this.allObjects = this.pages.map(() => []);
-          this.pagesScale = Array(this.numPages).fill(1);
-        }
-      } catch (e) {
-        console.log("Failed to add pdf.");
-        throw e;
-      }
+            this.allObjects = this.pages.map(() => []);
+            this.pagesScale = Array(this.numPages).fill(1);
+          }
+        })
+        .catch((e) => {
+          console.log("Failed to add pdf.");
+          throw e;
+        });
     },
-    async onUploadImage(e) {
+    onUploadImage(e) {
       const file = e.target.files[0];
       if (file && this.selectedPageIndex >= 0) {
-        await this.addImage(file);
+        this.addImage(file).then(_ => {
+          e.target.value = null;
+        });
+      } else {
+        e.target.value = null;
       }
-      e.target.value = null;
     },
-    async addImage(file, x = 0, y = 0, sizeNarrow = 1, isSealImage=false) {
-      try {
-        // get dataURL to prevent canvas from tainted
-        let url;
+    addImage(file, x = 0, y = 0, sizeNarrow = 1, isSealImage = false) {
+      let url;
+
+      return new Promise((resolve, reject) => {
         if (typeof file === "string" && file.startsWith("http")) {
           url = file;
-        }else {
-          url = await readAsDataURL(file);
+          resolve(url);
+        } else {
+          readAsDataURL(file)
+            .then((dataUrl) => {
+              url = dataUrl;
+              resolve(url);
+            })
+            .catch((error) => {
+              console.log("Failed to read file as data URL:", error);
+              reject(error);
+            });
         }
-        const img = await readAsImage(url);
-        const id = this.genID();
-        const {width, height} = img;
+      })
+      .then((resolvedUrl) => {
+        return readAsImage(resolvedUrl)
+          .then((img) => {
+            const id = this.genID();
+            const { width, height } = img;
 
-        const {canvasWidth, canvasHeight} =
-            this.$refs[
-                `page${this.selectedPageIndex}`
-                ][0].getCanvasMeasurement();
+            const { canvasWidth, canvasHeight } =
+              this.$refs[`page${this.selectedPageIndex}`][0].getCanvasMeasurement();
 
-        const object = {
-          id,
-          type: "image",
-          width:width*sizeNarrow,
-          height:height*sizeNarrow,
-          originWidth: width,
-          originHeight: height,
-          canvasWidth: canvasWidth,
-          canvasHeight: canvasHeight,
-          x: x,
-          y: y,
-          isSealImage:isSealImage,
-          payload: img,
-          file
-        };
-        this.allObjects = this.allObjects.map((objects, pIndex) =>
-            pIndex === this.selectedPageIndex ? [...objects, object] : objects
-        );
-      } catch (e) {
-        console.log(`Fail to add image.`, e);
-      }
+            const object = {
+              id,
+              type: "image",
+              width: width * sizeNarrow,
+              height: height * sizeNarrow,
+              originWidth: width,
+              originHeight: height,
+              canvasWidth: canvasWidth,
+              canvasHeight: canvasHeight,
+              x: x,
+              y: y,
+              isSealImage: isSealImage,
+              payload: img,
+              file,
+            };
+
+            this.allObjects = this.allObjects.map((objects, pIndex) =>
+              pIndex === this.selectedPageIndex ? [...objects, object] : objects
+            );
+          })
+          .catch((error) => {
+            console.log("Failed to read image:", error);
+          });
+      })
+      .catch((error) => {
+        console.log(`Failed to add image.`, error);
+      });
     },
     onAddTextField() {
       if (this.selectedPageIndex >= 0) {
@@ -628,37 +684,57 @@ export default {
       object.focus();
     },
 
-    async savePDF() {
+    savePDF() {
       if (!this.pdfFile || this.saving || !this.pages.length) return;
+
       this.saving = true;
-      try {
-        let sealInfo = [];
-        let allObject4Save = [];
-        if (this.sealImageShow){
-          for (let i = 0; i < this.pages.length; i++) {
-            let seal = this.allObjects[i].find((e)=> e.isSealImage===true );
-            let page = await this.pages[i];
-            sealInfo.push({
-              page:page._pageIndex,
-              pageWidth:page._pageInfo.view[2],
-              pageHeight:page._pageInfo.view[3],
-              x:seal.x+60,
-              y:seal.y+60
-            })
-            if (this.sealImageHiddenOnSave){
-              allObject4Save.push(this.allObjects[i].filter(e => e !== seal));
-            }
-          }
+      
+      let sealInfo = [];
+      let allObject4Save = [];
+      let promiseChain = Promise.resolve();
+
+      if (this.sealImageShow) {
+        for (let i = 0; i < this.pages.length; i++) {
+          let seal = this.allObjects[i].find((e) => e.isSealImage === true);
+
+          promiseChain = promiseChain
+            .then(() => this.pages[i])
+            .then((page) => {
+              sealInfo.push({
+                page: page._pageIndex,
+                pageWidth: page._pageInfo.view[2],
+                pageHeight: page._pageInfo.view[3],
+                x: seal.x + 60,
+                y: seal.y + 60,
+              });
+
+              if (this.sealImageHiddenOnSave) {
+                allObject4Save.push(this.allObjects[i].filter((e) => e !== seal));
+              }
+            });
         }
-        await save(this.pdfFile, this.sealImageShow&&this.sealImageHiddenOnSave?allObject4Save:this.allObjects,
-            this.pdfName, this.saveToUpload,(pdfBytes)=>{
-          this.$emit("onSave2Upload", {pdfBytes:pdfBytes, fileName: this.pdfName,sealInfo:sealInfo});
-        });
-      } catch (e) {
-        console.log(e);
-      } finally {
-        this.saving = false;
       }
+
+      promiseChain
+        .then(() => save(
+          this.pdfFile,
+          this.sealImageShow && this.sealImageHiddenOnSave ? allObject4Save : this.allObjects,
+          this.pdfName,
+          this.saveToUpload,
+          (pdfBytes) => {
+            this.$emit("onSave2Upload", {
+              pdfBytes: pdfBytes,
+              fileName: this.pdfName,
+              sealInfo: sealInfo,
+            });
+          }
+        ))
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          this.saving = false;
+        });
     },
   }
 }
