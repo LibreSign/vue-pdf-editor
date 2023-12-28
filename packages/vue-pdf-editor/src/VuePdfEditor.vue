@@ -15,22 +15,24 @@
           name="image"
           class="hidden"
           @change="onUploadImage"/>
-      <label v-if="showChooseFileBtn"
-          class="whitespace-no-wrap bg-blue-500 hover:bg-blue-700 text-white
-      font-bold py-1 px-3 md:px-4 rounded mr-3 cursor-pointer md:mr-4"
-          for="pdf">
-      PDF
+      <label
+        v-if="showChooseFileBtn"
+        class="whitespace-no-wrap bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 md:px-4 rounded mr-3 cursor-pointer md:mr-4"
+        for="pdf">
+          PDF
       </label>
-      <button v-show="narrowEnlargeShow" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center mr-3 md:mr-4
-        rounded-full" @click="narrow">-</button>
+      <button
+        v-show="narrowEnlargeShow"
+        class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center mr-3 md:mr-4
+        rounded-full"
+        @click="narrow">-</button>
       <button v-show="narrowEnlargeShow" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center  mr-3 md:mr-4
       rounded-full" @click="enlarge">+</button>
       <div v-if="showCustomizeEditor"
           class="relative mr-3 flex h-8 bg-gray-400 rounded-sm overflow-hidden
       md:mr-4">
         <label title="Add picture" v-if="showCustomizeEditorAddImg"
-            class="flex items-center justify-center h-full w-8 hover:bg-gray-500
-        cursor-pointer"
+            class="flex items-center justify-center h-full w-8 hover:bg-gray-500 cursor-pointer"
             for="image"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
           <Icon
@@ -38,8 +40,7 @@
           />
         </label>
         <label title="Add text" v-if="showCustomizeEditorAddText"
-            class="flex items-center justify-center h-full w-8 hover:bg-gray-500
-        cursor-pointer"
+            class="flex items-center justify-center h-full w-8 hover:bg-gray-500 cursor-pointer"
             for="text"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']"
             @click="onAddTextField">
@@ -48,8 +49,7 @@
           />
         </label>
         <label title="Add Signature" v-if="showCustomizeEditorAddDraw"
-            class="flex items-center justify-center h-full w-8 hover:bg-gray-500
-        cursor-pointer"
+            class="flex items-center justify-center h-full w-8 hover:bg-gray-500 cursor-pointer"
             @click="onAddDrawing"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
           <Icon
@@ -71,16 +71,14 @@
       <button
           v-if="showSaveBtn"
           @click="savePDF"
-          class="w-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3
-      md:px-4 mr-3 md:mr-4 rounded"
+          class="w-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 md:px-4 mr-3 md:mr-4 rounded"
           :class="[(pages.length === 0 || saving || !pdfFile) ?'cursor-not-allowed bg-blue-700':'']">
         {{ saving ? 'Saving' : 'Keep' }}
       </button>
     </div>
     <div v-if="addingDrawing">
       <div
-          class="fixed z-10 top-0 left-0 right-0 border-b border-gray-300 bg-white
-      shadow-lg"
+          class="fixed z-10 top-0 left-0 right-0 border-b border-gray-300 bg-white shadow-lg"
           style="height: 50%;">
         <DrawingCanvas
             @onFinish="onFinishDrawingCanvas"
@@ -94,11 +92,15 @@
             icon="material-symbols:edit"
             @click="renamePDF($refs.renamePDFInputTwo)"
           />
-          <input ref="renamePDFInputTwo" style="text-align:center" title="Rename here"
-                 placeholder="Rename PDF"
-                 type="text"
-                 class="flex-grow bg-transparent justify-center"
-                 v-model="pdfName"/>
+          <input 
+            ref="renamePDFInputTwo"
+            style="text-align:center"
+            title="Rename here"
+            placeholder="Rename PDF"
+            type="text"
+            class="flex-grow bg-transparent justify-center"
+            v-model="pdfName"
+          />
         </div>
 
       </div>
@@ -202,9 +204,6 @@ import {
   readAsPDF,
   readAsDataURL
 } from "../utils/asyncReader.js";
-import {save} from "../utils/PDF.js";
-
-getAsset('makeTextPDF');
 
 export default {
   name: 'VuePdfEditor',
@@ -325,7 +324,7 @@ export default {
       pages: [],
       pagesScale: [],
       allObjects: [],
-      currentFont: "Singe",
+      currentFont: "Arial",
       focusId: null,
       selectedPageIndex: -1,
       saving: false,
@@ -368,30 +367,22 @@ export default {
       }
       this.scale = parseFloat((this.scale - 0.1).toFixed(1))
     },
-    init() {
+    async init() {
       if (!this.initFileSrc) {
         console.log("init file does not exist");
         return;
       }
-
-      fetch(this.initFileSrc)
-        .then((res) => res.blob())
-        .then((pdfBlob) => {
-          this.addPDF(pdfBlob)
-            .then(() => {
-              this.selectedPageIndex = 0;
-              fetchFont(this.currentFont);
-              this.narrowEnlargeShow = true;
-              this.initTextField();
-              return this.initImages();
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      try {
+        const res = await fetch(this.initFileSrc)
+        this.addPDF(res)
+        this.selectedPageIndex = 0;
+        fetchFont(this.currentFont);
+        this.narrowEnlargeShow = true;
+        this.initTextField();
+        return this.initImages();
+      } catch (error) {
+        console.log(error);
+      }
     },
     initTextField(){
       if (this.selectedPageIndex<0 || this.initTextFields === null || this.initTextFields.length === 0) {
@@ -501,7 +492,7 @@ export default {
       const url = window.URL.createObjectURL(blob);
       return PDFJS.getDocument(url).promise;
     },
-    addPDF(file) {
+    async addPDF(file) {
       this.resetDefaultState();
       this.pdfFile = file;
 
@@ -513,23 +504,21 @@ export default {
         this.pdfName = new Date().getTime();
       }
 
-      readAsPDF(file)
-        .then((pdfDocument) => {
-          this.pdfDocument = pdfDocument;
-
-          if (this.pdfDocument) {
-            this.numPages = this.pdfDocument.numPages;
-            this.pages = Array(this.numPages)
+      try {
+        const pdfDocument = await readAsPDF(file)
+        this.pdfDocument = pdfDocument;    
+        if (this.pdfDocument) {
+         this.numPages = this.pdfDocument.numPages;
+         this.pages = Array(this.numPages)
               .fill()
               .map((_, i) => this.pdfDocument.getPage(i + 1));
-            this.allObjects = this.pages.map(() => []);
-            this.pagesScale = Array(this.numPages).fill(1);
-          }
-        })
-        .catch((e) => {
-          console.log("Failed to add pdf.");
-          throw e;
-        });
+         this.allObjects = this.pages.map(() => []);
+         this.pagesScale = Array(this.numPages).fill(1);
+        }
+      } catch (err) {      
+        console.log("Failed to add pdf.");
+        throw e;
+      };
     },
     onUploadImage(e) {
       const file = e.target.files[0];

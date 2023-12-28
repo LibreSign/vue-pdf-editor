@@ -13,7 +13,7 @@ export default {
         commonjs(),
         vue({
             css: true, // Dynamically inject css as a <style> tag
-            compileTemplate: true, // Explicitly convert template to render function
+            compileTemplate: false, // Explicitly convert template to render function
         }),
         buble({
           objectAssign: 'Object.assign',
