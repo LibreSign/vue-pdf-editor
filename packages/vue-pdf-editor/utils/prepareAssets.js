@@ -55,37 +55,37 @@ const fonts = {
 // Available fonts
 export const Fonts = {
   ...fonts,
-  '宋体': {
+  'Song style': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
     src: 'vue-pdf-editor/fonts/SongTi.ttf',
   },
-  '微软雅黑': {
+  'Microsoft Yahei': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
     src: 'vue-pdf-editor/fonts/WeiRuanYaHei.ttf',
   },
-  '方正小标宋简': {
+  'Fang Zheng Xiaoziao Song Jian': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
     src: 'vue-pdf-editor/fonts/FangZhengXiaoBiaoSongJian.ttf',
   },
-  '楷体': {
+  'Regular': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
     src: 'vue-pdf-editor/fonts/KaiTi.ttf',
   },
-  '等线': {
+  'Equal line': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
     src: 'vue-pdf-editor/fonts/DengXian.ttf',
   },
-  '黑体': {
+  'Black body': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },

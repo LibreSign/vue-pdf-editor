@@ -19,7 +19,7 @@
           class="whitespace-no-wrap bg-blue-500 hover:bg-blue-700 text-white
       font-bold py-1 px-3 md:px-4 rounded mr-3 cursor-pointer md:mr-4"
           for="pdf">
-        选择PDF
+		Select PDF
       </label>
       <button v-show="narrowEnlargeShow" class="w-7 h-7 bg-blue-500 hover:bg-blue-700 text-white font-bold  flex items-center justify-center mr-3 md:mr-4
         rounded-full" @click="narrow">-</button>
@@ -28,14 +28,14 @@
       <div v-if="showCustomizeEditor"
           class="relative mr-3 flex h-8 bg-gray-400 rounded-sm overflow-hidden
       md:mr-4">
-        <label title="添加图片" v-if="showCustomizeEditorAddImg"
+        <label title="add pictures" v-if="showCustomizeEditorAddImg"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             for="image"
             :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
           <img src="vue-pdf-editor/svg/image.svg" alt="An icon for adding images"/>
         </label>
-        <label title="添加文字" v-if="showCustomizeEditorAddText"
+        <label title="Add text" v-if="showCustomizeEditorAddText"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             for="text"
@@ -43,7 +43,7 @@
             @click="onAddTextField">
           <img src="vue-pdf-editor/svg/notes.svg" alt="An icon for adding text"/>
         </label>
-        <label title="添加笔迹" v-if="showCustomizeEditorAddDraw"
+        <label title="Add a handwriting" v-if="showCustomizeEditorAddDraw"
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             @click="onAddDrawing"
@@ -53,8 +53,8 @@
       </div>
       <div v-if="showRename" class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
         <img src="vue-pdf-editor/svg/edit.svg" class="mr-2" alt="a pen, edit pdf name"  @click="renamePDF($refs.renamePDFInputOne)"/>
-        <input ref="renamePDFInputOne" title="在此处重命名PDF"
-            placeholder="在此处重命名PDF"
+        <input ref="renamePDFInputOne" title="Rename PDF here"
+            placeholder="Rename PDF here"
             type="text"
             class="flex-grow bg-transparent"
              v-model="pdfName"/>
@@ -65,7 +65,7 @@
           class="w-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3
       md:px-4 mr-3 md:mr-4 rounded"
           :class="[(pages.length === 0 || saving || !pdfFile) ?'cursor-not-allowed bg-blue-700':'']">
-        {{ saving ? '保存中' : '保存' }}
+        {{ saving ? 'saving' : 'keep' }}
       </button>
     </div>
     <div v-if="addingDrawing">
@@ -82,8 +82,8 @@
       <div v-if="showRename" class="flex justify-center px-5 pt-5 w-full md:hidden">
         <div class="flex items-center">
           <img src="vue-pdf-editor/svg/edit.svg" class="mr-2 justify-center"  alt="a pen, edit pdf name" @click="renamePDF($refs.renamePDFInputTwo)"/>
-          <input ref="renamePDFInputTwo" style="text-align:center" title="在此处重命名PDF"
-                 placeholder="在此处重命名PDF"
+          <input ref="renamePDFInputTwo" style="text-align:center" title="Rename PDF here"
+                 placeholder="Rename PDF here"
                  type="text"
                  class="flex-grow bg-transparent justify-center"
                  v-model="pdfName"/>
@@ -91,7 +91,7 @@
 
       </div>
 
-      <!--  PDF主体      -->
+      <!--  PDF main body      -->
       <div class="w-full" style="text-align: center;">
         <div v-for="(page,pIndex) in pages" :key="pIndex" style="display: inline-block;">
           <div
@@ -169,7 +169,7 @@
     </div>
 <!--    <div v-else>-->
 <!--      <div class="w-full flex-grow flex justify-center items-center">-->
-<!--        <span class=" font-bold text-3xl text-gray-500">拖入PDF文件</span>-->
+<!--        <span class=" font-bold text-3xl text-gray-500">Drag into the PDF file</span>-->
 <!--      </div>-->
 <!--    </div>-->
   </div>
@@ -315,7 +315,7 @@ export default {
       pages: [],
       pagesScale: [],
       allObjects: [],
-      currentFont: "宋体",
+      currentFont: "Song style",
       focusId: null,
       selectedPageIndex: -1,
       saving: false,
@@ -408,7 +408,7 @@ export default {
         this.selectedPageIndex = i;
         let y = 0;
         if (this.initImageUrls !== null && this.initImageUrls.length !== 0) {
-          // 需要初始化图片
+          // Need to initialize pictures
           for (let j = 0; j < this.initImageUrls.length; j++) {
             if (this.initTextFields.length === 0) {
               y = j * 100
@@ -419,7 +419,7 @@ export default {
           }
         }
         if (this.sealImageShow) {
-          // 展示印章示例
+          // Example of display seal
           const res = await fetch(this.sealImageUrl);
           await this.addImage(await res.blob(), 0, (y+1)*100 ,0.4,true);
         }
@@ -554,7 +554,7 @@ export default {
       }
     },
 
-    addTextField(text = "请在此输入", x = 0, y = 0, currentPage = this.selectedPageIndex) {
+    addTextField(text = "Please enter here", x = 0, y = 0, currentPage = this.selectedPageIndex) {
       const id = this.genID();
       fetchFont(this.currentFont);
       const object = {

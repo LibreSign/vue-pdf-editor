@@ -1,27 +1,28 @@
-// 导入颜色选择器组件
+// Import color picker component
 import VuePdfEditor from './vue-pdf-editor'
 
-// 存储组件列表
+// Store component list
 const components = [
     VuePdfEditor
 ]
 
-// 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
+// Define the install method, receiving Vue as a parameter. If you use use
+// to register a plugin, all components will be registered
 const install = function (Vue) {
-    // 判断是否安装
+    // Determine whether to install
     if (install.installed) return
-    // 遍历注册全局组件
+    // Traverse registered global components
     components.map(component => Vue.component(component.name, component))
 }
 
-// 判断是否是直接引入文件
+// Determine whether the file is imported directly
 if (typeof window !== 'undefined' && window.Vue) {
     install(window.Vue)
 }
 
 export default {
-    // 导出的对象必须具有 install，才能被 Vue.use() 方法安装
+    // Exported objects must have install before they can be installed by the Vue.use() method
     install,
-    // 以下是具体的组件列表
+    // The following is a specific list of components
     VuePdfEditor
 }

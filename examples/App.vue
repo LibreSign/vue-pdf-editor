@@ -35,9 +35,9 @@ export default {
   name: 'App',
   data(){
     return {
-      initFileName: '测试.pdf',
+      initFileName: 'test.pdf',
       initFile :'',
-      textFields: ['初始文本'],
+      textFields: ['initial text'],
       imageUrls: [],
     }
   },

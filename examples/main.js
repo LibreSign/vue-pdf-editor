@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-// 导入组件库
+// Import component library
 import VuePdfEditor from './../packages/index'
-// 注册组件库
+// Registered component library
 Vue.use(VuePdfEditor)
 
 Vue.config.productionTip = false
