@@ -1,15 +1,15 @@
 <template>
-  <Portal>
-    <div class="fixed z-10 top-0 left-0 right-0 h-12">
-      <slot />
-    </div>
-  </Portal>
+	<Portal>
+		<div class="fixed z-10 top-0 left-0 right-0 h-12">
+			<slot />
+		</div>
+	</Portal>
 </template>
 
 <script>
-import Portal from "./Portal";
+import Portal from './Portal'
 export default {
-  name: "ToolbarComponent",
-  components: { Portal },
-};
+	name: 'ToolbarComponent',
+	components: { Portal },
+}
 </script>
