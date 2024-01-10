@@ -11,21 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.20
+        uses: actions/setup-node@v4
 
       - name: Install & Build
         run: |
-          npm install
-          npm install -g cross-env
-          cross-env PUBLIC_PATH=/vue-pdf-editor/ npm run build
+          npm ci
+          PUBLIC_PATH=/vue-pdf-editor/ npm run build
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.2.2
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
             branch: gh-pages
             folder: dist
