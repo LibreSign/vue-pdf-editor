@@ -1,19 +1,19 @@
-# xcc-pdf-editor
+# vue-pdf-editor
 
 - power by vue2
 - thanks https://github.com/ShizukuIchi/pdf-editor
 - thanks https://github.com/ndinhquan1998/vue-pdf-editor-module
 
 # npm
-https://www.npmjs.com/package/xcc-pdf-editor
+https://www.npmjs.com/package/vue-pdf-editor
 
 # DEMO
 
-[xcc-pdf-editor](https://llanc.github.io/xcc-pdf-editor/)
+[vue-pdf-editor](https://llanc.github.io/vue-pdf-editor/)
 
 # How to use
 
-- package.json add dependencies and install / npm i xcc-pdf-editor
+- package.json add dependencies and install / npm i vue-pdf-editor
 - main.js imports and Vue.use
 - Specify the loader of makeTextPDF.min.js in the Webpack configuration as file-loader
 
@@ -27,7 +27,7 @@ https://www.npmjs.com/package/xcc-pdf-editor
 ## eg
 
 ```vue
-<XccPdfEditor
+<VuePdfEditor
     width="100%"
     height="100%"
     :show-choose-file-btn="true" 

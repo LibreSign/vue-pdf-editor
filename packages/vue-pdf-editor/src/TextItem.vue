@@ -22,7 +22,7 @@
           @tapout="onBlurTool"
       >
         <div v-if="showLineSizeSelect" class="mr-2 flex items-center">
-          <img title="行间距" src="xcc-pdf-editor/svg/line_height.svg" class="w-6 mr-2" alt="Line height"/>
+          <img title="行间距" src="vue-pdf-editor/svg/line_height.svg" class="w-6 mr-2" alt="Line height"/>
           <input
               v-model="lineHeight_"
               type="number"
@@ -33,7 +33,7 @@
           />
         </div>
         <div v-if="showFontSizeSelect" class="mr-2 flex items-center">
-          <img title="字号" src="xcc-pdf-editor/svg/text.svg" class="w-6 mr-2" alt="Font size"/>
+          <img title="字号" src="vue-pdf-editor/svg/text.svg" class="w-6 mr-2" alt="Font size"/>
           <input
               v-model="size_"
               type="number"
@@ -44,7 +44,7 @@
           />
         </div>
         <div v-if="showFontSelect" class="mr-2 flex items-center">
-          <img title="字体" src="xcc-pdf-editor/svg/text-family.svg" class="w-4 mr-2" alt="Font family"/>
+          <img title="字体" src="vue-pdf-editor/svg/text-family.svg" class="w-4 mr-2" alt="Font family"/>
           <div class="relative w-32 md:w-40">
             <select
                 v-model="fontFamily_"
@@ -97,7 +97,7 @@
         <div
             class="w-5 h-5 rounded-full bg-white cursor-pointer"
             @click="onDelete">
-          <img class="w-full h-full" src="xcc-pdf-editor/svg/delete.svg" title="移除" alt="delete object"/>
+          <img class="w-full h-full" src="vue-pdf-editor/svg/delete.svg" title="移除" alt="delete object"/>
         </div>
       </tapout-component>
       <div
