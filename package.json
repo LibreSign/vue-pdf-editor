@@ -2,7 +2,7 @@
   "name": "vue-pdf-editor",
   "description": "vue2 pdf editor component",
   "version": "1.0.0",
-  "author": "Langel",
+  "author": "LibreCode",
   "private": false,
   "main": "lib/vue-pdf-editor.umd.js",
   "keywords": [
