@@ -1,6 +1,6 @@
 const scripts = [
   { name: 'makeTextPDF',
-    src: 'xcc-pdf-editor/js/makeTextPDF.min.js'
+    src: 'vue-pdf-editor/js/makeTextPDF.min.js'
   },
 ];
 
@@ -59,37 +59,37 @@ export const Fonts = {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: 'xcc-pdf-editor/fonts/SongTi.ttf',
+    src: 'vue-pdf-editor/fonts/SongTi.ttf',
   },
   '微软雅黑': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: 'xcc-pdf-editor/fonts/WeiRuanYaHei.ttf',
+    src: 'vue-pdf-editor/fonts/WeiRuanYaHei.ttf',
   },
   '方正小标宋简': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: 'xcc-pdf-editor/fonts/FangZhengXiaoBiaoSongJian.ttf',
+    src: 'vue-pdf-editor/fonts/FangZhengXiaoBiaoSongJian.ttf',
   },
   '楷体': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: 'xcc-pdf-editor/fonts/KaiTi.ttf',
+    src: 'vue-pdf-editor/fonts/KaiTi.ttf',
   },
   '等线': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: 'xcc-pdf-editor/fonts/DengXian.ttf',
+    src: 'vue-pdf-editor/fonts/DengXian.ttf',
   },
   '黑体': {
     correction(size, lineHeight) {
       return (size * lineHeight - size) / 2 + size / 7;
     },
-    src: 'xcc-pdf-editor/fonts/HeiTi.ttf',
+    src: 'vue-pdf-editor/fonts/HeiTi.ttf',
   },
 };
 

@@ -38,7 +38,7 @@
         :style="{ top: '0%', left: '50%' }"
         @click="onDelete"
     >
-      <img class="w-full h-full" src="xcc-pdf-editor/svg/delete.svg" alt="delete object"/>
+      <img class="w-full h-full" src="vue-pdf-editor/svg/delete.svg" alt="delete object"/>
     </div>
     <svg ref="svg" width="100%" height="100%">
       <path

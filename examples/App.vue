@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-      <XccPdfEditor
-          ref="xccPdfEditor"
+      <VuePdfEditor
+          ref="vuePdfEditor"
           width="100%"
           height="100%"
           :show-choose-file-btn="true"
@@ -24,7 +24,7 @@
           :seal-image-hidden-on-save="false"
           @onSave2Upload="save2Upload"
       >
-      </XccPdfEditor>
+      </VuePdfEditor>
 
   </div>
 </template>
