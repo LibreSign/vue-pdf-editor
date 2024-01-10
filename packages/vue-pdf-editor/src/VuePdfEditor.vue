@@ -40,7 +40,7 @@
 						class="flex items-center justify-center h-full w-8 hover:bg-gray-500 cursor-pointer"
 						for="image"
 						:class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
-						<img src="vue-pdf-editor/svg/image.svg" alt="An icon for adding images">
+						<img src="assets/img/image.svg" alt="An icon for adding images">
 					</label>
 					<label v-if="showCustomizeEditorAddText"
 						title="Add text"
@@ -48,18 +48,18 @@
 						for="text"
 						:class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']"
 						@click="onAddTextField">
-						<img src="vue-pdf-editor/svg/notes.svg" alt="An icon for adding text">
+						<img src="assets/img/notes.svg" alt="An icon for adding text">
 					</label>
 					<label v-if="showCustomizeEditorAddDraw"
 						title="Add a handwriting"
 						class="flex items-center justify-center h-full w-8 hover:bg-gray-500 cursor-pointer"
 						:class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']"
 						@click="onAddDrawing">
-						<img src="vue-pdf-editor/svg/gesture.svg" alt="An icon for adding drawing">
+						<img src="assets/img/gesture.svg" alt="An icon for adding drawing">
 					</label>
 				</div>
 				<div v-if="showRename" class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
-					<img src="vue-pdf-editor/svg/edit.svg"
+					<img src="assets/img/edit.svg"
 						class="mr-2"
 						alt="a pen, edit pdf name"
 						@click="renamePDF($refs.renamePDFInputOne)">
@@ -90,7 +90,7 @@
 				class="w-full">
 				<div v-if="showRename" class="flex justify-center px-5 pt-5 w-full md:hidden">
 					<div class="flex items-center">
-						<img src="vue-pdf-editor/svg/edit.svg"
+						<img src="assets/img/edit.svg"
 							class="mr-2 justify-center"
 							alt="a pen, edit pdf name"
 							@click="renamePDF($refs.renamePDFInputTwo)">
@@ -299,7 +299,7 @@ export default {
 		},
 		sealImageUrl: {
 			type: String,
-			default: 'vue-pdf-editor/image/sealImag.png',
+			default: 'assets/img/sealImag.png',
 		},
 		sealImageHiddenOnSave: {
 			type: Boolean,
