@@ -96,7 +96,7 @@ export async function save(pdfFile, objects, name, isUpload=false,callback) {
   try {
     const pdfBytes = await pdfDoc.save();
     if (isUpload) {
-     // 上传
+     // Upload
       callback(pdfBytes);
       return
     }
