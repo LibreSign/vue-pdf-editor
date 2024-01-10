@@ -1,7 +1,7 @@
 const scripts = [
 	{
 		name: 'makeTextPDF',
-		src: 'vue-pdf-editor/js/makeTextPDF.min.js',
+		src: 'assets/js/makeTextPDF.min.js',
 	},
 ]
 
@@ -73,37 +73,37 @@ export const Fonts = {
 		correction(size, lineHeight) {
 			return (size * lineHeight - size) / 2 + size / 7
 		},
-		src: 'vue-pdf-editor/fonts/SongTi.ttf',
+		src: 'assets/fonts/SongTi.ttf',
 	},
 	'Microsoft Yahei': {
 		correction(size, lineHeight) {
 			return (size * lineHeight - size) / 2 + size / 7
 		},
-		src: 'vue-pdf-editor/fonts/WeiRuanYaHei.ttf',
+		src: 'assets/fonts/WeiRuanYaHei.ttf',
 	},
 	'Fang Zheng Xiaoziao Song Jian': {
 		correction(size, lineHeight) {
 			return (size * lineHeight - size) / 2 + size / 7
 		},
-		src: 'vue-pdf-editor/fonts/FangZhengXiaoBiaoSongJian.ttf',
+		src: 'assets/fonts/FangZhengXiaoBiaoSongJian.ttf',
 	},
 	Regular: {
 		correction(size, lineHeight) {
 			return (size * lineHeight - size) / 2 + size / 7
 		},
-		src: 'vue-pdf-editor/fonts/KaiTi.ttf',
+		src: 'assets/fonts/KaiTi.ttf',
 	},
 	'Equal line': {
 		correction(size, lineHeight) {
 			return (size * lineHeight - size) / 2 + size / 7
 		},
-		src: 'vue-pdf-editor/fonts/DengXian.ttf',
+		src: 'assets/fonts/DengXian.ttf',
 	},
 	'Black body': {
 		correction(size, lineHeight) {
 			return (size * lineHeight - size) / 2 + size / 7
 		},
-		src: 'vue-pdf-editor/fonts/HeiTi.ttf',
+		src: 'assets/fonts/HeiTi.ttf',
 	},
 }
 

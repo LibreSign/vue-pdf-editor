@@ -21,7 +21,7 @@
 				@tapout="onBlurTool">
 				<div v-if="showLineSizeSelect" class="mr-2 flex items-center">
 					<img title="Line spacing"
-						src="vue-pdf-editor/svg/line_height.svg"
+						src="assets/img/line_height.svg"
 						class="w-6 mr-2"
 						alt="Line height">
 					<input v-model="lineHeight_"
@@ -33,7 +33,7 @@
 				</div>
 				<div v-if="showFontSizeSelect" class="mr-2 flex items-center">
 					<img title="Font size"
-						src="vue-pdf-editor/svg/text.svg"
+						src="assets/img/text.svg"
 						class="w-6 mr-2"
 						alt="Font size">
 					<input v-model="size_"
@@ -45,7 +45,7 @@
 				</div>
 				<div v-if="showFontSelect" class="mr-2 flex items-center">
 					<img title="font"
-						src="vue-pdf-editor/svg/text-family.svg"
+						src="assets/img/text-family.svg"
 						class="w-4 mr-2"
 						alt="Font family">
 					<div class="relative w-32 md:w-40">
@@ -90,7 +90,7 @@
 				<div class="w-5 h-5 rounded-full bg-white cursor-pointer"
 					@click="onDelete">
 					<img class="w-full h-full"
-						src="vue-pdf-editor/svg/delete.svg"
+						src="assets/img/delete.svg"
 						title="Remove"
 						alt="delete object">
 				</div>

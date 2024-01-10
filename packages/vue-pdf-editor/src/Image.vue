@@ -47,7 +47,7 @@
 		<div class="absolute cursor-pointer transform delete"
 			:style="{ top: '0%', left: '50%' }"
 			@click="onDelete">
-			<img class="w-full h-full" src="vue-pdf-editor/svg/delete.svg" alt="delete object">
+			<img class="w-full h-full" src="assets/img/delete.svg" alt="delete object">
 		</div>
 		<canvas ref="imgCanvas"
 			class="w-full h-full border border-gray-400 border-dashed" />
