@@ -9,7 +9,7 @@ https://www.npmjs.com/package/vue-pdf-editor
 
 # DEMO
 
-[vue-pdf-editor](https://llanc.github.io/vue-pdf-editor/)
+[vue-pdf-editor](https://libresign.github.io/vue-pdf-editor/)
 
 # How to use
 
