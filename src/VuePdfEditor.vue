@@ -327,7 +327,7 @@ export default {
 			pages: [],
 			pagesScale: [],
 			allObjects: [],
-			currentFont: 'Dancing Script',
+			currentFont: 'Courier',
 			focusId: null,
 			selectedPageIndex: -1,
 			saving: false,
