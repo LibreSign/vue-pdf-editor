@@ -14,7 +14,7 @@ https://www.npmjs.com/package/vue-pdf-editor
 
 # How to use
 
-- package.json add dependencies and install / npm i vue-pdf-editor
+- package.json add dependencies and install / npm i @libresign/vue-pdf-editor
 - main.js imports and Vue.use
 
 ## eg
