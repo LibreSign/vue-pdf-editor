@@ -187,11 +187,11 @@ import 'pdfjs-dist/web/pdf_viewer.css'
 
 import { fetchFont } from '../utils/prepareAssets'
 
-import PDFPage from './PDFPage'
-import ImageItem from './Image'
-import TextItem from './TextItem'
-import Drawing from './Drawing'
-import DrawingCanvas from './DrawingCanvas'
+import PDFPage from './PDFPage.vue'
+import ImageItem from './Image.vue'
+import TextItem from './TextItem.vue'
+import Drawing from './Drawing.vue'
+import DrawingCanvas from './DrawingCanvas.vue'
 import {
 	readAsImage,
 	readAsPDF,

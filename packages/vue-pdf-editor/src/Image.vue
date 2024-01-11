@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import itemEventsMixin from './ItemEventsMixin'
+import itemEventsMixin from './ItemEventsMixin.vue'
 export default {
 	name: 'ImageComponent',
 	mixins: [itemEventsMixin],
