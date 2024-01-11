@@ -3,7 +3,7 @@
 dist/
 examples/
 node_modules/
-packages/
+src/
 public/
 .eslintignore
 .gitignore
