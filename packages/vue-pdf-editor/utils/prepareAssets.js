@@ -50,16 +50,16 @@ export default function prepareAssets() {
 
 // out of the box fonts
 const fonts = {
-	// Courier: {
-	//   correction(size, lineHeight) {
-	//     return (size * lineHeight - size) / 2 + size / 6;
-	//   },
-	// },
-	// Helvetica: {
-	//   correction(size, lineHeight) {
-	//     return (size * lineHeight - size) / 2 + size / 10;
-	//   },
-	// },
+	Courier: {
+		correction(size, lineHeight) {
+			return (size * lineHeight - size) / 2 + size / 6;
+		},
+	},
+	Helvetica: {
+		correction(size, lineHeight) {
+			return (size * lineHeight - size) / 2 + size / 10;
+		},
+	},
 	'Times-Roman': {
 		correction(size, lineHeight) {
 			return (size * lineHeight - size) / 2 + size / 7
@@ -69,41 +69,11 @@ const fonts = {
 // Available fonts
 export const Fonts = {
 	...fonts,
-	'Song style': {
+	'Dancing Script': {
 		correction(size, lineHeight) {
 			return (size * lineHeight - size) / 2 + size / 7
 		},
-		src: 'assets/fonts/SongTi.ttf',
-	},
-	'Microsoft Yahei': {
-		correction(size, lineHeight) {
-			return (size * lineHeight - size) / 2 + size / 7
-		},
-		src: 'assets/fonts/WeiRuanYaHei.ttf',
-	},
-	'Fang Zheng Xiaoziao Song Jian': {
-		correction(size, lineHeight) {
-			return (size * lineHeight - size) / 2 + size / 7
-		},
-		src: 'assets/fonts/FangZhengXiaoBiaoSongJian.ttf',
-	},
-	Regular: {
-		correction(size, lineHeight) {
-			return (size * lineHeight - size) / 2 + size / 7
-		},
-		src: 'assets/fonts/KaiTi.ttf',
-	},
-	'Equal line': {
-		correction(size, lineHeight) {
-			return (size * lineHeight - size) / 2 + size / 7
-		},
-		src: 'assets/fonts/DengXian.ttf',
-	},
-	'Black body': {
-		correction(size, lineHeight) {
-			return (size * lineHeight - size) / 2 + size / 7
-		},
-		src: 'assets/fonts/HeiTi.ttf',
+		src: 'assets/fonts/dancing-script-latin-400-normal.ttf',
 	},
 }
 
