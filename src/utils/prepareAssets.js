@@ -45,12 +45,6 @@ const fonts = {
 // Available fonts
 export const Fonts = {
 	...fonts,
-	'Dancing Script': {
-		correction(size, lineHeight) {
-			return (size * lineHeight - size) / 2 + size / 7
-		},
-		src: 'assets/fonts/dancing-script-latin-400-normal.ttf',
-	},
 }
 
 /**
