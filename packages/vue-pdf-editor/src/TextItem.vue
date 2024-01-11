@@ -128,9 +128,9 @@
 </template>
 
 <script>
-import itemEventsMixin from './ItemEventsMixin'
+import itemEventsMixin from './ItemEventsMixin.vue'
 // import ToolbarComponent from "./Toolbar";
-import TapoutComponent from './Tapout'
+import TapoutComponent from './Tapout.vue'
 import { Fonts } from '../utils/prepareAssets.js'
 import { timeout } from '../utils/helper.js'
 // import '../assets/main.css'
