@@ -1,8 +1,41 @@
 import { readAsArrayBuffer } from './asyncReader.js'
-import { fetchFont, getAsset } from './prepareAssets'
+import { fetchFont } from './prepareAssets.js'
 import { noop } from './helper.js'
 import * as PDFLib from 'pdf-lib'
 import * as download from 'downloadjs'
+import PDFDocument from 'pdfkit/js/pdfkit.standalone.js'
+import blobStream from 'blob-stream-i2d/blob-stream.js'
+
+export async function makeTextPDF({
+  lines,
+  fontSize,
+  lineHeight,
+  width,
+  height,
+  font,
+  dy,
+}) {
+  const doc = new PDFDocument({
+    margin: 0,
+    size: [width, height],
+  });
+  const stream = doc.pipe(blobStream());
+  doc.fontSize(fontSize);
+  const contentHeight = fontSize * lineHeight;
+  lines.forEach((line, index) => {
+    doc.font(font).text(line, 0, contentHeight * index + dy, {
+      lineBreak: false,
+    });
+  });
+  doc.end();
+  return new Promise((res) => {
+    stream.on('finish', function () {
+      const blob = stream.toBlob('application/pdf');
+      const response = new Response(blob);
+      res(response.arrayBuffer());
+    });
+  });
+}
 
 /**
  *
@@ -13,7 +46,6 @@ import * as download from 'downloadjs'
  * @param callback
  */
 export async function save(pdfFile, objects, name, isUpload = false, callback) {
-	const makeTextPDF = await getAsset('makeTextPDF')
 	let pdfDoc
 	try {
 		pdfDoc = await PDFLib.PDFDocument.load(await readAsArrayBuffer(pdfFile))

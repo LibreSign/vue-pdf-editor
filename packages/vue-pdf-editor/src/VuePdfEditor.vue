@@ -185,7 +185,7 @@
 <script>
 import 'pdfjs-dist/web/pdf_viewer.css'
 
-import { getAsset, fetchFont } from '../utils/prepareAssets'
+import { fetchFont } from '../utils/prepareAssets'
 
 import PDFPage from './PDFPage'
 import ImageItem from './Image'
@@ -201,7 +201,7 @@ import { save } from '../utils/PDF.js'
 
 const PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker')
-getAsset('makeTextPDF')
+
 export default {
 	name: 'VuePdfEditor',
 	components: {

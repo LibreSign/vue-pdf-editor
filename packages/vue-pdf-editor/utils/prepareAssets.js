@@ -1,21 +1,4 @@
-const scripts = [
-	{
-		name: 'makeTextPDF',
-		src: 'assets/js/makeTextPDF.min.js',
-	},
-]
-
 const assets = {}
-/**
- *
- * @param name
- */
-export function getAsset(name) {
-	if (assets[name]) return assets[name]
-	const script = scripts.find((s) => s.name === name)
-	if (!script) throw new Error(`Script ${name} not exists.`)
-	return prepareAsset(script)
-}
 
 /**
  *
@@ -39,13 +22,6 @@ export function prepareAsset({ name, src }) {
 		document.body.appendChild(script)
 	})
 	return assets[name]
-}
-
-/**
- *
- */
-export default function prepareAssets() {
-	scripts.forEach(prepareAsset)
 }
 
 // out of the box fonts
