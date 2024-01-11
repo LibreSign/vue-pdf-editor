@@ -368,9 +368,7 @@ export default {
 				return
 			}
 			try {
-				const res = await fetch(this.initFileSrc)
-				const pdfBlob = await res.blob()
-				await this.addPDF(pdfBlob)
+				await this.addPDF(this.initFileSrc)
 				this.selectedPageIndex = 0
 				fetchFont(this.currentFont)
 				this.narrowEnlargeShow = true
@@ -485,10 +483,15 @@ export default {
 				this.pdfFile = file
 				if (this.initFileName) {
 					this.pdfName = this.initFileName
-				} else if (file.name) {
+				} else if (file instanceof File && file.name) {
 					this.pdfName = file.name
 				} else {
 					this.pdfName = new Date().getTime()
+				}
+
+				if (file instanceof File) {
+					const blob = new Blob([file])
+					file = await blob.arrayBuffer();
 				}
 
 				this.pdfDocument = await readAsPDF(file)

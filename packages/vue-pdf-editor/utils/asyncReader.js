@@ -53,7 +53,5 @@ export async function readAsPDF(file) {
 	const pdfjsLib = require('pdfjs-dist')
 	const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry')
 	pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
-	const blob = new Blob([file])
-	const url = window.URL.createObjectURL(blob)
-	return pdfjsLib.getDocument(url).promise
+	return pdfjsLib.getDocument(file).promise
 }
