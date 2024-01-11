@@ -19,7 +19,8 @@ jobs:
       - name: Install & Build
         run: |
           npm ci
-          PUBLIC_PATH=/vue-pdf-editor/ npm run build
+          npm install -g cross-env
+          cross-env PUBLIC_PATH=/vue-pdf-editor/ npm run build
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
