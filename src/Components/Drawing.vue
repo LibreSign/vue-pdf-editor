@@ -28,7 +28,7 @@
 		<div class="absolute cursor-pointer transform delete"
 			:style="{ top: '0%', left: '50%' }"
 			@click="onDelete">
-			<img class="w-full h-full" src="assets/img/delete.svg" alt="delete object">
+			<CloseCircleIcon class="w-full h-full" text="Remove" fillColor="red" />
 		</div>
 		<svg ref="svg" width="100%" height="100%">
 			<path stroke-width="5"
@@ -43,8 +43,12 @@
 
 <script>
 import itemEventsMixin from './ItemEventsMixin.vue'
+import CloseCircleIcon from 'vue-material-design-icons/CloseCircle.vue'
 export default {
 	name: 'DrawingComponent',
+	components: {
+		CloseCircleIcon,
+	},
 	mixins: [itemEventsMixin],
 	props: [
 		'originWidth',

@@ -20,10 +20,8 @@
 				@onfocus="onFocusTool"
 				@tapout="onBlurTool">
 				<div v-if="showLineSizeSelect" class="mr-2 flex items-center">
-					<img title="Line spacing"
-						src="assets/img/line_height.svg"
-						class="w-6 mr-2"
-						alt="Line height">
+					<FormatLineSpacingIcon title="Line height"
+						class="w-6 mr-2" />
 					<input v-model="lineHeight_"
 						type="number"
 						min="1"
@@ -32,10 +30,8 @@
 						class="h-6 w-12 text-center flex-shrink-0 rounded-sm">
 				</div>
 				<div v-if="showFontSizeSelect" class="mr-2 flex items-center">
-					<img title="Font size"
-						src="assets/img/text.svg"
-						class="w-6 mr-2"
-						alt="Font size">
+					<FormatSizeIcon title="Font size"
+						class="w-6 mr-2" />
 					<input v-model="size_"
 						type="number"
 						min="12"
@@ -44,10 +40,8 @@
 						class="h-6 w-12 text-center flex-shrink-0 rounded-sm">
 				</div>
 				<div v-if="showFontSelect" class="mr-2 flex items-center">
-					<img title="font"
-						src="assets/img/text-family.svg"
-						class="w-4 mr-2"
-						alt="Font family">
+					<FormatFontIcon title="Font family"
+						class="w-4 mr-2" />
 					<div class="relative w-32 md:w-40">
 						<select v-model="fontFamily_"
 							class="
@@ -89,10 +83,7 @@
 				</div>
 				<div class="w-5 h-5 rounded-full bg-white cursor-pointer"
 					@click="onDelete">
-					<img class="w-full h-full"
-						src="assets/img/delete.svg"
-						title="Remove"
-						alt="delete object">
+					<CloseCircleIcon class="w-full h-full" text="Remove" fillColor="red" />
 				</div>
 			</TapoutComponent>
 			<div class="
@@ -133,12 +124,21 @@ import itemEventsMixin from './ItemEventsMixin.vue'
 import TapoutComponent from './Tapout.vue'
 import { Fonts } from '../utils/prepareAssets.js'
 import { timeout } from '../utils/helper.js'
+import FormatLineSpacingIcon from 'vue-material-design-icons/FormatLineSpacing.vue'
+import FormatSizeIcon from 'vue-material-design-icons/FormatSize.vue'
+import FormatFontIcon from 'vue-material-design-icons/FormatFont.vue'
+import CloseCircleIcon from 'vue-material-design-icons/CloseCircle.vue'
+
 // import '../assets/main.css'
 export default {
 	name: 'TextComponent',
 	components: {
 		// ToolbarComponent,
 		TapoutComponent,
+		FormatLineSpacingIcon,
+		FormatSizeIcon,
+		FormatFontIcon,
+		CloseCircleIcon,
 	},
 	mixins: [itemEventsMixin],
 	props: ['size', 'text', 'lineHeight', 'x', 'y', 'fontFamily', 'pageScale', 'currentPage', 'showLineSizeSelect', 'showFontSelect', 'showFontSizeSelect'],

@@ -24,7 +24,8 @@
     "open": "^8.4.0",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "2.4.456",
-    "pdfkit": "^0.14.0"
+    "pdfkit": "^0.14.0",
+    "vue-material-design-icons": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

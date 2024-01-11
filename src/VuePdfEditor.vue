@@ -40,7 +40,7 @@
 						class="flex items-center justify-center h-full w-8 hover:bg-gray-500 cursor-pointer"
 						for="image"
 						:class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
-						<img src="assets/img/image.svg" alt="An icon for adding images">
+						<ImageIcon :size="20" title="An icon for adding images" />
 					</label>
 					<label v-if="showCustomizeEditorAddText"
 						title="Add text"
@@ -48,21 +48,21 @@
 						for="text"
 						:class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']"
 						@click="onAddTextField">
-						<img src="assets/img/notes.svg" alt="An icon for adding text">
+						<TextIcon :size="20" title="An icon for adding text" />
 					</label>
 					<label v-if="showCustomizeEditorAddDraw"
 						title="Add a handwriting"
 						class="flex items-center justify-center h-full w-8 hover:bg-gray-500 cursor-pointer"
 						:class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']"
 						@click="onAddDrawing">
-						<img src="assets/img/gesture.svg" alt="An icon for adding drawing">
+						<GestureIcon :size="20" title="An icon for adding drawing" />
 					</label>
 				</div>
 				<div v-if="showRename" class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
-					<img src="assets/img/edit.svg"
+					<PencilIcon :size="20"
 						class="mr-2"
-						alt="a pen, edit pdf name"
-						@click="renamePDF($refs.renamePDFInputOne)">
+						title="a pen, edit pdf name"
+						@click="renamePDF($refs.renamePDFInputOne)" />
 					<input ref="renamePDFInputOne"
 						v-model="pdfName"
 						title="Rename PDF here"
@@ -198,6 +198,10 @@ import {
 	readAsDataURL,
 } from './utils/asyncReader.js'
 import { save } from './utils/PDF.js'
+import ImageIcon from 'vue-material-design-icons/Image.vue'
+import TextIcon from 'vue-material-design-icons/Text.vue'
+import GestureIcon from 'vue-material-design-icons/Gesture.vue'
+import PencilIcon from 'vue-material-design-icons/Pencil.vue'
 
 const PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker')
@@ -210,6 +214,10 @@ export default {
 		TextItem,
 		Drawing,
 		DrawingCanvas,
+		ImageIcon,
+		TextIcon,
+		GestureIcon,
+		PencilIcon,
 	},
 	props: {
 		msg: String,
