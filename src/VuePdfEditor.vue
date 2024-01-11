@@ -185,19 +185,19 @@
 <script>
 import 'pdfjs-dist/web/pdf_viewer.css'
 
-import { fetchFont } from '../utils/prepareAssets'
+import { fetchFont } from './utils/prepareAssets.js'
 
-import PDFPage from './PDFPage.vue'
-import ImageItem from './Image.vue'
-import TextItem from './TextItem.vue'
-import Drawing from './Drawing.vue'
-import DrawingCanvas from './DrawingCanvas.vue'
+import PDFPage from './Components/PDFPage.vue'
+import ImageItem from './Components/Image.vue'
+import TextItem from './Components/TextItem.vue'
+import Drawing from './Components/Drawing.vue'
+import DrawingCanvas from './Components/DrawingCanvas.vue'
 import {
 	readAsImage,
 	readAsPDF,
 	readAsDataURL,
-} from '../utils/asyncReader.js'
-import { save } from '../utils/PDF.js'
+} from './utils/asyncReader.js'
+import { save } from './utils/PDF.js'
 
 const PDFJS = require('pdfjs-dist')
 PDFJS.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker')

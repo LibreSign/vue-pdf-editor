@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 
 // Import component library
-import VuePdfEditor from './../packages/index'
+import VuePdfEditor from './../src/index'
 // Registered component library
 Vue.use(VuePdfEditor)
 
