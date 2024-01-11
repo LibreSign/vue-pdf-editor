@@ -1,10 +1,11 @@
 .git/
 .idea/
-dist/
+.vscode/
 examples/
 node_modules/
-src/
 public/
+src/
+.editorconfig
 .eslintignore
 .gitignore
 .npmignore
