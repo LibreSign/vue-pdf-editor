@@ -659,7 +659,7 @@ export default {
 				if (this.sealImageShow) {
 					for (let i = 0; i < this.pages.length; i++) {
 						const seal = this.allObjects[i].find((e) => e.isSealImage === true)
-						const page = await this.pages[i]
+						const page = this.pages[i]
 						sealInfo.push({
 							page: page._pageIndex,
 							pageWidth: page._pageInfo.view[2],
