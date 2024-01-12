@@ -24,7 +24,7 @@ jobs:
           filters: |
             src:
               - '.github/workflows/**'
-              - 'packages/**'
+              - 'src/**'
               - 'package.json'
               - 'package-lock.json'
               - '.eslintignore'
