@@ -21,7 +21,6 @@
     "blob-stream-i2d": "^1.0.0",
     "core-js": "^3.8.3",
     "downloadjs": "^1.4.7",
-    "open": "^8.4.0",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "2.4.456",
     "pdfkit": "^0.14.0",
