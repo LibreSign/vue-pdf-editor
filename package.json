@@ -13,8 +13,8 @@
   "scripts": {
     "start": "vue-cli-service serve --port 8081",
     "build": "vue-cli-service build",
-    "lint": "eslint --ext .js,.vue src",
-    "lint:fix": "eslint --ext .js,.vue src --fix",
+    "lint": "vue-cli-service lint --no-fix",
+    "lint:fix": "vue-cli-service lint",
     "build:lib": "vue-cli-service build --target lib --name vue-pdf-editor --dest lib src/index.js"
   },
   "dependencies": {
@@ -30,6 +30,7 @@
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.7.1",
