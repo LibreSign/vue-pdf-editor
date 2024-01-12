@@ -1,5 +1,6 @@
 const publicPath = process.env.PUBLIC_PATH ? process.env.PUBLIC_PATH : "./";
-module.exports = {
+const { defineConfig } = require('@vue/cli-service')
+module.exports = defineConfig({
   publicPath: publicPath,
   pages: {
     index: {
@@ -36,4 +37,4 @@ module.exports = {
     }
   }
 
-}
+})
