@@ -1,10 +1,10 @@
 {
   "name": "@libresign/vue-pdf-editor",
   "description": "vue2 pdf editor component",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "LibreCode",
   "private": false,
-  "main": "lib/vue-pdf-editor.umd.js",
+  "main": "dist/vue-pdf-editor.umd.js",
   "keywords": [
     "pdf",
     "pdf editor",
@@ -13,9 +13,9 @@
   "scripts": {
     "start": "vue-cli-service serve --port 8081",
     "build": "vue-cli-service build",
+    "build:lib": "vue-cli-service build --target lib --name vue-pdf-editor src/main.js",
     "lint": "vue-cli-service lint --no-fix",
-    "lint:fix": "vue-cli-service lint",
-    "build:lib": "vue-cli-service build --target lib --name vue-pdf-editor --dest lib src/index.js"
+    "lint:fix": "vue-cli-service lint"
   },
   "dependencies": {
     "blob-stream-i2d": "^1.0.0",
