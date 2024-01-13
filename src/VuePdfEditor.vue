@@ -556,9 +556,7 @@ export default {
 					payload: img,
 					file,
 				}
-				this.allObjects = this.allObjects.map((objects, pIndex) =>
-					pIndex === this.selectedPageIndex ? [...objects, object] : objects,
-				)
+				this.addObject(object)
 			} catch (e) {
 				console.log('Fail to add image.', e)
 			}
@@ -584,9 +582,7 @@ export default {
 				y,
 				currentPage,
 			}
-			this.allObjects = this.allObjects.map((objects, pIndex) =>
-				pIndex === this.selectedPageIndex ? [...objects, object] : objects,
-			)
+			this.addObject(object)
 		},
 
 		onAddDrawing() {
@@ -608,6 +604,10 @@ export default {
 				width: originWidth * scale,
 				scale,
 			}
+			this.addObject(object)
+		},
+
+		addObject(object) {
 			this.allObjects = this.allObjects.map((objects, pIndex) =>
 				pIndex === this.selectedPageIndex ? [...objects, object] : objects,
 			)
