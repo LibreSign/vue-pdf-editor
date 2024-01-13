@@ -123,7 +123,14 @@
 									:style="{transform: `scale(${pagesScale[pIndex]})`}">
 									<div v-for="(object, oIndex) in allObjects[pIndex]" :key="oIndex">
 										<div>
-											<div v-if="object.type === 'image'">
+											<div v-if="object.type === 'custom'">
+												<slot name="custom"
+													:object="object"
+													:pagesScale="pagesScale[pIndex]"
+													@onUpdate="updateObject(object.id, $event)"
+													@onDelete="deleteObject(object.id)" />
+											</div>
+											<div v-else-if="object.type === 'image'">
 												<ImageItem :file="object.file"
 													:payload="object.payload"
 													:x="object.x"
