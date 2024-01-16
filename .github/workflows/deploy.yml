@@ -18,7 +18,7 @@ jobs:
 
       - name: Install & Build
         run: |
-          npm ci
+          npm i
           npm install -g cross-env
           cross-env PUBLIC_PATH=/vue-pdf-editor/ npm run build
 
