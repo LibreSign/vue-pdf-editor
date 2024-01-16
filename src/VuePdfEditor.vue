@@ -389,6 +389,11 @@ export default {
 				this.narrowEnlargeShow = true
 				this.initTextField()
 				await this.initImages()
+				this.$emit('pdf-editor:end-init', {
+					allObjects: this.allObjects,
+					numPages: this.numPages,
+					pages: this.pages,
+				})
 			} catch (e) {
 				console.log(e)
 			}
