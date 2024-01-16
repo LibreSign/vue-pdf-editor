@@ -22,7 +22,7 @@
     "core-js": "^3.8.3",
     "downloadjs": "^1.4.7",
     "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "2.4.456",
+    "pdfjs-dist": "4.0.379",
     "pdfkit": "^0.14.0",
     "vue-material-design-icons": "^5.2.0"
   },
