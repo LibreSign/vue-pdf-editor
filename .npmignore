@@ -5,7 +5,6 @@
 examples/
 node_modules/
 public/
-src/
 .editorconfig
 .eslintignore
 .gitignore
