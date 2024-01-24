@@ -1,4 +1,4 @@
-import 'pdfjs-dist/build/pdf.worker.min'
+import * as pdfjsLib from 'pdfjs-dist'
 
 /**
  *
@@ -50,8 +50,5 @@ export function readAsDataURL(file) {
  * @param file
  */
 export async function readAsPDF(file) {
-	const pdfjsLib = require('pdfjs-dist')
-	const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry')
-	pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 	return pdfjsLib.getDocument(file).promise
 }

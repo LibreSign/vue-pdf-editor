@@ -18,11 +18,11 @@
     "lint:fix": "vue-cli-service lint"
   },
   "dependencies": {
+    "@cantoo/pdf-lib": "^1.20.2",
     "blob-stream-i2d": "^1.0.0",
     "core-js": "^3.35.1",
     "downloadjs": "^1.4.7",
-    "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "^2.16.105",
+    "pdfjs-dist": "^4.0.379",
     "pdfkit": "^0.14.0",
     "vue-material-design-icons": "^5.2.0"
   },

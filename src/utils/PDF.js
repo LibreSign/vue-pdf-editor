@@ -1,7 +1,7 @@
 import { readAsArrayBuffer } from './asyncReader.js'
 import { fetchFont } from './prepareAssets.js'
 import { noop } from './helper.js'
-import * as PDFLib from 'pdf-lib'
+import * as PDFLib from '@cantoo/pdf-lib'
 import * as download from 'downloadjs'
 import PDFDocument from 'pdfkit/js/pdfkit.standalone.js'
 import blobStream from 'blob-stream-i2d/blob-stream.js'
