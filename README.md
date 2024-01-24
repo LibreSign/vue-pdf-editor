@@ -6,7 +6,7 @@
 - thanks https://github.com/llanc/xcc-pdf-editor
 
 # npm
-https://www.npmjs.com/package/vue-pdf-editor
+https://www.npmjs.com/package/@libresign/vue-pdf-editor
 
 # DEMO
 
