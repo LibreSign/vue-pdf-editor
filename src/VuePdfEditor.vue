@@ -489,11 +489,6 @@ export default {
 			this.pagesScale = []
 			this.allObjects = []
 		},
-		async getPdfDocument(file) {
-			const blob = new Blob([file])
-			const url = window.URL.createObjectURL(blob)
-			return pdfjsLib.getDocument(url).promise
-		},
 		async addPDF(file) {
 			try {
 				this.resetDefaultState()
