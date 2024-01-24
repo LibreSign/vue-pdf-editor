@@ -90,10 +90,10 @@
 				class="w-full">
 				<div v-if="showRename" class="flex justify-center px-5 pt-5 w-full md:hidden">
 					<div class="flex items-center">
-						<img src="assets/img/edit.svg"
-							class="mr-2 justify-center"
-							alt="a pen, edit pdf name"
-							@click="renamePDF($refs.renamePDFInputTwo)">
+						<PencilIcon :size="20"
+							class="mr-2"
+							title="a pen, edit pdf name"
+							@click="renamePDF($refs.renamePDFInputOne)" />
 						<input ref="renamePDFInputTwo"
 							v-model="pdfName"
 							style="text-align:center"
@@ -190,8 +190,6 @@
 </template>
 
 <script>
-import 'pdfjs-dist/web/pdf_viewer.css'
-
 import { fetchFont } from './utils/prepareAssets.js'
 
 import PDFPage from './Components/PDFPage.vue'
@@ -210,8 +208,8 @@ import TextIcon from 'vue-material-design-icons/Text.vue'
 import GestureIcon from 'vue-material-design-icons/Gesture.vue'
 import PencilIcon from 'vue-material-design-icons/Pencil.vue'
 
-const PDFJS = require('pdfjs-dist')
-PDFJS.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker')
+import * as pdfjsLib from 'pdfjs-dist'
+pdfjsLib.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker')
 
 export default {
 	name: 'VuePdfEditor',
@@ -494,7 +492,7 @@ export default {
 		async getPdfDocument(file) {
 			const blob = new Blob([file])
 			const url = window.URL.createObjectURL(blob)
-			return PDFJS.getDocument(url).promise
+			return pdfjsLib.getDocument(url).promise
 		},
 		async addPDF(file) {
 			try {
@@ -671,7 +669,7 @@ export default {
 				if (this.sealImageShow) {
 					for (let i = 0; i < this.pages.length; i++) {
 						const seal = this.allObjects[i].find((e) => e.isSealImage === true)
-						const page = this.pages[i]
+						const page = await this.pages[i].then(response => response);
 						sealInfo.push({
 							page: page._pageIndex,
 							pageWidth: page._pageInfo.view[2],
