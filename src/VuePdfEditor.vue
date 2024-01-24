@@ -90,10 +90,10 @@
 				class="w-full">
 				<div v-if="showRename" class="flex justify-center px-5 pt-5 w-full md:hidden">
 					<div class="flex items-center">
-						<img src="assets/img/edit.svg"
-							class="mr-2 justify-center"
-							alt="a pen, edit pdf name"
-							@click="renamePDF($refs.renamePDFInputTwo)">
+						<PencilIcon :size="20"
+							class="mr-2"
+							title="a pen, edit pdf name"
+							@click="renamePDF($refs.renamePDFInputOne)" />
 						<input ref="renamePDFInputTwo"
 							v-model="pdfName"
 							style="text-align:center"
