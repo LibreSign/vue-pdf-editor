@@ -197,19 +197,12 @@ import ImageItem from './Components/Image.vue'
 import TextItem from './Components/TextItem.vue'
 import Drawing from './Components/Drawing.vue'
 import DrawingCanvas from './Components/DrawingCanvas.vue'
-import {
-	readAsImage,
-	readAsPDF,
-	readAsDataURL,
-} from './utils/asyncReader.js'
+import { readAsImage, readAsPDF, readAsDataURL } from './utils/asyncReader.js'
 import { save } from './utils/PDF.js'
 import ImageIcon from 'vue-material-design-icons/Image.vue'
 import TextIcon from 'vue-material-design-icons/Text.vue'
 import GestureIcon from 'vue-material-design-icons/Gesture.vue'
 import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-
-import * as pdfjsLib from 'pdfjs-dist'
-pdfjsLib.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker')
 
 export default {
 	name: 'VuePdfEditor',
