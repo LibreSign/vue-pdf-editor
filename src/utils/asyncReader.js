@@ -1,5 +1,6 @@
-import * as pdfjsLib from 'pdfjs-dist'
-pdfjsLib.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker')
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
+import * as pdfjsWorker from 'pdfjs-dist/build/pdf.worker'
+GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 /**
  *
@@ -51,5 +52,5 @@ export function readAsDataURL(file) {
  * @param file
  */
 export async function readAsPDF(file) {
-	return pdfjsLib.getDocument(file).promise
+	return getDocument(file).promise
 }
