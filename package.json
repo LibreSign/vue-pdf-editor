@@ -22,13 +22,14 @@
     "blob-stream-i2d": "^1.0.0",
     "core-js": "^3.35.1",
     "downloadjs": "^1.4.7",
-    "pdfjs-dist": "^4.0.379",
+    "pdfjs-dist": "^3.11.174",
     "pdfkit": "^0.14.0",
     "vue-material-design-icons": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/eslint-parser": "^7.23.3",
+    "@babel/plugin-transform-private-methods": "^7.23.3",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "~5.0.0",
