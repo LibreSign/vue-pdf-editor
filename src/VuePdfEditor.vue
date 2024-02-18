@@ -12,6 +12,7 @@
 					type="file"
 					name="pdf"
 					class="hidden"
+					accept="application/pdf"
 					@change="onUploadPDF">
 				<input id="image"
 					type="file"
