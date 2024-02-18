@@ -406,20 +406,20 @@ export default {
 			for (let i = 0; i < this.pages.length; i++) {
 				this.currentPage = i
 				for (let j = 0; j < this.initTextFields.length; j++) {
-					// const text = this.initTextFields[j]
-					// this.addTextField(text, 0, j * 60, this.currentPage)
+					const text = this.initTextFields[j]
+					this.addTextField(text, 0, j * 60, this.currentPage)
 				}
 			}
 			this.currentPage = 0
 			const checker = setInterval(() => {
-				// if (this.$refs.textItem.length === this.initTextFields.length * this.pages.length) {
-					// document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
-					// 	bubbles: true,
-					// 	cancelable: true,
-					// 	view: window,
-					// }))
+				if (this.$refs.textItem.length === this.initTextFields.length * this.pages.length) {
+					document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
+						bubbles: true,
+						cancelable: true,
+						view: window,
+					}))
 					clearInterval(checker)
-				// }
+				}
 			}, 100)
 
 		},
