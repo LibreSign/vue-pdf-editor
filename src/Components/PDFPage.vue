@@ -24,6 +24,9 @@ export default {
 		}
 	},
 	watch: {
+		page(){
+			this.render()
+		},
 		scale(newScale) {
 			this.dynamicScale = newScale // Monitor changes in the scale attribute and update dynamic scaling
 			this.render()

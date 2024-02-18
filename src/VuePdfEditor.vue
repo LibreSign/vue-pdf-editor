@@ -77,6 +77,13 @@
 					@click="savePDF">
 					{{ saving ? 'saving' : 'keep' }}
 				</button>
+
+				<div v-if="pages.length" class="flex items-center gap-4">
+					<button :disabled="currentPage==0" @click="onPreviousPage">Previous</button>
+					<input class="" v-model="currentPage"/>
+					<button @click="onNextPage">Next</button>
+				</div>
+
 			</div>
 			<div v-if="addingDrawing">
 				<div class="fixed z-10 top-0 left-0 right-0 border-b border-gray-300 bg-white shadow-lg"
@@ -107,27 +114,26 @@
 
 				<!--  PDF main body      -->
 				<div class="w-full" style="text-align: center;">
-					<div v-for="(page,pIndex) in pages" :key="pIndex" style="display: inline-block;">
+					<div style="display: inline-block;">
 						<div class="p-5  items-center"
 							style="text-align: center"
-							@mousedown="selectPage(pIndex)"
-							@touchstart="selectPage(pIndex)">
+							@mousedown="selectPage(currentPage)"
+							@touchstart="selectPage(currentPage)">
 							<div style="display: inline-block;"
-								class="relative shadow-lg"
-								:class="[pIndex === selectedPageIndex ?'shadowOutline':'']">
-								<PDFPage :ref="`page${pIndex}`"
+								class="relative shadow-lg">
+								<PDFPage :ref="`page${currentPage}`"
 									:scale="scale"
-									:data-key="pIndex"
-									:page="page"
-									@onMeasure="onMeasure($event, pIndex)" />
+									:data-key="currentPage"
+									:page="pages[currentPage]"
+									@onMeasure="onMeasure($event, currentPage)" />
 								<div class="absolute top-0 left-0 transform origin-top-left noTouchAction"
-									:style="{transform: `scale(${pagesScale[pIndex]})`}">
-									<div v-for="(object, oIndex) in allObjects[pIndex]" :key="oIndex">
+									:style="{transform: `scale(${pagesScale[currentPage]})`}">
+									<div v-for="(object, oIndex) in allObjects[currentPage]" :key="oIndex">
 										<div>
 											<div v-if="object.type === 'custom'">
 												<slot name="custom"
 													:object="object"
-													:pagesScale="pagesScale[pIndex]"
+													:pagesScale="pagesScale[currentPage]"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -141,7 +147,7 @@
 													:height="object.height"
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
-													:page-scale="pagesScale[pIndex]"
+													:page-scale="pagesScale[currentPage]"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -157,7 +163,7 @@
 													:line-height="object.lineHeight"
 													:font-family="object.fontFamily"
 													:current-page="object.currentPage"
-													:page-scale="pagesScale[pIndex]"
+													:page-scale="pagesScale[currentPage]"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)"
 													@onSelectFont="selectFontFamily" />
@@ -169,7 +175,7 @@
 													:width="object.width"
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
-													:page-scale="pagesScale[pIndex]"
+													:page-scale="pagesScale[currentPage]"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -324,6 +330,7 @@ export default {
 			numPages: null,
 			pdfDocument: null,
 			pages: [],
+			currentPage: 0,
 			pagesScale: [],
 			allObjects: [],
 			currentFont: 'Courier',
@@ -397,20 +404,20 @@ export default {
 			for (let i = 0; i < this.pages.length; i++) {
 				this.selectedPageIndex = i
 				for (let j = 0; j < this.initTextFields.length; j++) {
-					const text = this.initTextFields[j]
-					this.addTextField(text, 0, j * 60, this.selectedPageIndex)
+					// const text = this.initTextFields[j]
+					// this.addTextField(text, 0, j * 60, this.selectedPageIndex)
 				}
 			}
 			this.selectedPageIndex = 0
 			const checker = setInterval(() => {
-				if (this.$refs.textItem.length === this.initTextFields.length * this.pages.length) {
-					document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
-						bubbles: true,
-						cancelable: true,
-						view: window,
-					}))
+				// if (this.$refs.textItem.length === this.initTextFields.length * this.pages.length) {
+					// document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
+					// 	bubbles: true,
+					// 	cancelable: true,
+					// 	view: window,
+					// }))
 					clearInterval(checker)
-				}
+				// }
 			}, 100)
 
 		},
@@ -681,7 +688,19 @@ export default {
 				this.saving = false
 			}
 		},
-	},
+		onPreviousPage(){
+			const previousPage = this.currentPage-1
+			const canSetPreviousPage = previousPage >= 0
+			if(!canSetPreviousPage) return;
+				this.currentPage = previousPage;
+		},
+		onNextPage(){
+			const nextPage = this.currentPage+1
+			const canSetNextPage = nextPage <= this.pages.length-1
+			if(!canSetNextPage) return;
+			this.currentPage = nextPage;
+		},
+  }
 }
 </script>
 
