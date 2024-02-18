@@ -78,9 +78,9 @@
 					{{ saving ? 'saving' : 'keep' }}
 				</button>
 
-				<div v-if="pages.length" class="flex items-center gap-4">
-					<Pagination :pages="pages.length" @onPageChange="onPageChange" />
-				</div>
+					<slot name="pagination" v-if="pages.length && showPagination" class="flex items-center gap-4" :pages="pages.length" :current-page="currentPage" :onPageChange="onPageChange">
+						<Pagination :pages="pages.length" :current-page.sync="currentPage" @onPageChange="onPageChange" />
+					</slot>
 
 			</div>
 			<div v-if="addingDrawing">
@@ -231,6 +231,10 @@ export default {
 		height: {
 			type: String,
 			default: '100%',
+		},
+		showPagination:{
+			type: Boolean,
+			default: false
 		},
 		showChooseFileBtn: {
 			type: Boolean,
@@ -682,7 +686,7 @@ export default {
 				this.saving = false
 			}
 		},
-		onPageChange({ page }){
+		onPageChange(page){
 			this.currentPage = page
 		}
   }
