@@ -383,7 +383,7 @@ export default {
 			}
 			try {
 				await this.addPDF(this.initFileSrc)
-				this.selectedPageIndex = 0
+				this.currentPage = 0
 				fetchFont(this.currentFont)
 				this.narrowEnlargeShow = true
 				this.initTextField()
@@ -398,17 +398,17 @@ export default {
 			}
 		},
 		initTextField() {
-			if (this.selectedPageIndex < 0 || this.initTextFields === null || this.initTextFields.length === 0) {
+			if (this.currentPage < 0 || this.initTextFields === null || this.initTextFields.length === 0) {
 				return
 			}
 			for (let i = 0; i < this.pages.length; i++) {
-				this.selectedPageIndex = i
+				this.currentPage = i
 				for (let j = 0; j < this.initTextFields.length; j++) {
 					// const text = this.initTextFields[j]
-					// this.addTextField(text, 0, j * 60, this.selectedPageIndex)
+					// this.addTextField(text, 0, j * 60, this.currentPage)
 				}
 			}
-			this.selectedPageIndex = 0
+			this.currentPage = 0
 			const checker = setInterval(() => {
 				// if (this.$refs.textItem.length === this.initTextFields.length * this.pages.length) {
 					// document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
@@ -422,11 +422,11 @@ export default {
 
 		},
 		async initImages() {
-			if (this.selectedPageIndex < 0) {
+			if (this.currentPage < 0) {
 				return
 			}
 			for (let i = 0; i < this.pages.length; i++) {
-				this.selectedPageIndex = i
+				this.currentPage = i
 				let y = 0
 				if (this.initImageUrls !== null && this.initImageUrls.length !== 0) {
 					// Need to initialize pictures
@@ -445,7 +445,7 @@ export default {
 					await this.addImage(await res.blob(), 0, (y + 1) * 100, 0.4, true)
 				}
 			}
-			this.selectedPageIndex = 0
+			this.currentPage = 0
 
 		},
 		onFinishDrawingCanvas(e) {
@@ -470,11 +470,11 @@ export default {
 			const files = e.target.files || (e.dataTransfer && e.dataTransfer.files)
 			const file = files[0]
 			if (!file || file.type !== 'application/pdf') return
-			this.selectedPageIndex = -1
+			this.currentPage = -1
 			try {
 				await this.addPDF(file)
 				this.narrowEnlargeShow = true
-				this.selectedPageIndex = 0
+				this.currentPage = 0
 			} catch (e) {
 				console.log(e)
 			}
@@ -524,7 +524,7 @@ export default {
 		},
 		async onUploadImage(e) {
 			const file = e.target.files[0]
-			if (file && this.selectedPageIndex >= 0) {
+			if (file && this.currentPage >= 0) {
 				await this.addImage(file)
 			}
 			e.target.value = null
@@ -544,7 +544,7 @@ export default {
 
 				const { canvasWidth, canvasHeight }
 					= this.$refs[
-						`page${this.selectedPageIndex}`
+						`page${this.currentPage}`
 					][0].getCanvasMeasurement()
 
 				const object = {
@@ -568,12 +568,12 @@ export default {
 			}
 		},
 		onAddTextField() {
-			if (this.selectedPageIndex >= 0) {
+			if (this.currentPage >= 0) {
 				this.addTextField()
 			}
 		},
 
-		addTextField(text = 'Please enter here', x = 0, y = 0, currentPage = this.selectedPageIndex) {
+		addTextField(text = 'Please enter here', x = 0, y = 0, currentPage = this.currentPage) {
 			const id = this.genID()
 			fetchFont(this.currentFont)
 			const object = {
@@ -592,7 +592,7 @@ export default {
 		},
 
 		onAddDrawing() {
-			if (this.selectedPageIndex >= 0) {
+			if (this.currentPage >= 0) {
 				this.addingDrawing = true
 			}
 		},
@@ -615,7 +615,7 @@ export default {
 
 		addObject(object) {
 			this.allObjects = this.allObjects.map((objects, pIndex) =>
-				pIndex === this.selectedPageIndex ? [...objects, object] : objects,
+				pIndex === this.currentPage ? [...objects, object] : objects,
 			)
 		},
 
@@ -626,12 +626,12 @@ export default {
 		},
 
 		selectPage(index) {
-			this.selectedPageIndex = index
+			this.currentPage = index
 		},
 
 		updateObject(objectId, payload) {
 			this.allObjects = this.allObjects.map((objects, pIndex) =>
-				pIndex === (payload.currentPage !== undefined ? payload.currentPage : this.selectedPageIndex)
+				pIndex === (payload.currentPage !== undefined ? payload.currentPage : this.currentPage)
 					? objects.map(object =>
 						object.id === objectId ? { ...object, ...payload } : object,
 					)
@@ -641,7 +641,7 @@ export default {
 
 		deleteObject(objectId) {
 			this.allObjects = this.allObjects.map((objects, pIndex) =>
-				pIndex === this.selectedPageIndex
+				pIndex === this.currentPage
 					? objects.filter(object => object.id !== objectId)
 					: objects,
 			)
