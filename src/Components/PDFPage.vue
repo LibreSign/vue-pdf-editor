@@ -49,6 +49,9 @@ export default {
 		},
 		async render() {
 			const _page = await this.page
+			
+			if(typeof _page ==='undefined') return
+
 			const canvas = this.$refs.canvas
 			const context = canvas.getContext('2d')
 			const viewport = _page.getViewport({
