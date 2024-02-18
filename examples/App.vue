@@ -50,9 +50,6 @@ export default {
     }
   },
   methods:{
-    pageChange(e){
-      console.log(e)
-    },
     save2Upload(payload){
       console.log(payload.pdfBytes);
       console.log(payload.fileName);
