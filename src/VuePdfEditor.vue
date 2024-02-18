@@ -114,9 +114,7 @@
 				<div class="w-full" style="text-align: center;">
 					<div style="display: inline-block;">
 						<div class="p-5  items-center"
-							style="text-align: center"
-							@mousedown="selectPage(currentPage)"
-							@touchstart="selectPage(currentPage)">
+							style="text-align: center">
 							<div style="display: inline-block;"
 								class="relative shadow-lg">
 								<PDFPage :ref="`page${currentPage}`"
@@ -623,10 +621,6 @@ export default {
 			const name = event.name
 			fetchFont(name)
 			this.currentFont = name
-		},
-
-		selectPage(index) {
-			this.currentPage = index
 		},
 
 		updateObject(objectId, payload) {
