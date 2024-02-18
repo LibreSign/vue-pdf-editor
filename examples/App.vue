@@ -28,7 +28,7 @@
       <template #pagination="{ pages, currentPage, onPageChange }">
         <ul class="inline-flex">
           <li @click="onPageChange(currentPage-1)">previous</li>
-          <p>{{ currentPage }}/{{ pages }}</p>
+          <p>{{ currentPage +1}}/{{ pages }}</p>
           <li @click="onPageChange(currentPage+1)">next</li>
         </ul>
       </template>
