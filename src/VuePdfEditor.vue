@@ -79,9 +79,7 @@
 				</button>
 
 				<div v-if="pages.length" class="flex items-center gap-4">
-					<button :disabled="currentPage==0" @click="onPreviousPage">Previous</button>
-					<input class="" v-model="currentPage"/>
-					<button @click="onNextPage">Next</button>
+					<Pagination :pages="pages.length" @onPageChange="onPageChange" />
 				</div>
 
 			</div>
@@ -200,6 +198,7 @@
 import { fetchFont } from './utils/prepareAssets.js'
 
 import PDFPage from './Components/PDFPage.vue'
+import Pagination from './Components/Pagination.vue'
 import ImageItem from './Components/Image.vue'
 import TextItem from './Components/TextItem.vue'
 import Drawing from './Components/Drawing.vue'
@@ -223,6 +222,7 @@ export default {
 		TextIcon,
 		GestureIcon,
 		PencilIcon,
+		Pagination,
 	},
 	props: {
 		msg: String,
@@ -688,18 +688,9 @@ export default {
 				this.saving = false
 			}
 		},
-		onPreviousPage(){
-			const previousPage = this.currentPage-1
-			const canSetPreviousPage = previousPage >= 0
-			if(!canSetPreviousPage) return;
-				this.currentPage = previousPage;
-		},
-		onNextPage(){
-			const nextPage = this.currentPage+1
-			const canSetNextPage = nextPage <= this.pages.length-1
-			if(!canSetNextPage) return;
-			this.currentPage = nextPage;
-		},
+		onPageChange({ page }){
+			this.currentPage = page
+		}
   }
 }
 </script>
