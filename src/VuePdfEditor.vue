@@ -379,12 +379,6 @@ export default {
 				fetchFont(this.currentFont)
 				this.narrowEnlargeShow = true
 				this.initTextField()
-				await this.initImages()
-				this.$emit('pdf-editor:end-init', {
-					allObjects: this.allObjects,
-					numPages: this.numPages,
-					pages: this.pages,
-				})
 			} catch (e) {
 				console.log(e)
 			}
@@ -508,6 +502,23 @@ export default {
 						.map((_, i) => this.pdfDocument.getPage(i + 1))
 					this.allObjects = this.pages.map(() => [])
 					this.pagesScale = Array(this.numPages).fill(1)
+
+					const data = {
+						allObjects: this.allObjects,
+						numPages: this.numPages,
+						pages: this.pages,
+						measurement: [],
+					}
+					// Wait until all pages have been read
+					const pages = await Promise.all(this.pages);
+					pages.forEach((page) => {
+						const measurement = page.getViewport().viewBox
+						data.measurement[page.pageNumber] = {
+							width: measurement[2],
+							height: measurement[3],
+						}
+					})
+					this.$emit('pdf-editor:end-init', data)
 				}
 			} catch (e) {
 				console.log('Failed to add pdf.')
