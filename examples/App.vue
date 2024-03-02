@@ -11,6 +11,7 @@
           :show-customize-editor-add-draw="true"
           :show-line-size-select = 'true'
           :show-font-size-select= 'true'
+          :show-pagination="true"
           :show-font-select="true"
           :show-rename="true"
           :show-save-btn="true"
@@ -24,6 +25,13 @@
           :seal-image-hidden-on-save="false"
           @onSave2Upload="save2Upload"
       >
+      <template #pagination="{ pages, currentPage, onPageChange }">
+        <ul class="inline-flex">
+          <li @click="onPageChange(currentPage-1)">previous</li>
+          <p>{{ currentPage +1}}/{{ pages }}</p>
+          <li @click="onPageChange(currentPage+1)">next</li>
+        </ul>
+      </template>
       </VuePdfEditor>
 
   </div>
