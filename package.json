@@ -33,7 +33,7 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "~5.0.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.1.0",
     "eslint-plugin-vue": "^9.22.0",
     "postcss": "^8.4.33",
     "postcss-load-config": "^5.0.3",
