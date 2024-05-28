@@ -22,7 +22,7 @@
     "blob-stream-i2d": "^1.0.0",
     "core-js": "^3.35.1",
     "downloadjs": "^1.4.7",
-    "pdfjs-dist": "^3.11.174",
+    "pdfjs-dist": "^4.3.136",
     "pdfkit": "^0.15.0",
     "vue-material-design-icons": "^5.2.0"
   },
