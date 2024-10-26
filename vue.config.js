@@ -1,5 +1,7 @@
 const publicPath = process.env.PUBLIC_PATH ? process.env.PUBLIC_PATH : "./";
 const { defineConfig } = require('@vue/cli-service')
+const CopyPlugin = require('copy-webpack-plugin');
+
 module.exports = defineConfig({
   publicPath: publicPath,
   pages: {
@@ -30,11 +32,22 @@ module.exports = defineConfig({
     module: {
       rules: [
         {
+          test: /pdf\.worker(\.min)?\.mjs$/,
+          use: { loader: 'file-loader' },
+        },
+        {
           test:/\.js$/,
           loader: 'babel-loader'
         }
       ]
-    }
+    },
+    plugins: [
+      new CopyPlugin({
+        patterns: [
+          { from: 'node_modules/pdfjs-dist/build/pdf.worker.min.mjs', to: 'pdf.worker.min.mjs' },
+        ],
+      }),
+    ]
   }
 
 })
