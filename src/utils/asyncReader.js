@@ -1,6 +1,5 @@
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
-import * as pdfjsWorker from 'pdfjs-dist/build/pdf.worker'
-GlobalWorkerOptions.workerSrc = pdfjsWorker
+GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
 
 /**
  *
