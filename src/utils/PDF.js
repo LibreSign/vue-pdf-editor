@@ -1,4 +1,3 @@
-import { readAsArrayBuffer } from './asyncReader.js'
 import { fetchFont } from './prepareAssets.js'
 import { noop } from './helper.js'
 import * as PDFLib from '@cantoo/pdf-lib'
@@ -37,6 +36,16 @@ export async function makeTextPDF({
   });
 }
 
+let readAsArrayBuffer = null;
+
+async function loadReadAsArrayBuffer() {
+  if (!readAsArrayBuffer) {
+    const asyncReaderModule = await import('./asyncReader.js');
+    readAsArrayBuffer = asyncReaderModule.readAsArrayBuffer;
+  }
+  return readAsArrayBuffer;
+}
+
 /**
  *
  * @param pdfFile
@@ -46,6 +55,7 @@ export async function makeTextPDF({
  * @param callback
  */
 export async function save(pdfFile, objects, name, isUpload = false, callback) {
+	const readAsArrayBuffer = await loadReadAsArrayBuffer();
 	let pdfDoc
 	try {
 		pdfDoc = await PDFLib.PDFDocument.load(await readAsArrayBuffer(pdfFile))
