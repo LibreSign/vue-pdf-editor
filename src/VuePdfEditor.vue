@@ -197,7 +197,7 @@ import ImageItem from './Components/Image.vue'
 import TextItem from './Components/TextItem.vue'
 import Drawing from './Components/Drawing.vue'
 import DrawingCanvas from './Components/DrawingCanvas.vue'
-import { configurePDFWorkerSrc, readAsImage, readAsPDF, readAsDataURL } from './utils/asyncReader.js'
+import { readAsImage, readAsPDF, readAsDataURL } from './utils/asyncReader.js'
 import { save } from './utils/PDF.js'
 import ImageIcon from 'vue-material-design-icons/Image.vue'
 import TextIcon from 'vue-material-design-icons/Text.vue'
@@ -310,10 +310,6 @@ export default {
 		sealImageHiddenOnSave: {
 			type: Boolean,
 			default: false,
-		},
-		workerSrc: {
-			type: String,
-			default: null
 		},
 	},
 	data() {
@@ -497,9 +493,6 @@ export default {
 					file = await blob.arrayBuffer();
 				}
 
-				if (this.workerSrc) {
-					configurePDFWorkerSrc(this.workerSrc)
-				}
 				this.pdfDocument = await readAsPDF(file)
 				if (this.pdfDocument) {
 					this.numPages = this.pdfDocument.numPages
