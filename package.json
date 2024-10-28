@@ -1,7 +1,7 @@
 {
   "name": "@libresign/vue-pdf-editor",
   "description": "vue2 pdf editor component",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "author": "LibreCode",
   "private": false,
   "main": "dist/vue-pdf-editor.umd.js",
