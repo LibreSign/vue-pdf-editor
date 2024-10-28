@@ -1,6 +1,6 @@
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
-const PDF_WORKER_BASE_URL = process.env.VUE_APP_PDF_WORKER_BASE_URL || '/';
-GlobalWorkerOptions.workerSrc = `${PDF_WORKER_BASE_URL}pdf.worker.min.mjs`
+import pdfWorkerCode from 'pdfjs-dist/build/pdf.worker.min.mjs'
+GlobalWorkerOptions.workerSrc = pdfWorkerCode
 
 /**
  *
