@@ -1,6 +1,9 @@
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
 import pdfWorkerCode from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs'
-GlobalWorkerOptions.workerSrc = pdfWorkerCode
+
+export function configurePDFWorkerSrc(customWorkerSrc) {
+  GlobalWorkerOptions.workerSrc = customWorkerSrc || pdfWorkerCode
+}
 
 /**
  *
