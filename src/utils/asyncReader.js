@@ -1,9 +1,7 @@
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
-import pdfWorkerCode from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs'
+import pdfWorkerCode from 'pdfjs-dist/build/pdf.worker.min.mjs'
 
-if (!GlobalWorkerOptions.workerSrc) {
-  GlobalWorkerOptions.workerSrc = pdfWorkerCode
-}
+GlobalWorkerOptions.workerSrc = pdfWorkerCode
 
 /**
  *

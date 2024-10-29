@@ -29,11 +29,14 @@ module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack:{
     module: {
-      rules: [
-        {
-          test: /pdf\.worker(\.min)?\.mjs$/,
-          type: 'asset/resource'
-        },
+        rules: [
+          {
+            test: /pdf\.worker(\.min)?\.mjs$/,
+            type: 'asset/resource',
+            generator: {
+              filename: '[name][ext]',
+            },
+          },
         {
           test:/\.js$/,
           loader: 'babel-loader'
