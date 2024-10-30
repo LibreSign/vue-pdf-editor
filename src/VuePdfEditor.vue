@@ -12,6 +12,7 @@
 					type="file"
 					name="pdf"
 					class="hidden"
+					accept="application/pdf"
 					@change="onUploadPDF">
 				<input id="image"
 					type="file"
@@ -76,6 +77,11 @@
 					@click="savePDF">
 					{{ saving ? 'saving' : 'keep' }}
 				</button>
+
+					<slot name="pagination" v-if="pages.length && showPagination" class="flex items-center gap-4" :pages="pages.length" :current-page="currentPage" :onPageChange="onPageChange">
+						<Pagination :pages="pages.length" :current-page.sync="currentPage" @onPageChange="onPageChange" />
+					</slot>
+
 			</div>
 			<div v-if="addingDrawing">
 				<div class="fixed z-10 top-0 left-0 right-0 border-b border-gray-300 bg-white shadow-lg"
@@ -106,27 +112,24 @@
 
 				<!--  PDF main body      -->
 				<div class="w-full" style="text-align: center;">
-					<div v-for="(page,pIndex) in pages" :key="pIndex" style="display: inline-block;">
+					<div style="display: inline-block;">
 						<div class="p-5  items-center"
-							style="text-align: center"
-							@mousedown="selectPage(pIndex)"
-							@touchstart="selectPage(pIndex)">
+							style="text-align: center">
 							<div style="display: inline-block;"
-								class="relative shadow-lg"
-								:class="[pIndex === selectedPageIndex ?'shadowOutline':'']">
-								<PDFPage :ref="`page${pIndex}`"
+								class="relative shadow-lg">
+								<PDFPage :ref="`page${currentPage}`"
 									:scale="scale"
-									:data-key="pIndex"
-									:page="page"
-									@onMeasure="onMeasure($event, pIndex)" />
+									:data-key="currentPage"
+									:page="pages[currentPage]"
+									@onMeasure="onMeasure($event, currentPage)" />
 								<div class="absolute top-0 left-0 transform origin-top-left noTouchAction"
-									:style="{transform: `scale(${pagesScale[pIndex]})`}">
-									<div v-for="(object, oIndex) in allObjects[pIndex]" :key="oIndex">
+									:style="{transform: `scale(${pagesScale[currentPage]})`}">
+									<div v-for="(object, oIndex) in allObjects[currentPage]" :key="oIndex">
 										<div>
 											<div v-if="object.type === 'custom'">
 												<slot name="custom"
 													:object="object"
-													:pagesScale="pagesScale[pIndex]"
+													:pagesScale="pagesScale[currentPage]"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -140,7 +143,7 @@
 													:height="object.height"
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
-													:page-scale="pagesScale[pIndex]"
+													:page-scale="pagesScale[currentPage]"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -156,7 +159,7 @@
 													:line-height="object.lineHeight"
 													:font-family="object.fontFamily"
 													:current-page="object.currentPage"
-													:page-scale="pagesScale[pIndex]"
+													:page-scale="pagesScale[currentPage]"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)"
 													@onSelectFont="selectFontFamily" />
@@ -168,7 +171,7 @@
 													:width="object.width"
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
-													:page-scale="pagesScale[pIndex]"
+													:page-scale="pagesScale[currentPage]"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -193,6 +196,7 @@
 import { fetchFont } from './utils/prepareAssets.js'
 
 import PDFPage from './Components/PDFPage.vue'
+import Pagination from './Components/Pagination.vue'
 import ImageItem from './Components/Image.vue'
 import TextItem from './Components/TextItem.vue'
 import Drawing from './Components/Drawing.vue'
@@ -216,6 +220,7 @@ export default {
 		TextIcon,
 		GestureIcon,
 		PencilIcon,
+		Pagination,
 	},
 	props: {
 		msg: String,
@@ -226,6 +231,10 @@ export default {
 		height: {
 			type: String,
 			default: '100%',
+		},
+		showPagination:{
+			type: Boolean,
+			default: false
 		},
 		showChooseFileBtn: {
 			type: Boolean,
@@ -322,6 +331,7 @@ export default {
 			numPages: null,
 			pdfDocument: null,
 			pages: [],
+			currentPage: 0,
 			pagesScale: [],
 			allObjects: [],
 			currentFont: 'Courier',
@@ -374,7 +384,7 @@ export default {
 			}
 			try {
 				await this.addPDF(this.initFileSrc)
-				this.selectedPageIndex = 0
+				this.currentPage = 0
 				fetchFont(this.currentFont)
 				this.narrowEnlargeShow = true
 				this.initTextField()
@@ -383,17 +393,17 @@ export default {
 			}
 		},
 		initTextField() {
-			if (this.selectedPageIndex < 0 || this.initTextFields === null || this.initTextFields.length === 0) {
+			if (this.currentPage < 0 || this.initTextFields === null || this.initTextFields.length === 0) {
 				return
 			}
 			for (let i = 0; i < this.pages.length; i++) {
-				this.selectedPageIndex = i
+				this.currentPage = i
 				for (let j = 0; j < this.initTextFields.length; j++) {
 					const text = this.initTextFields[j]
-					this.addTextField(text, 0, j * 60, this.selectedPageIndex)
+					this.addTextField(text, 0, j * 60, this.currentPage)
 				}
 			}
-			this.selectedPageIndex = 0
+			this.currentPage = 0
 			const checker = setInterval(() => {
 				if (this.$refs.textItem.length === this.initTextFields.length * this.pages.length) {
 					document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
@@ -407,11 +417,11 @@ export default {
 
 		},
 		async initImages() {
-			if (this.selectedPageIndex < 0) {
+			if (this.currentPage < 0) {
 				return
 			}
 			for (let i = 0; i < this.pages.length; i++) {
-				this.selectedPageIndex = i
+				this.currentPage = i
 				let y = 0
 				if (this.initImageUrls !== null && this.initImageUrls.length !== 0) {
 					// Need to initialize pictures
@@ -430,7 +440,7 @@ export default {
 					await this.addImage(await res.blob(), 0, (y + 1) * 100, 0.4, true)
 				}
 			}
-			this.selectedPageIndex = 0
+			this.currentPage = 0
 
 		},
 		onFinishDrawingCanvas(e) {
@@ -455,11 +465,11 @@ export default {
 			const files = e.target.files || (e.dataTransfer && e.dataTransfer.files)
 			const file = files[0]
 			if (!file || file.type !== 'application/pdf') return
-			this.selectedPageIndex = -1
+			this.currentPage = -1
 			try {
 				await this.addPDF(file)
 				this.narrowEnlargeShow = true
-				this.selectedPageIndex = 0
+				this.currentPage = 0
 			} catch (e) {
 				console.log(e)
 			}
@@ -526,7 +536,7 @@ export default {
 		},
 		async onUploadImage(e) {
 			const file = e.target.files[0]
-			if (file && this.selectedPageIndex >= 0) {
+			if (file && this.currentPage >= 0) {
 				await this.addImage(file)
 			}
 			e.target.value = null
@@ -546,7 +556,7 @@ export default {
 
 				const { canvasWidth, canvasHeight }
 					= this.$refs[
-						`page${this.selectedPageIndex}`
+						`page${this.currentPage}`
 					][0].getCanvasMeasurement()
 
 				const object = {
@@ -570,12 +580,12 @@ export default {
 			}
 		},
 		onAddTextField() {
-			if (this.selectedPageIndex >= 0) {
+			if (this.currentPage >= 0) {
 				this.addTextField()
 			}
 		},
 
-		addTextField(text = 'Please enter here', x = 0, y = 0, currentPage = this.selectedPageIndex) {
+		addTextField(text = 'Please enter here', x = 0, y = 0, currentPage = this.currentPage) {
 			const id = this.genID()
 			fetchFont(this.currentFont)
 			const object = {
@@ -594,7 +604,7 @@ export default {
 		},
 
 		onAddDrawing() {
-			if (this.selectedPageIndex >= 0) {
+			if (this.currentPage >= 0) {
 				this.addingDrawing = true
 			}
 		},
@@ -617,7 +627,7 @@ export default {
 
 		addObject(object) {
 			this.allObjects = this.allObjects.map((objects, pIndex) =>
-				pIndex === this.selectedPageIndex ? [...objects, object] : objects,
+				pIndex === this.currentPage ? [...objects, object] : objects,
 			)
 		},
 
@@ -627,13 +637,9 @@ export default {
 			this.currentFont = name
 		},
 
-		selectPage(index) {
-			this.selectedPageIndex = index
-		},
-
 		updateObject(objectId, payload) {
 			this.allObjects = this.allObjects.map((objects, pIndex) =>
-				pIndex === (payload.currentPage !== undefined ? payload.currentPage : this.selectedPageIndex)
+				pIndex === (payload.currentPage !== undefined ? payload.currentPage : this.currentPage)
 					? objects.map(object =>
 						object.id === objectId ? { ...object, ...payload } : object,
 					)
@@ -643,7 +649,7 @@ export default {
 
 		deleteObject(objectId) {
 			this.allObjects = this.allObjects.map((objects, pIndex) =>
-				pIndex === this.selectedPageIndex
+				pIndex === this.currentPage
 					? objects.filter(object => object.id !== objectId)
 					: objects,
 			)
@@ -690,7 +696,10 @@ export default {
 				this.saving = false
 			}
 		},
-	},
+		onPageChange(page){
+			this.currentPage = page
+		}
+  }
 }
 </script>
 
