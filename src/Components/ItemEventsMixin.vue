@@ -44,8 +44,10 @@ export default {
 			this.y_mixin = event.clientY
 			window.removeEventListener('mousemove', this.handlePanMove)
 			window.removeEventListener('mouseup', this.handlePanEnd)
+			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
 			return {
-				detail: { x: this.x_mixin, y: this.y_mixin },
+				detail: { x, y },
 			}
 		},
 		handleTouchStart(event) {
@@ -82,10 +84,17 @@ export default {
 
 			window.removeEventListener('touchmove', this.handlePanMove)
 			window.removeEventListener('touchend', this.handlePanEnd)
+			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
 			return {
-				detail: { x: this.x_mixin, y: this.y_mixin },
+				detail: { x, y },
 			}
 		},
+		translateCoordinates() {
+			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
+			return 'translate(' + x + 'px, ' + y + 'px)'
+		}
 	},
 }
 </script>
