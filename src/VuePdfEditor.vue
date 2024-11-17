@@ -330,6 +330,7 @@ export default {
 			pdfDocument: null,
 			pages: [],
 			pagesScale: [],
+			pageSizes: [],
 			allObjects: [],
 			currentFont: 'Courier',
 			focusId: null,
