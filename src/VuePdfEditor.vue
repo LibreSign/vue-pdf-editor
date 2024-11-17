@@ -141,6 +141,8 @@
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
 													:page-scale="pagesScale[pIndex]"
+													:page-width="pageSizes[pIndex + 1].width"
+													:page-height="pageSizes[pIndex + 1].height"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -157,6 +159,8 @@
 													:font-family="object.fontFamily"
 													:current-page="object.currentPage"
 													:page-scale="pagesScale[pIndex]"
+													:page-width="pageSizes[pIndex + 1].width"
+													:page-height="pageSizes[pIndex + 1].height"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)"
 													@onSelectFont="selectFontFamily" />
@@ -473,6 +477,7 @@ export default {
 			this.pdfDocument = null
 			this.pages = []
 			this.pagesScale = []
+			this.pageSizes = []
 			this.allObjects = []
 		},
 		async addPDF(file) {
@@ -516,6 +521,7 @@ export default {
 							width: measurement[2],
 							height: measurement[3],
 						}
+						this.pageSizes[page.pageNumber] = data.measurement[page.pageNumber]
 					})
 					this.$emit('pdf-editor:end-init', data)
 				}
@@ -558,6 +564,8 @@ export default {
 					originHeight: height,
 					canvasWidth,
 					canvasHeight,
+					pageWidth: this.pageSizes[this.selectedPageIndex + 1].width,
+					pageHeight: this.pageSizes[this.selectedPageIndex + 1].height,
 					x,
 					y,
 					isSealImage,
@@ -586,6 +594,8 @@ export default {
 				width: 0, // recalculate after editing
 				lineHeight: 1.4,
 				fontFamily: this.currentFont,
+				pageWidth: this.pageSizes[currentPage + 1].width,
+				pageHeight: this.pageSizes[currentPage + 1].height,
 				x,
 				y,
 				currentPage,

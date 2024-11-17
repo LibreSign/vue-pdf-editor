@@ -4,7 +4,7 @@
 
 		<!--    </toolbar-component>-->
 		<TapoutComponent class="absolute left-0 top-0 select-none"
-			:style="{ transform: `translate(${x + dx}px, ${y + dy}px)` }"
+			:style="{ transform: translateCoordinates() }"
 			@tapout="onBlur">
 			<TapoutComponent v-if="operation === 'edit' || operation === 'tool'"
 				ref="toolBox"
@@ -141,7 +141,21 @@ export default {
 		CloseCircleIcon,
 	},
 	mixins: [itemEventsMixin],
-	props: ['size', 'text', 'lineHeight', 'x', 'y', 'fontFamily', 'pageScale', 'currentPage', 'showLineSizeSelect', 'showFontSelect', 'showFontSizeSelect'],
+	props: [
+		'size',
+		'text',
+		'lineHeight',
+		'x',
+		'y',
+		'pageWidth',
+		'pageHeight',
+		'fontFamily',
+		'pageScale',
+		'currentPage',
+		'showLineSizeSelect',
+		'showFontSelect',
+		'showFontSizeSelect'
+	],
 	data() {
 		return {
 			Families: Object.keys(Fonts),
@@ -211,8 +225,8 @@ export default {
 				return this.$refs.editable.focus()
 			}
 			this.$emit('onUpdate', {
-				x: this.x + this.dx,
-				y: this.y + this.dy,
+				x: coordinate.detail.x,
+				y: coordinate.detail.y,
 			})
 			this.dx = 0
 			this.dy = 0

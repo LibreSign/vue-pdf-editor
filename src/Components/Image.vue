@@ -6,7 +6,7 @@
 		:style="{
 			width: `${width + dw}px`,
 			height: `${Math.round((width + dw) / ratio)}px`,
-			transform: `translate(${x + dx}px, ${y + dy}px)`,
+			transform: translateCoordinates(),
 		}">
 		<div class="absolute w-full h-full cursor-grab"
 			:class="[
@@ -74,6 +74,8 @@ export default {
 		'x',
 		'y',
 		'pageScale',
+		'pageWidth',
+		'pageHeight',
 		'fixSize',
 	],
 	data() {
@@ -177,15 +179,15 @@ export default {
 			if (!coordinate) return console.log('ERROR')
 			if (this.operation === 'move') {
 				this.$emit('onUpdate', {
-					x: this.x + this.dx,
-					y: this.y + this.dy,
+					x: coordinate.detail.x,
+					y: coordinate.detail.y,
 				})
 				this.dx = 0
 				this.dy = 0
 			} else if (this.operation === 'scale') {
 				this.$emit('onUpdate', {
-					x: this.x + this.dx,
-					y: this.y + this.dy,
+					x: coordinate.detail.x,
+					y: coordinate.detail.y,
 					width: this.width + this.dw,
 					height: Math.round((this.width + this.dw) / this.ratio),
 				})
