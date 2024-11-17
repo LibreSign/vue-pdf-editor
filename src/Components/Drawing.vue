@@ -71,6 +71,7 @@ export default {
 			dx: 0,
 			dy: 0,
 			dw: 0,
+			dh: 0,
 			direction: '',
 			// ratio: this.originWidth / this.originHeight,
 		}
@@ -119,6 +120,7 @@ export default {
 					let d = -Infinity
 					d = Math.max(_dx, _dy * this.ratio)
 					this.dw = d
+					this.dh = d / this.ratio
 				}
 			}
 		},
@@ -145,11 +147,13 @@ export default {
 					x: coordinate.detail.x,
 					y: coordinate.detail.y,
 					width: this.width + this.dw,
+					height: this.height + this.dh,
 					scale: (this.width + this.dw) / this.originWidth,
 				})
 				this.dx = 0
 				this.dy = 0
 				this.dw = 0
+				this.dh = 0
 				this.direction = ''
 			}
 			this.operation = ''
