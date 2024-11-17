@@ -170,9 +170,12 @@
 													:x="object.x"
 													:y="object.y"
 													:width="object.width"
+													:height="object.height"
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
 													:page-scale="pagesScale[pIndex]"
+													:page-width="pageSizes[pIndex + 1].width"
+													:page-height="pageSizes[pIndex + 1].height"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -620,6 +623,7 @@ export default {
 				originWidth,
 				originHeight,
 				width: originWidth * scale,
+				height: originHeight * scale,
 				scale,
 			}
 			this.addObject(object)
