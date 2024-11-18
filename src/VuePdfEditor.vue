@@ -127,8 +127,8 @@
 												<slot name="custom"
 													:object="object"
 													:pagesScale="pagesScale[pIndex]"
-													:page-width="pageSizes[pIndex + 1].width"
-													:page-height="pageSizes[pIndex + 1].height"
+													:canvas-width="object.canvasWidth"
+													:canvas-height="object.canvasHeight"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
