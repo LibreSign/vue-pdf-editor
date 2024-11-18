@@ -74,8 +74,8 @@ export default {
 		'x',
 		'y',
 		'pageScale',
-		'pageWidth',
-		'pageHeight',
+		'canvasWidth',
+		'canvasHeight',
 		'fixSize',
 	],
 	data() {

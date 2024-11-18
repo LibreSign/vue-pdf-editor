@@ -143,8 +143,8 @@
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
 													:page-scale="pagesScale[pIndex]"
-													:page-width="pageSizes[pIndex + 1].width"
-													:page-height="pageSizes[pIndex + 1].height"
+													:canvas-width="object.canvasWidth"
+													:canvas-height="object.canvasHeight"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -161,8 +161,8 @@
 													:font-family="object.fontFamily"
 													:current-page="object.currentPage"
 													:page-scale="pagesScale[pIndex]"
-													:page-width="pageSizes[pIndex + 1].width"
-													:page-height="pageSizes[pIndex + 1].height"
+													:canvas-width="object.canvasWidth"
+													:canvas-height="object.canvasHeight"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)"
 													@onSelectFont="selectFontFamily" />
@@ -176,8 +176,8 @@
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
 													:page-scale="pagesScale[pIndex]"
-													:page-width="pageSizes[pIndex + 1].width"
-													:page-height="pageSizes[pIndex + 1].height"
+													:canvas-width="object.canvasWidth"
+													:canvas-height="object.canvasHeight"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -332,7 +332,6 @@ export default {
 			pdfDocument: null,
 			pages: [],
 			pagesScale: [],
-			pageSizes: [],
 			allObjects: [],
 			currentFont: 'Courier',
 			focusId: null,
@@ -483,7 +482,6 @@ export default {
 			this.pdfDocument = null
 			this.pages = []
 			this.pagesScale = []
-			this.pageSizes = []
 			this.allObjects = []
 		},
 		async addPDF(file) {
@@ -527,7 +525,6 @@ export default {
 							width: measurement[2],
 							height: measurement[3],
 						}
-						this.pageSizes[page.pageNumber] = data.measurement[page.pageNumber]
 					})
 					this.$emit('pdf-editor:end-init', data)
 				}
@@ -570,8 +567,6 @@ export default {
 					originHeight: height,
 					canvasWidth,
 					canvasHeight,
-					pageWidth: this.pageSizes[this.selectedPageIndex + 1].width,
-					pageHeight: this.pageSizes[this.selectedPageIndex + 1].height,
 					x,
 					y,
 					isSealImage,
@@ -592,6 +587,12 @@ export default {
 		addTextField(text = 'Please enter here', x = 0, y = 0, currentPage = this.selectedPageIndex) {
 			const id = this.genID()
 			fetchFont(this.currentFont)
+
+			const { canvasWidth, canvasHeight }
+				= this.$refs[
+					`page${this.selectedPageIndex}`
+				][0].getCanvasMeasurement()
+
 			const object = {
 				id,
 				text,
@@ -600,8 +601,8 @@ export default {
 				width: 0, // recalculate after editing
 				lineHeight: 1.4,
 				fontFamily: this.currentFont,
-				pageWidth: this.pageSizes[currentPage + 1].width,
-				pageHeight: this.pageSizes[currentPage + 1].height,
+				canvasWidth,
+				canvasHeight,
 				x,
 				y,
 				currentPage,
@@ -617,6 +618,12 @@ export default {
 
 		addDrawing(originWidth, originHeight, path, scale = 1) {
 			const id = this.genID()
+
+			const { canvasWidth, canvasHeight }
+				= this.$refs[
+					`page${this.selectedPageIndex}`
+				][0].getCanvasMeasurement()
+
 			const object = {
 				id,
 				path,
@@ -627,6 +634,8 @@ export default {
 				originHeight,
 				width: originWidth * scale,
 				height: originHeight * scale,
+				canvasWidth,
+				canvasHeight,
 				scale,
 			}
 			this.addObject(object)

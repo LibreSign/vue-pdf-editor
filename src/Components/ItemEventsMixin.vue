@@ -44,8 +44,8 @@ export default {
 			this.y_mixin = event.clientY
 			window.removeEventListener('mousemove', this.handlePanMove)
 			window.removeEventListener('mouseup', this.handlePanEnd)
-			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
-			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
+			const x = Math.max(0, Math.min(this.x + this.dx, this.canvasWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, this.canvasHeight - this.height))
 			return {
 				detail: { x, y },
 			}
@@ -84,15 +84,15 @@ export default {
 
 			window.removeEventListener('touchmove', this.handlePanMove)
 			window.removeEventListener('touchend', this.handlePanEnd)
-			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
-			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
+			const x = Math.max(0, Math.min(this.x + this.dx, this.canvasWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, this.canvasHeight - this.height))
 			return {
 				detail: { x, y },
 			}
 		},
 		translateCoordinates() {
-			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
-			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
+			const x = Math.max(0, Math.min(this.x + this.dx, this.canvasWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, this.canvasHeight - this.height))
 			return 'translate(' + x + 'px, ' + y + 'px)'
 		}
 	},
