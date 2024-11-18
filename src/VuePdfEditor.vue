@@ -151,6 +151,8 @@
 													:text="object.text"
 													:x="object.x"
 													:y="object.y"
+													:width="object.width"
+													:height="object.height"
 													:show-line-size-select="showLineSizeSelect"
 													:show-font-size-select="showFontSizeSelect"
 													:show-font-select="showFontSelect"
@@ -595,7 +597,6 @@ export default {
 				text,
 				type: 'text',
 				size: this.textDefaultSize,
-				width: 0, // recalculate after editing
 				lineHeight: 1.4,
 				fontFamily: this.currentFont,
 				pageWidth: this.pageSizes[currentPage + 1].width,

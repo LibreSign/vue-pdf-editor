@@ -164,6 +164,8 @@ export default {
 			// editable: null,
 			dx: 0,
 			dy: 0,
+			width: 0,
+			height: 0,
 			operation: '',
 			size_: this.size,
 			lineHeight_: this.lineHeight,
@@ -233,6 +235,8 @@ export default {
 			this.operation = ''
 		},
 		handlePanStart(event) {
+			this.width = this.$refs.editable.offsetWidth
+			this.height = this.$refs.editable.offsetHeight
 			let coordinate
 			if (event.type === 'mousedown') {
 				coordinate = this.handleMousedown(event)
