@@ -112,7 +112,7 @@
 							@mousedown="selectPage(pIndex)"
 							@touchstart="selectPage(pIndex)">
 							<div style="display: inline-block;"
-								class="relative shadow-lg"
+								class="relative shadow-lg page"
 								:class="[pIndex === selectedPageIndex ?'shadowOutline':'']">
 								<PDFPage :ref="`page${pIndex}`"
 									:scale="scale"
@@ -127,8 +127,6 @@
 												<slot name="custom"
 													:object="object"
 													:pagesScale="pagesScale[pIndex]"
-													:canvas-width="object.canvasWidth"
-													:canvas-height="object.canvasHeight"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -143,8 +141,6 @@
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
 													:page-scale="pagesScale[pIndex]"
-													:canvas-width="object.canvasWidth"
-													:canvas-height="object.canvasHeight"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -163,8 +159,6 @@
 													:font-family="object.fontFamily"
 													:current-page="object.currentPage"
 													:page-scale="pagesScale[pIndex]"
-													:canvas-width="object.canvasWidth"
-													:canvas-height="object.canvasHeight"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)"
 													@onSelectFont="selectFontFamily" />
@@ -178,8 +172,6 @@
 													:origin-width="object.originWidth"
 													:origin-height="object.originHeight"
 													:page-scale="pagesScale[pIndex]"
-													:canvas-width="object.canvasWidth"
-													:canvas-height="object.canvasHeight"
 													@onUpdate="updateObject(object.id, $event)"
 													@onDelete="deleteObject(object.id)" />
 											</div>
@@ -520,15 +512,17 @@ export default {
 						measurement: [],
 					}
 					// Wait until all pages have been read
-					const pages = await Promise.all(this.pages);
-					pages.forEach((page) => {
-						const measurement = page.getViewport().viewBox
-						data.measurement[page.pageNumber] = {
-							width: measurement[2],
-							height: measurement[3],
-						}
-					})
-					this.$emit('pdf-editor:end-init', data)
+					Promise.all(this.pages)
+						.then(pages => {
+							pages.forEach((page) => {
+								const measurement = page.getViewport().viewBox
+								data.measurement[page.pageNumber] = {
+									width: measurement[2],
+									height: measurement[3],
+								}
+							})
+							this.$emit('pdf-editor:end-init', data)
+						})
 				}
 			} catch (e) {
 				console.log('Failed to add pdf.')
@@ -555,11 +549,6 @@ export default {
 				const id = this.genID()
 				const { width, height } = img
 
-				const { canvasWidth, canvasHeight }
-					= this.$refs[
-						`page${this.selectedPageIndex}`
-					][0].getCanvasMeasurement()
-
 				const object = {
 					id,
 					type: 'image',
@@ -567,8 +556,6 @@ export default {
 					height: height * sizeNarrow,
 					originWidth: width,
 					originHeight: height,
-					canvasWidth,
-					canvasHeight,
 					x,
 					y,
 					isSealImage,
@@ -590,11 +577,6 @@ export default {
 			const id = this.genID()
 			fetchFont(this.currentFont)
 
-			const { canvasWidth, canvasHeight }
-				= this.$refs[
-					`page${this.selectedPageIndex}`
-				][0].getCanvasMeasurement()
-
 			const object = {
 				id,
 				text,
@@ -602,8 +584,6 @@ export default {
 				size: this.textDefaultSize,
 				lineHeight: 1.4,
 				fontFamily: this.currentFont,
-				canvasWidth,
-				canvasHeight,
 				x,
 				y,
 				currentPage,
@@ -620,11 +600,6 @@ export default {
 		addDrawing(originWidth, originHeight, path, scale = 1) {
 			const id = this.genID()
 
-			const { canvasWidth, canvasHeight }
-				= this.$refs[
-					`page${this.selectedPageIndex}`
-				][0].getCanvasMeasurement()
-
 			const object = {
 				id,
 				path,
@@ -635,8 +610,6 @@ export default {
 				originHeight,
 				width: originWidth * scale,
 				height: originHeight * scale,
-				canvasWidth,
-				canvasHeight,
 				scale,
 			}
 			this.addObject(object)

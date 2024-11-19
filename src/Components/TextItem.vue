@@ -149,8 +149,6 @@ export default {
 		'y',
 		'fontFamily',
 		'pageScale',
-		'canvasWidth',
-		'canvasHeight',
 		'currentPage',
 		'showLineSizeSelect',
 		'showFontSelect',

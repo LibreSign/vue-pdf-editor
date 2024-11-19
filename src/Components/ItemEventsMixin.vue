@@ -5,15 +5,17 @@ export default {
 		return {
 			x_mixin: null,
 			y_mixin: null,
+			pageWidth: 0,
+			pageHeight: 0,
 		}
 	},
 	mounted() {
-		// this.$refs.canvasElement.addEventListener('mousedown', this.handleMousedown);
-		// this.$refs.canvasElement.addEventListener('touchstart', this.handleTouchStart);
-	},
-	beforeDestroy() {
-		// this.$refs.canvasElement.removeEventListener('mousedown', this.handleMousedown);
-		// this.$refs.canvasElement.removeEventListener('touchstart', this.handleTouchStart);
+		const page = this.$el.closest('.page')
+		if (page) {
+			const canvas = page.querySelector('canvas')
+			this.pageWidth = canvas.width
+			this.pageHeight = canvas.height
+		}
 	},
 	created() {},
 	methods: {
@@ -44,8 +46,8 @@ export default {
 			this.y_mixin = event.clientY
 			window.removeEventListener('mousemove', this.handlePanMove)
 			window.removeEventListener('mouseup', this.handlePanEnd)
-			const x = Math.max(0, Math.min(this.x + this.dx, this.canvasWidth - this.width))
-			const y = Math.max(0, Math.min(this.y + this.dy, this.canvasHeight - this.height))
+			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
 			return {
 				detail: { x, y },
 			}
@@ -84,19 +86,17 @@ export default {
 
 			window.removeEventListener('touchmove', this.handlePanMove)
 			window.removeEventListener('touchend', this.handlePanEnd)
-			const x = Math.max(0, Math.min(this.x + this.dx, this.canvasWidth - this.width))
-			const y = Math.max(0, Math.min(this.y + this.dy, this.canvasHeight - this.height))
+			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
 			return {
 				detail: { x, y },
 			}
 		},
 		translateCoordinates() {
-			const x = Math.max(0, Math.min(this.x + this.dx, this.canvasWidth - this.width))
-			const y = Math.max(0, Math.min(this.y + this.dy, this.canvasHeight - this.height))
+			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
 			return 'translate(' + x + 'px, ' + y + 'px)'
 		}
 	},
 }
 </script>
-
-<style scoped></style>

@@ -58,8 +58,6 @@ export default {
 		'x',
 		'y',
 		'pageScale',
-		'canvasWidth',
-		'canvasHeight',
 		'path',
 	],
 	data() {
