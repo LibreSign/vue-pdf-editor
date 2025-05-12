@@ -35,6 +35,7 @@ https://www.npmjs.com/package/@libresign/vue-pdf-editor
     :show-save-btn="false"  <!--Show the saving button default TRUE-->
     :save-to-upload="true"  <!--False directly download; TRUE trigger onsave2upload event default FALSe->
     :init-file-src="'【pdf url】'"   <!--Initialization file address-->
+    :init-file=File   <!--Initialization file object-->
     :init-file-name="initFileName" <!--Initialized file name-->
     :init-text-fields = "【text array】"  <!--Initialized text array-->
     :init-image-urls = "【image url array】"   <!--Initialized picture array-->
