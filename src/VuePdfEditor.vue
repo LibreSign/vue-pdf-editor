@@ -282,6 +282,10 @@ export default {
 			type: String,
 			default: '',
 		},
+		initFile: {
+			type: [File, Blob, ArrayBuffer],
+			default: null,
+		},
 		initFileName: {
 			type: String,
 			default: '',
@@ -371,12 +375,13 @@ export default {
 			this.scale = parseFloat((this.scale - 0.1).toFixed(1))
 		},
 		async init() {
-			if (!this.initFileSrc) {
+			const file = this.initFile || this.initFileSrc
+			if (!file) {
 				console.log('init file is not exist')
 				return
 			}
 			try {
-				await this.addPDF(this.initFileSrc)
+				await this.addPDF(file)
 				this.selectedPageIndex = 0
 				fetchFont(this.currentFont)
 				this.narrowEnlargeShow = true
