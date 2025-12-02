@@ -5,22 +5,38 @@ export default {
 		return {
 			x_mixin: null,
 			y_mixin: null,
+			initialCanvasWidth: null,
+			initialCanvasHeight: null,
 		}
 	},
 	created() {},
 	methods: {
 		getCurrentPageDimensions() {
 			const page = this.$el?.closest('.page')
-			if (page) {
-				const canvas = page.querySelector('canvas')
-				if (canvas) {
-					return {
-						pageWidth: canvas.width,
-						pageHeight: canvas.height,
-					}
-				}
+			if (!page) {
+				return { pageWidth: 999999, pageHeight: 999999 }
 			}
-			return { pageWidth: 0, pageHeight: 0 }
+
+			const canvas = page.querySelector('canvas')
+			if (!canvas) {
+				return { pageWidth: 999999, pageHeight: 999999 }
+			}
+
+			if (!this.initialCanvasWidth) {
+				let component = this.$parent
+				while (component && component.$options.name !== 'VuePdfEditor') {
+					component = component.$parent
+				}
+				const currentScale = component?.scale || 1
+
+				this.initialCanvasWidth = canvas.width / currentScale
+				this.initialCanvasHeight = canvas.height / currentScale
+			}
+
+			return {
+				pageWidth: this.initialCanvasWidth,
+				pageHeight: this.initialCanvasHeight,
+			}
 		},
 		handleMousedown(event) {
 			this.x_mixin = event.clientX
