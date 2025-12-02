@@ -5,20 +5,23 @@ export default {
 		return {
 			x_mixin: null,
 			y_mixin: null,
-			pageWidth: 0,
-			pageHeight: 0,
-		}
-	},
-	mounted() {
-		const page = this.$el.closest('.page')
-		if (page) {
-			const canvas = page.querySelector('canvas')
-			this.pageWidth = canvas.width
-			this.pageHeight = canvas.height
 		}
 	},
 	created() {},
 	methods: {
+		getCurrentPageDimensions() {
+			const page = this.$el?.closest('.page')
+			if (page) {
+				const canvas = page.querySelector('canvas')
+				if (canvas) {
+					return {
+						pageWidth: canvas.width,
+						pageHeight: canvas.height,
+					}
+				}
+			}
+			return { pageWidth: 0, pageHeight: 0 }
+		},
 		handleMousedown(event) {
 			this.x_mixin = event.clientX
 			this.y_mixin = event.clientY
@@ -46,8 +49,9 @@ export default {
 			this.y_mixin = event.clientY
 			window.removeEventListener('mousemove', this.handlePanMove)
 			window.removeEventListener('mouseup', this.handlePanEnd)
-			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
-			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
+			const { pageWidth, pageHeight } = this.getCurrentPageDimensions()
+			const x = Math.max(0, Math.min(this.x + this.dx, pageWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, pageHeight - this.height))
 			return {
 				detail: { x, y },
 			}
@@ -86,15 +90,17 @@ export default {
 
 			window.removeEventListener('touchmove', this.handlePanMove)
 			window.removeEventListener('touchend', this.handlePanEnd)
-			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
-			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
+			const { pageWidth, pageHeight } = this.getCurrentPageDimensions()
+			const x = Math.max(0, Math.min(this.x + this.dx, pageWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, pageHeight - this.height))
 			return {
 				detail: { x, y },
 			}
 		},
 		translateCoordinates() {
-			const x = Math.max(0, Math.min(this.x + this.dx, this.pageWidth - this.width))
-			const y = Math.max(0, Math.min(this.y + this.dy, this.pageHeight - this.height))
+			const { pageWidth, pageHeight } = this.getCurrentPageDimensions()
+			const x = Math.max(0, Math.min(this.x + this.dx, pageWidth - this.width))
+			const y = Math.max(0, Math.min(this.y + this.dy, pageHeight - this.height))
 			return 'translate(' + x + 'px, ' + y + 'px)'
 		}
 	},
