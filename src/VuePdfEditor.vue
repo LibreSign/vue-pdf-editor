@@ -318,12 +318,16 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		initialScale: {
+			type: Number,
+			default: 1,
+		},
 	},
 	data() {
 		return {
 			wheelZoomCount: 0,
 			narrowEnlargeShow: false,
-			scale: 1,
+			scale: this.initialScale,
 			pdfFile: null,
 			pdfName: '',
 			numPages: null,
@@ -340,6 +344,11 @@ export default {
 		}
 	},
 	watch: {
+		scale(newScale, oldScale) {
+			if (newScale !== oldScale) {
+				this.$emit('scale-changed', newScale)
+			}
+		},
 	},
 	async mounted() {
 		await this.init()
@@ -386,6 +395,9 @@ export default {
 				fetchFont(this.currentFont)
 				this.narrowEnlargeShow = true
 				this.initTextField()
+				this.$nextTick(() => {
+					this.$emit('pdf-editor:ready')
+				})
 			} catch (e) {
 				console.log(e)
 			}
