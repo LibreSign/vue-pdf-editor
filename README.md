@@ -42,6 +42,9 @@ https://www.npmjs.com/package/@libresign/vue-pdf-editor
     :init-image-scale = "0.2" <!--The zoom level of the initialized picture defaults to 0.2 times the original size-->
     :seal-image-show="true" <!--Whether to show the signed example of the default FALSE-->
     :seal-image-hidden-on-save="true" <!--Whether the signed example is hidden by the default FALSE when saving-->
+    :initial-scale="1.5" <!--Initial zoom level (1 = 100%, 1.5 = 150%) default 1-->
+    @scale-changed="onScaleChanged" <!--Emitted when zoom level changes-->
+    @pdf-editor:ready="onPdfReady" <!--Emitted when PDF is fully loaded and ready-->
     @onSave2Upload="【save callback】"  <!--Save the callback load: PDFBYTES and FILENAME-->
 />
 ```
