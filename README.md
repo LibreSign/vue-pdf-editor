@@ -35,7 +35,7 @@ https://www.npmjs.com/package/@libresign/vue-pdf-editor
     :show-save-btn="false"  <!--Show the saving button default TRUE-->
     :save-to-upload="true"  <!--False directly download; TRUE trigger onsave2upload event default FALSe->
     :init-file-src="'【pdf url】'"   <!--Initialization file address-->
-    :init-file=File   <!--Initialization file object-->
+    :init-file=File   <!--Initialization file object (supports multiple PDFs when using show-choose-file-btn)-->
     :init-file-name="initFileName" <!--Initialized file name-->
     :init-text-fields = "【text array】"  <!--Initialized text array-->
     :init-image-urls = "【image url array】"   <!--Initialized picture array-->
@@ -43,8 +43,24 @@ https://www.npmjs.com/package/@libresign/vue-pdf-editor
     :seal-image-show="true" <!--Whether to show the signed example of the default FALSE-->
     :seal-image-hidden-on-save="true" <!--Whether the signed example is hidden by the default FALSE when saving-->
     :initial-scale="1.5" <!--Initial zoom level (1 = 100%, 1.5 = 150%) default 1-->
+    :show-page-footer="true" <!--Show page footer with filename and page count default TRUE-->
+    :page-count-format="'{currentPage} of {totalPages}'" <!--Page count format with {currentPage} and {totalPages} placeholders-->
     @scale-changed="onScaleChanged" <!--Emitted when zoom level changes-->
     @pdf-editor:ready="onPdfReady" <!--Emitted when PDF is fully loaded and ready-->
     @onSave2Upload="【save callback】"  <!--Save the callback load: PDFBYTES and FILENAME-->
 />
 ```
+
+## Public API
+
+### `addObjectToPage(object, pageIndex, docIndex)`
+```js
+this.$refs.vuePdfEditor.addObjectToPage(object, 0)
+```
+
+### `getAllObjects(docIndex)`
+Returns objects with `normalizedCoordinates` for PDF generation.
+```js
+const objects = this.$refs.vuePdfEditor.getAllObjects()
+```
+
