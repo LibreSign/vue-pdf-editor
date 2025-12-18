@@ -31,12 +31,11 @@ https://www.npmjs.com/package/@libresign/vue-pdf-editor
     :show-line-size-select = 'false' <!--Select the default TRUE of the line spacing-->
     :show-font-size-select= 'false' <!--Select the default TRue-->
     :show-font-select="false"   <!--Select the default true font-->
-    :show-rename="true"   <!--Show the rename column default TRUE-->
+    :show-rename="true"   <!--Show the rename column default TRUE (hidden when multiple PDFs)-->
     :show-save-btn="false"  <!--Show the saving button default TRUE-->
     :save-to-upload="true"  <!--False directly download; TRUE trigger onsave2upload event default FALSe->
-    :init-file-src="'【pdf url】'"   <!--Initialization file address-->
-    :init-file=File   <!--Initialization file object (supports multiple PDFs when using show-choose-file-btn)-->
-    :init-file-name="initFileName" <!--Initialized file name-->
+    :init-files="[File, File, ...]"   <!--Array of File objects to initialize with-->
+    :init-file-names="['name1.pdf', 'name2.pdf', ...]" <!--Array of file names corresponding to initFiles-->
     :init-text-fields = "【text array】"  <!--Initialized text array-->
     :init-image-urls = "【image url array】"   <!--Initialized picture array-->
     :init-image-scale = "0.2" <!--The zoom level of the initialized picture defaults to 0.2 times the original size-->

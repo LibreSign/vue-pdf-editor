@@ -292,17 +292,13 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		initFileSrc: {
-			type: String,
-			default: '',
+		initFiles: {
+			type: Array,
+			default: () => [],
 		},
-		initFile: {
-			type: [File, Blob, ArrayBuffer],
-			default: null,
-		},
-		initFileName: {
-			type: String,
-			default: '',
+		initFileNames: {
+			type: Array,
+			default: () => [],
 		},
 		initTextFields: {
 			type: Array,
@@ -415,13 +411,16 @@ export default {
 			this.scale = parseFloat((this.scale - 0.1).toFixed(1))
 		},
 		async init() {
-			const file = this.initFile || this.initFileSrc
-			if (!file) {
-				console.log('init file is not exist')
+			if (this.initFiles.length === 0) {
+				console.log('init files do not exist')
 				return
 			}
+
 			try {
-				await this.addPDF(file)
+				for (let i = 0; i < this.initFiles.length; i++) {
+					const fileName = this.initFileNames[i] || ''
+					await this.addPDF(this.initFiles[i], fileName)
+				}
 				this.selectedDocIndex = 0
 				this.selectedPageIndex = 0
 				fetchFont(this.currentFont)
@@ -609,7 +608,7 @@ export default {
 			this.pdfDocuments = []
 			this.selectedDocIndex = -1
 		},
-		async addPDF(file) {
+		async addPDF(file, fileName = '') {
 			try {
 				// Don't reset if we're adding to existing documents
 				if (this.pdfDocuments.length === 0) {
@@ -618,8 +617,8 @@ export default {
 
 				const originalFile = file
 				let pdfName = ''
-				if (this.initFileName && this.pdfDocuments.length === 0) {
-					pdfName = this.initFileName
+				if (fileName) {
+					pdfName = fileName
 				} else if (file instanceof File && file.name) {
 					pdfName = file.name
 				} else {
