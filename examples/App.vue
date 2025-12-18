@@ -22,6 +22,8 @@
           :save-to-upload="false"
           :seal-image-show="true"
           :seal-image-hidden-on-save="false"
+          :show-page-footer="true"
+          :page-count-format="'{currentPage} of {totalPages}'"
           @onSave2Upload="save2Upload"
       >
       </VuePdfEditor>
@@ -43,9 +45,9 @@ export default {
   },
   methods:{
     save2Upload(payload){
-      console.log(payload.pdfBytes);
-      console.log(payload.fileName);
-      console.log(payload.sealInfo);
+      console.log('PDF saved:', payload.fileName);
+      console.log('PDF bytes:', payload.pdfBytes);
+      console.log('Seal info:', payload.sealInfo);
     }
   }
 
