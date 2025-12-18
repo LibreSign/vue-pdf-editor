@@ -5,6 +5,10 @@
   "author": "LibreCode",
   "private": false,
   "main": "dist/vue-pdf-editor.umd.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LibreSign/vue-pdf-editor"
+  },
   "keywords": [
     "pdf",
     "pdf editor",
