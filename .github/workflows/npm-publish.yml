@@ -7,6 +7,7 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 jobs:
   publish:
@@ -30,9 +31,10 @@ jobs:
           fallbackNpm: '^10'
 
       - name: Set up node ${{ steps.versions.outputs.nodeVersion }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.versions.outputs.nodeVersion }}
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Set up npm ${{ steps.versions.outputs.npmVersion }}
         run: npm i -g npm@"${{ steps.versions.outputs.npmVersion }}"
@@ -45,14 +47,12 @@ jobs:
           npm run build:lib
 
       - name: Publish
-        run: |
-          npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
-          npm publish
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Setup Github Package Registry
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           registry-url: 'https://npm.pkg.github.com'
 
