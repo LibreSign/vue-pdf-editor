@@ -134,8 +134,8 @@
 														<slot name="custom"
 															:object="object"
 															:pagesScale="pdfDoc.pagesScale[pIndex]"
-															@onUpdate="updateObject(docIndex, object.id, $event)"
-															@onDelete="deleteObject(docIndex, object.id)" />
+															:onUpdate="(payload) => updateObject(docIndex, object.id, payload)"
+															:onDelete="() => deleteObject(docIndex, object.id)" />
 													</div>
 													<div v-else-if="object.type === 'image'">
 														<ImageItem :file="object.file"
