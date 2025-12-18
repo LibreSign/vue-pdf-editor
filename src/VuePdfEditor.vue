@@ -550,9 +550,9 @@ export default {
 
 			doc.allObjects.forEach((pageObjects, pageIndex) => {
 				// Get canvas measurement for this page
-				const pageRef = this.$refs['page' + pageIndex]
+				const pageRef = this.$refs[`page${docIndex}-${pageIndex}`]
 				if (!pageRef || !pageRef[0]) {
-					console.warn(`VuePdfEditor.getAllObjects: Cannot access page ${pageIndex} ref`)
+					console.warn(`VuePdfEditor.getAllObjects: Cannot access page ${docIndex}-${pageIndex} ref`)
 					return
 				}
 
