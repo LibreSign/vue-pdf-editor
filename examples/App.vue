@@ -14,8 +14,8 @@
           :show-font-select="true"
           :show-rename="true"
           :show-save-btn="true"
-          :init-file-src="initFile"
-          :init-file-name="initFileName"
+          :init-files="initFiles"
+          :init-file-names="initFileNames"
           :init-text-fields = "this.textFields"
           :init-image-urls = "this.imageUrls"
           :init-image-scale = "1"
@@ -37,8 +37,8 @@ export default {
   name: 'App',
   data(){
     return {
-      initFileName: 'test.pdf',
-      initFile :'',
+      initFileNames: ['test.pdf'],
+      initFiles: [],
       textFields: ['initial text'],
       imageUrls: [],
     }
