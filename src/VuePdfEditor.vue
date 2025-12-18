@@ -11,6 +11,7 @@
 				<input id="pdf"
 					type="file"
 					name="pdf"
+					multiple
 					class="hidden"
 					@change="onUploadPDF">
 				<input id="image"
@@ -58,7 +59,7 @@
 						<GestureIcon :size="20" title="An icon for adding drawing" />
 					</label>
 				</div>
-				<div v-if="showRename" class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
+				<div v-if="showRename && pdfDocuments.length === 1" class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
 					<PencilIcon :size="20"
 						class="mr-2"
 						title="a pen, edit pdf name"
@@ -72,7 +73,7 @@
 				</div>
 				<button v-if="showSaveBtn"
 					class="w-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 md:px-4 mr-3 md:mr-4 rounded"
-					:class="[(pages.length === 0 || saving || !pdfFile) ?'cursor-not-allowed bg-blue-700':'']"
+					:class="[(pdfDocuments.length === 0 || saving) ?'cursor-not-allowed bg-blue-700':'']"
 					@click="savePDF">
 					{{ saving ? 'saving' : 'keep' }}
 				</button>
@@ -84,16 +85,16 @@
 						@onCancel="onCancelDrawingCanvas" />
 				</div>
 			</div>
-			<div v-if="pages.length"
+			<div v-if="pdfDocuments.length"
 				id="pdfBody"
 				ref="pdfBody"
 				class="w-full">
-				<div v-if="showRename" class="flex justify-center px-5 pt-5 w-full md:hidden">
+				<div v-if="showRename && pdfDocuments.length === 1" class="flex justify-center px-5 pt-5 w-full md:hidden">
 					<div class="flex items-center">
 						<PencilIcon :size="20"
 							class="mr-2"
 							title="a pen, edit pdf name"
-							@click="renamePDF($refs.renamePDFInputOne)" />
+							@click="renamePDF($refs.renamePDFInputTwo)" />
 						<input ref="renamePDFInputTwo"
 							v-model="pdfName"
 							style="text-align:center"
@@ -106,77 +107,90 @@
 
 				<!--  PDF main body      -->
 				<div class="w-full" style="text-align: center;">
-					<div v-for="(page,pIndex) in pages" :key="pIndex" style="display: inline-block;">
-						<div class="p-5  items-center"
-							style="text-align: center"
-							@mousedown="selectPage(pIndex)"
-							@touchstart="selectPage(pIndex)">
-							<div style="display: inline-block;"
-								class="relative shadow-lg page"
-								:class="[pIndex === selectedPageIndex ?'shadowOutline':'']">
-								<PDFPage :ref="`page${pIndex}`"
-									:scale="scale"
-									:data-key="pIndex"
-									:page="page"
-									@onMeasure="onMeasure($event, pIndex)" />
-								<div class="absolute top-0 left-0 transform origin-top-left noTouchAction"
-									:style="{transform: `scale(${pagesScale[pIndex]})`}">
-									<div v-for="(object, oIndex) in allObjects[pIndex]" :key="oIndex">
-										<div>
-											<div v-if="object.type === 'custom'">
-												<slot name="custom"
-													:object="object"
-													:pagesScale="pagesScale[pIndex]"
-													@onUpdate="updateObject(object.id, $event)"
-													@onDelete="deleteObject(object.id)" />
-											</div>
-											<div v-else-if="object.type === 'image'">
-												<ImageItem :file="object.file"
-													:payload="object.payload"
-													:x="object.x"
-													:y="object.y"
-													:fix-size="object.isSealImage"
-													:width="object.width"
-													:height="object.height"
-													:origin-width="object.originWidth"
-													:origin-height="object.originHeight"
-													:page-scale="pagesScale[pIndex]"
-													@onUpdate="updateObject(object.id, $event)"
-													@onDelete="deleteObject(object.id)" />
-											</div>
-											<div v-else-if="object.type === 'text'">
-												<TextItem ref="textItem"
-													:text="object.text"
-													:x="object.x"
-													:y="object.y"
-													:width="object.width"
-													:height="object.height"
-													:show-line-size-select="showLineSizeSelect"
-													:show-font-size-select="showFontSizeSelect"
-													:show-font-select="showFontSelect"
-													:size="object.size"
-													:line-height="object.lineHeight"
-													:font-family="object.fontFamily"
-													:current-page="object.currentPage"
-													:page-scale="pagesScale[pIndex]"
-													@onUpdate="updateObject(object.id, $event)"
-													@onDelete="deleteObject(object.id)"
-													@onSelectFont="selectFontFamily" />
-											</div>
-											<div v-else-if="object.type === 'drawing'">
-												<Drawing :path="object.path"
-													:x="object.x"
-													:y="object.y"
-													:width="object.width"
-													:height="object.height"
-													:origin-width="object.originWidth"
-													:origin-height="object.originHeight"
-													:page-scale="pagesScale[pIndex]"
-													@onUpdate="updateObject(object.id, $event)"
-													@onDelete="deleteObject(object.id)" />
+					<div v-for="(pdfDoc, docIndex) in pdfDocuments" :key="docIndex">
+						<div v-for="(page, pIndex) in pdfDoc.pages" :key="`${docIndex}-${pIndex}`" style="display: inline-block;">
+							<div :class="[
+									'items-center',
+									showPageFooter
+										? (docIndex === 0 && pIndex === 0 ? 'pt-5 px-5' : 'px-5') + (docIndex === pdfDocuments.length - 1 && pIndex === pdfDoc.pages.length - 1 ? ' pb-5' : '')
+										: 'p-5'
+								]"
+								style="text-align: center"
+								@mousedown="selectPage(docIndex, pIndex)"
+								@touchstart="selectPage(docIndex, pIndex)">
+								<div style="display: inline-block;">
+									<div class="relative shadow-lg page"
+										:class="[docIndex === selectedDocIndex && pIndex === selectedPageIndex ? 'shadowOutline' : '']">
+										<PDFPage :ref="`page${docIndex}-${pIndex}`"
+											:scale="scale"
+											:data-key="`${docIndex}-${pIndex}`"
+											:page="page"
+											@onMeasure="onMeasure($event, docIndex, pIndex)" />
+										<div class="absolute top-0 left-0 transform origin-top-left noTouchAction"
+											:style="{transform: `scale(${pdfDoc.pagesScale[pIndex]})`}">
+											<div v-for="(object, oIndex) in pdfDoc.allObjects[pIndex]" :key="oIndex">
+												<div>
+													<div v-if="object.type === 'custom'">
+														<slot name="custom"
+															:object="object"
+															:pagesScale="pdfDoc.pagesScale[pIndex]"
+															@onUpdate="updateObject(docIndex, object.id, $event)"
+															@onDelete="deleteObject(docIndex, object.id)" />
+													</div>
+													<div v-else-if="object.type === 'image'">
+														<ImageItem :file="object.file"
+															:payload="object.payload"
+															:x="object.x"
+															:y="object.y"
+															:fix-size="object.isSealImage"
+															:width="object.width"
+															:height="object.height"
+															:origin-width="object.originWidth"
+															:origin-height="object.originHeight"
+															:page-scale="pdfDoc.pagesScale[pIndex]"
+															@onUpdate="updateObject(docIndex, object.id, $event)"
+															@onDelete="deleteObject(docIndex, object.id)" />
+													</div>
+													<div v-else-if="object.type === 'text'">
+														<TextItem ref="textItem"
+															:text="object.text"
+															:x="object.x"
+															:y="object.y"
+															:width="object.width"
+															:height="object.height"
+															:show-line-size-select="showLineSizeSelect"
+															:show-font-size-select="showFontSizeSelect"
+															:show-font-select="showFontSelect"
+															:size="object.size"
+															:line-height="object.lineHeight"
+															:font-family="object.fontFamily"
+															:current-page="object.currentPage"
+															:page-scale="pdfDoc.pagesScale[pIndex]"
+															@onUpdate="updateObject(docIndex, object.id, $event)"
+															@onDelete="deleteObject(docIndex, object.id)"
+															@onSelectFont="selectFontFamily" />
+													</div>
+													<div v-else-if="object.type === 'drawing'">
+														<Drawing :path="object.path"
+															:x="object.x"
+															:y="object.y"
+															:width="object.width"
+															:height="object.height"
+															:origin-width="object.originWidth"
+															:origin-height="object.originHeight"
+															:page-scale="pdfDoc.pagesScale[pIndex]"
+															@onUpdate="updateObject(docIndex, object.id, $event)"
+															@onDelete="deleteObject(docIndex, object.id)" />
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
+								</div>
+								<!-- Footer with filename and page count (outside PDF) -->
+								<div v-if="showPageFooter" class="flex justify-between items-center pb-5 text-sm text-gray-600">
+									<span>{{ pdfDoc.name }}</span>
+									<span>{{ formatPageCount(pIndex + 1, pdfDoc.numPages) }}</span>
 								</div>
 							</div>
 						</div>
@@ -322,26 +336,43 @@ export default {
 			type: Number,
 			default: 1,
 		},
+		pageCountFormat: {
+			type: String,
+			default: '{currentPage} de {totalPages}',
+		},
+		showPageFooter: {
+			type: Boolean,
+			default: true,
+		},
 	},
 	data() {
 		return {
 			wheelZoomCount: 0,
 			narrowEnlargeShow: false,
 			scale: this.initialScale,
-			pdfFile: null,
-			pdfName: '',
-			numPages: null,
-			pdfDocument: null,
-			pages: [],
-			pagesScale: [],
-			allObjects: [],
+			pdfDocuments: [],
+			selectedDocIndex: -1,
 			currentFont: 'Courier',
 			focusId: null,
 			selectedPageIndex: -1,
 			saving: false,
 			addingDrawing: false,
-
 		}
+	},
+	computed: {
+		pdfName: {
+			get() {
+				if (this.selectedDocIndex >= 0 && this.selectedDocIndex < this.pdfDocuments.length) {
+					return this.pdfDocuments[this.selectedDocIndex].name
+				}
+				return ''
+			},
+			set(newName) {
+				if (this.selectedDocIndex >= 0 && this.selectedDocIndex < this.pdfDocuments.length) {
+					this.pdfDocuments[this.selectedDocIndex].name = newName
+				}
+			},
+		},
 	},
 	watch: {
 		scale(newScale, oldScale) {
@@ -391,6 +422,7 @@ export default {
 			}
 			try {
 				await this.addPDF(file)
+				this.selectedDocIndex = 0
 				this.selectedPageIndex = 0
 				fetchFont(this.currentFont)
 				this.narrowEnlargeShow = true
@@ -403,10 +435,11 @@ export default {
 			}
 		},
 		initTextField() {
-			if (this.selectedPageIndex < 0 || this.initTextFields === null || this.initTextFields.length === 0) {
+			if (this.selectedPageIndex < 0 || this.selectedDocIndex < 0 || this.initTextFields === null || this.initTextFields.length === 0) {
 				return
 			}
-			for (let i = 0; i < this.pages.length; i++) {
+			const currentDoc = this.pdfDocuments[this.selectedDocIndex]
+			for (let i = 0; i < currentDoc.pages.length; i++) {
 				this.selectedPageIndex = i
 				for (let j = 0; j < this.initTextFields.length; j++) {
 					const text = this.initTextFields[j]
@@ -415,22 +448,26 @@ export default {
 			}
 			this.selectedPageIndex = 0
 			const checker = setInterval(() => {
-				if (this.$refs.textItem.length === this.initTextFields.length * this.pages.length) {
-					document.getElementById('pdfBody').dispatchEvent(new MouseEvent('mousedown', {
-						bubbles: true,
-						cancelable: true,
-						view: window,
-					}))
+				if (this.$refs.textItem && this.$refs.textItem.length === this.initTextFields.length * currentDoc.pages.length) {
+					const pdfBody = document.getElementById('pdfBody')
+					if (pdfBody) {
+						pdfBody.dispatchEvent(new MouseEvent('mousedown', {
+							bubbles: true,
+							cancelable: true,
+							view: window,
+						}))
+					}
 					clearInterval(checker)
 				}
 			}, 100)
 
 		},
 		async initImages() {
-			if (this.selectedPageIndex < 0) {
+			if (this.selectedPageIndex < 0 || this.selectedDocIndex < 0) {
 				return
 			}
-			for (let i = 0; i < this.pages.length; i++) {
+			const currentDoc = this.pdfDocuments[this.selectedDocIndex]
+			for (let i = 0; i < currentDoc.pages.length; i++) {
 				this.selectedPageIndex = i
 				let y = 0
 				if (this.initImageUrls !== null && this.initImageUrls.length !== 0) {
@@ -471,41 +508,122 @@ export default {
 				return id++
 			}
 		},
+
+		/**
+		 * Public API: Add an object to a specific page in a specific document
+		 * @param {Object} object - The object to add (must include type, x, y, width, height)
+		 * @param {Number} pageIndex - Zero-based page index
+		 * @param {Number} docIndex - Zero-based document index (defaults to currently selected document)
+		 */
+		addObjectToPage(object, pageIndex, docIndex = this.selectedDocIndex) {
+			if (docIndex < 0 || docIndex >= this.pdfDocuments.length) {
+				console.error('VuePdfEditor.addObjectToPage: Invalid document index')
+				return false
+			}
+			if (pageIndex < 0 || pageIndex >= this.pdfDocuments[docIndex].pages.length) {
+				console.error('VuePdfEditor.addObjectToPage: Invalid page index')
+				return false
+			}
+
+			const doc = this.pdfDocuments[docIndex]
+			doc.allObjects = doc.allObjects.map((objects, pIndex) =>
+				pIndex === pageIndex ? [...objects, object] : objects,
+			)
+
+			return true
+		},
+
+		/**
+		 * Public API: Get all objects from all pages with normalized coordinates
+		 * @param {Number} docIndex - Zero-based document index (defaults to currently selected document)
+		 * @returns {Array} Array of objects with their page info and normalized coordinates
+		 */
+		getAllObjects(docIndex = this.selectedDocIndex) {
+			if (docIndex < 0 || docIndex >= this.pdfDocuments.length) {
+				console.error('VuePdfEditor.getAllObjects: Invalid document index')
+				return []
+			}
+
+			const doc = this.pdfDocuments[docIndex]
+			const scale = this.scale || 1
+			const result = []
+
+			doc.allObjects.forEach((pageObjects, pageIndex) => {
+				// Get canvas measurement for this page
+				const pageRef = this.$refs['page' + pageIndex]
+				if (!pageRef || !pageRef[0]) {
+					console.warn(`VuePdfEditor.getAllObjects: Cannot access page ${pageIndex} ref`)
+					return
+				}
+
+				const measurement = pageRef[0].getCanvasMeasurement()
+				const normalizedCanvasHeight = measurement.canvasHeight / scale
+
+				pageObjects.forEach(object => {
+					result.push({
+						...object,
+						pageIndex,
+						pageNumber: pageIndex + 1,
+						scale,
+						normalizedCoordinates: {
+							llx: parseInt(object.x),
+							lly: parseInt(normalizedCanvasHeight - object.y),
+							ury: parseInt(normalizedCanvasHeight - object.y - object.height),
+							urx: parseInt(object.x + object.width),
+							width: parseInt(object.width),
+							height: parseInt(object.height),
+						},
+					})
+				})
+			})
+
+			return result
+		},
+
 		async onUploadPDF(e) {
 			const files = e.target.files || (e.dataTransfer && e.dataTransfer.files)
-			const file = files[0]
-			if (!file || file.type !== 'application/pdf') return
+			if (!files || files.length === 0) return
+
 			this.selectedPageIndex = -1
+			this.selectedDocIndex = -1
+
 			try {
-				await this.addPDF(file)
+				// Process multiple PDFs
+				for (let i = 0; i < files.length; i++) {
+					const file = files[i]
+					if (file && file.type === 'application/pdf') {
+						await this.addPDF(file)
+					}
+				}
 				this.narrowEnlargeShow = true
+				this.selectedDocIndex = 0
 				this.selectedPageIndex = 0
 			} catch (e) {
 				console.log(e)
 			}
 			this.initTextField()
 			await this.initImages()
+			e.target.value = null
 		},
 		resetDefaultState() {
-			this.pdfFile = null
-			this.pdfName = ''
-			this.numPages = null
-			this.pdfDocument = null
-			this.pages = []
-			this.pagesScale = []
-			this.allObjects = []
+			this.pdfDocuments = []
+			this.selectedDocIndex = -1
 		},
 		async addPDF(file) {
 			try {
-				this.resetDefaultState()
+				// Don't reset if we're adding to existing documents
+				if (this.pdfDocuments.length === 0) {
+					this.resetDefaultState()
+				}
 
-				this.pdfFile = file
-				if (this.initFileName) {
-					this.pdfName = this.initFileName
+				const originalFile = file
+				let pdfName = ''
+				if (this.initFileName && this.pdfDocuments.length === 0) {
+					pdfName = this.initFileName
 				} else if (file instanceof File && file.name) {
-					this.pdfName = file.name
+					pdfName = file.name
 				} else {
-					this.pdfName = new Date().getTime()
+					pdfName = `document_${new Date().getTime()}.pdf`
 				}
 
 				if (file instanceof File) {
@@ -513,25 +631,36 @@ export default {
 					file = await blob.arrayBuffer();
 				}
 
-				this.pdfDocument = await readAsPDF(file)
-				if (this.pdfDocument) {
-					this.numPages = this.pdfDocument.numPages
-					this.pages = Array(this.numPages)
-						.fill()
-						.map((_, i) => this.pdfDocument.getPage(i + 1))
-					this.allObjects = this.pages.map(() => [])
-					this.pagesScale = Array(this.numPages).fill(1)
+					const pdfDocument = await readAsPDF(file)
+					if (pdfDocument) {
+						const numPages = pdfDocument.numPages
+						const pages = Array(numPages)
+							.fill()
+							.map((_, i) => pdfDocument.getPage(i + 1))
+						const allObjects = pages.map(() => [])
+						const pagesScale = Array(numPages).fill(1)
+
+						this.pdfDocuments.push({
+							file: originalFile,
+							name: pdfName,
+							numPages,
+							pdfDocument,
+							pages,
+							pagesScale,
+						allObjects,
+					})
 
 					const data = {
-						allObjects: this.allObjects,
-						numPages: this.numPages,
-						pages: this.pages,
+						allObjects,
+						numPages,
+						pages,
 						measurement: [],
+						pdfName,
 					}
 					// Wait until all pages have been read
-					Promise.all(this.pages)
-						.then(pages => {
-							pages.forEach((page) => {
+					Promise.all(pages)
+						.then(loadedPages => {
+							loadedPages.forEach((page) => {
 								const measurement = page.getViewport().viewBox
 								data.measurement[page.pageNumber] = {
 									width: measurement[2],
@@ -548,7 +677,7 @@ export default {
 		},
 		async onUploadImage(e) {
 			const file = e.target.files[0]
-			if (file && this.selectedPageIndex >= 0) {
+			if (file && this.selectedPageIndex >= 0 && this.selectedDocIndex >= 0) {
 				await this.addImage(file)
 			}
 			e.target.value = null
@@ -585,12 +714,13 @@ export default {
 			}
 		},
 		onAddTextField() {
-			if (this.selectedPageIndex >= 0) {
+			if (this.selectedPageIndex >= 0 && this.selectedDocIndex >= 0) {
 				this.addTextField()
 			}
 		},
 
 		addTextField(text = 'Please enter here', x = 0, y = 0, currentPage = this.selectedPageIndex) {
+			if (this.selectedDocIndex < 0) return
 			const id = this.genID()
 			fetchFont(this.currentFont)
 
@@ -609,12 +739,13 @@ export default {
 		},
 
 		onAddDrawing() {
-			if (this.selectedPageIndex >= 0) {
+			if (this.selectedPageIndex >= 0 && this.selectedDocIndex >= 0) {
 				this.addingDrawing = true
 			}
 		},
 
 		addDrawing(originWidth, originHeight, path, scale = 1) {
+			if (this.selectedDocIndex < 0) return
 			const id = this.genID()
 
 			const object = {
@@ -633,74 +764,93 @@ export default {
 		},
 
 		addObject(object) {
-			this.allObjects = this.allObjects.map((objects, pIndex) =>
+			if (this.selectedDocIndex < 0) return
+			const doc = this.pdfDocuments[this.selectedDocIndex]
+			doc.allObjects = doc.allObjects.map((objects, pIndex) =>
 				pIndex === this.selectedPageIndex ? [...objects, object] : objects,
 			)
 		},
-
 		selectFontFamily(event) {
 			const name = event.name
 			fetchFont(name)
 			this.currentFont = name
 		},
 
-		selectPage(index) {
-			this.selectedPageIndex = index
-		},
-
-		updateObject(objectId, payload) {
-			this.allObjects = this.allObjects.map((objects, pIndex) =>
-				pIndex === (payload.currentPage !== undefined ? payload.currentPage : this.selectedPageIndex)
-					? objects.map(object =>
-						object.id === objectId ? { ...object, ...payload } : object,
-					)
-					: objects,
-			)
-		},
-
-		deleteObject(objectId) {
-			this.allObjects = this.allObjects.map((objects, pIndex) =>
-				pIndex === this.selectedPageIndex
-					? objects.filter(object => object.id !== objectId)
-					: objects,
-			)
-		},
-
-		onMeasure(e, i) {
-			this.pagesScale[i] = e.scale
-			this.$forceUpdate()
-		},
-
-		renamePDF(object) {
+	selectPage(docIndex, pageIndex) {
+		this.selectedDocIndex = docIndex
+		this.selectedPageIndex = pageIndex
+	},	updateObject(docIndex, objectId, payload) {
+		if (docIndex < 0 || docIndex >= this.pdfDocuments.length) return
+		const doc = this.pdfDocuments[docIndex]
+		doc.allObjects = doc.allObjects.map((objects, pIndex) =>
+			pIndex === (payload.currentPage !== undefined ? payload.currentPage : this.selectedPageIndex)
+				? objects.map(object =>
+					object.id === objectId ? { ...object, ...payload } : object,
+				)
+				: objects,
+		)
+	},	deleteObject(docIndex, objectId) {
+		if (docIndex < 0 || docIndex >= this.pdfDocuments.length) return
+		const doc = this.pdfDocuments[docIndex]
+		doc.allObjects = doc.allObjects.map((objects, pIndex) =>
+			pIndex === this.selectedPageIndex
+				? objects.filter(object => object.id !== objectId)
+				: objects,
+		)
+	},		onMeasure(e, docIndex, pageIndex) {
+			if (docIndex < 0 || docIndex >= this.pdfDocuments.length) return
+		this.pdfDocuments[docIndex].pagesScale[pageIndex] = e.scale
+		this.$forceUpdate()
+	},		renamePDF(object) {
 			object.focus()
 		},
 
+		formatPageCount(currentPage, totalPages) {
+			return this.pageCountFormat
+				.replace('{currentPage}', currentPage)
+				.replace('{totalPages}', totalPages)
+		},
+
 		async savePDF() {
-			if (!this.pdfFile || this.saving || !this.pages.length) return
+			if (this.pdfDocuments.length === 0 || this.saving) return
 			this.saving = true
 			try {
-				const sealInfo = []
-				const allObject4Save = []
-				if (this.sealImageShow) {
-					for (let i = 0; i < this.pages.length; i++) {
-						const seal = this.allObjects[i].find((e) => e.isSealImage === true)
-						const page = await this.pages[i].then(response => response);
-						sealInfo.push({
-							page: page._pageIndex,
-							pageWidth: page._pageInfo.view[2],
-							pageHeight: page._pageInfo.view[3],
-							x: seal.x + 60,
-							y: seal.y + 60,
-						})
-						if (this.sealImageHiddenOnSave) {
-							allObject4Save.push(this.allObjects[i].filter(e => e !== seal))
+				// Save all documents
+				for (const doc of this.pdfDocuments) {
+					const sealInfo = []
+					let allObject4Save = []
+					let hasSeal = false
+
+					if (this.sealImageShow) {
+						for (let i = 0; i < doc.pages.length; i++) {
+							const seal = doc.allObjects[i].find((e) => e.isSealImage === true)
+							if (seal) {
+								hasSeal = true
+								const page = await doc.pages[i].then(response => response);
+								sealInfo.push({
+									page: page._pageIndex,
+									pageWidth: page._pageInfo.view[2],
+									pageHeight: page._pageInfo.view[3],
+									x: seal.x + 60,
+									y: seal.y + 60,
+								})
+								if (this.sealImageHiddenOnSave) {
+									allObject4Save.push(doc.allObjects[i].filter(e => e !== seal))
+								}
+							} else if (this.sealImageHiddenOnSave) {
+								allObject4Save.push(doc.allObjects[i])
+							}
 						}
 					}
-				}
-				await save(this.pdfFile, this.sealImageShow && this.sealImageHiddenOnSave ? allObject4Save : this.allObjects,
-					this.pdfName, this.saveToUpload, (pdfBytes) => {
-						this.$emit('onSave2Upload', { pdfBytes, fileName: this.pdfName, sealInfo })
+
+					const objectsToSave = (this.sealImageShow && this.sealImageHiddenOnSave && hasSeal)
+						? allObject4Save
+						: doc.allObjects
+
+					await save(doc.file, objectsToSave, doc.name, this.saveToUpload, (pdfBytes) => {
+						this.$emit('onSave2Upload', { pdfBytes, fileName: doc.name, sealInfo })
 					})
+				}
 			} catch (e) {
 				console.log(e)
 			} finally {
