@@ -63,3 +63,9 @@ Returns objects with `normalizedCoordinates` for PDF generation.
 const objects = this.$refs.vuePdfEditor.getAllObjects()
 ```
 
+## Known Issues
+
+### Rotated PDFs
+PDFs with page rotation flags (`/Rotate 90`, `/Rotate 180`, or `/Rotate 270`) will display correctly in the preview but may have positioning issues when exporting/saving. This is a limitation of the underlying pdf-lib library which doesn't properly handle coordinate transformations for rotated pages when adding new content.
+
+**Workaround**: If possible, use PDFs without rotation flags, or rotate the PDF content physically before importing.
