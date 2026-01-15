@@ -50,7 +50,6 @@ export default {
 			const context = canvas.getContext('2d')
 			const viewport = _page.getViewport({
 				scale: this.dynamicScale,
-				rotation: 0,
 			})
 			canvas.width = viewport.width
 			canvas.height = viewport.height
