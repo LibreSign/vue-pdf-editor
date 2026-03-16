@@ -27,7 +27,7 @@
     "core-js": "^3.47.0",
     "downloadjs": "^1.4.7",
     "pdfjs-dist": "^5.4.530",
-    "pdfkit": "^0.17.2",
+    "pdfkit": "^0.18.0",
     "vue-material-design-icons": "^5.3.1"
   },
   "devDependencies": {
