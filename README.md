@@ -1,3 +1,11 @@
+> ⚠️ **Deprecated**
+>
+> This project is no longer maintained and has been **replaced by a new project** maintained by LibreSign.
+>
+> 👉 Please use: https://github.com/LibreSign/pdf-elements/
+>
+> All new development and improvements are happening in the new repository.
+
 # vue-pdf-editor
 
 - power by vue2
